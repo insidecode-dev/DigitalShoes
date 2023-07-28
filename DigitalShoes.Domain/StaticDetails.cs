@@ -11,7 +11,8 @@ namespace DigitalShoes.Domain
         public enum Gender
         {
             Man = 1, 
-            Woman = 2
+            Woman = 2,
+            Unisex = 3
         }
 
         public enum Rating
@@ -39,7 +40,9 @@ namespace DigitalShoes.Domain
 
         public enum DataStatus
         {
-            Inserted = 1, Updated = 2, Deleted = 3
+            Inserted = 1, 
+            Updated = 2, 
+            Deleted = 3
         }
     }
 }

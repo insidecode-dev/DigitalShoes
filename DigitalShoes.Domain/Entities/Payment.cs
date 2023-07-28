@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace DigitalShoes.Domain.Entities
 {
-    public class PaymentHistory : BaseEntity // ignore ModifiedDate date 
+    public class Payment : BaseEntity // ignore ModifiedDate date 
     {
         public int ApplicationUserId { get; set; }    
-        public ApplicationUser ApplicationUser { get; set; }
-        public int ShoeId { get; set; }
-        public Shoe Shoe { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }        
+        public Cart Cart { get; set; }
+        public decimal TotalPrice { get; set; }
     }
 }

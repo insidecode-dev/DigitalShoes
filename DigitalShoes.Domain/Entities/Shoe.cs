@@ -20,6 +20,8 @@ namespace DigitalShoes.Domain.Entities
         public Category Category { get; set; }
         public List<ShoeImage> ShoeImages { get; set; }
         public List<Review> Reviews { get; set; }                
-        public List<Wishlist> Wishlists { get; set; }
+        public List<ShoeWishlist> ShoeWishlists { get; set; }
+        public List<CartItem> CartItems { get; set; }        
+
     }
 }

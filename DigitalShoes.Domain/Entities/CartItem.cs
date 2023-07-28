@@ -6,5 +6,6 @@
         public Shoe Shoe { get; set; }
         public int CartId { get; set; }
         public Cart Cart { get; set; }
+        public int ItemsCount { get; set; }
     }
 }

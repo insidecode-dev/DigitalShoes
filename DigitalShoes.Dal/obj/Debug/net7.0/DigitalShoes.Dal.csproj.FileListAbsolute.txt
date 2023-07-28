@@ -1,0 +1,12 @@
+C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Dal\bin\Debug\net7.0\DigitalShoes.Dal.deps.json
+C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Dal\bin\Debug\net7.0\DigitalShoes.Dal.dll
+C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Dal\bin\Debug\net7.0\DigitalShoes.Dal.pdb
+C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Dal\obj\Debug\net7.0\DigitalShoes.Dal.csproj.AssemblyReference.cache
+C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Dal\obj\Debug\net7.0\DigitalShoes.Dal.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Dal\obj\Debug\net7.0\DigitalShoes.Dal.AssemblyInfoInputs.cache
+C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Dal\obj\Debug\net7.0\DigitalShoes.Dal.AssemblyInfo.cs
+C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Dal\obj\Debug\net7.0\DigitalShoes.Dal.csproj.CoreCompileInputs.cache
+C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Dal\obj\Debug\net7.0\DigitalShoes.Dal.dll
+C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Dal\obj\Debug\net7.0\refint\DigitalShoes.Dal.dll
+C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Dal\obj\Debug\net7.0\DigitalShoes.Dal.pdb
+C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Dal\obj\Debug\net7.0\ref\DigitalShoes.Dal.dll
