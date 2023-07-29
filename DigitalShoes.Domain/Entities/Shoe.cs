@@ -21,7 +21,7 @@ namespace DigitalShoes.Domain.Entities
         public List<ShoeImage> ShoeImages { get; set; }
         public List<Review> Reviews { get; set; }                
         public List<ShoeWishlist> ShoeWishlists { get; set; }
-        public List<CartItem> CartItems { get; set; }        
-
+        public List<CartItem> CartItems { get; set; }
+        public List<PaymentObject> PaymentObjects { get; set; }
     }
 }
