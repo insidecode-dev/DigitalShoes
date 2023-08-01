@@ -7,5 +7,6 @@
         public int CartId { get; set; }
         public Cart Cart { get; set; }
         public int ItemsCount { get; set; }
+        public decimal Price { get; set; }
     }
 }

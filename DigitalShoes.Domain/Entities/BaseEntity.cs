@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using static DigitalShoes.Domain.StaticDetails;
 
 namespace DigitalShoes.Domain.Entities
@@ -14,9 +11,9 @@ namespace DigitalShoes.Domain.Entities
             CreatedDate = DateTime.Now;
             DataStatus = DataStatus.Inserted;
         }
-
-        public int Id { get; set; }
-        
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }        
         public DateTime CreatedDate { get; set; }
         public DateTime ModifiedDate { get; set; }
         public DataStatus DataStatus { get; set; }

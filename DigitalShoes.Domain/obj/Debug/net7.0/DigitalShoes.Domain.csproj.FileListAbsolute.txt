@@ -10,3 +10,5 @@ C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Domain\obj\Debug\net7.0\D
 C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Domain\obj\Debug\net7.0\refint\DigitalShoes.Domain.dll
 C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Domain\obj\Debug\net7.0\DigitalShoes.Domain.pdb
 C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Domain\obj\Debug\net7.0\ref\DigitalShoes.Domain.dll
+C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Domain\bin\Debug\net7.0\DigitalShoes.Domain.runtimeconfig.json
+C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Domain\obj\Debug\net7.0\DigitalShoes.Domain.genruntimeconfig.cache

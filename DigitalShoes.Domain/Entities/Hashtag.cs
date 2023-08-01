@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace DigitalShoes.Domain.Entities
 {
-    public class Tag : BaseEntity 
+    public class Hashtag : BaseEntity 
     {        
         public string Text { get; set; }
-        public List<ShoeTag> ShoeTags { get; set; }
+        public List<ShoeHashtag> ShoeHashtags { get; set; }
     }
 }

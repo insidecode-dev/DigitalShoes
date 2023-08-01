@@ -10,3 +10,6 @@ C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Dal\obj\Debug\net7.0\Digi
 C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Dal\obj\Debug\net7.0\refint\DigitalShoes.Dal.dll
 C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Dal\obj\Debug\net7.0\DigitalShoes.Dal.pdb
 C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Dal\obj\Debug\net7.0\ref\DigitalShoes.Dal.dll
+C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Dal\bin\Debug\net7.0\DigitalShoes.Domain.dll
+C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Dal\bin\Debug\net7.0\DigitalShoes.Domain.pdb
+C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Dal\obj\Debug\net7.0\DigitalShoes.Dal.csproj.CopyComplete

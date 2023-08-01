@@ -10,7 +10,7 @@ namespace DigitalShoes.Domain.Entities
     {
         public int ApplicationUserId { get; set; }    
         public ApplicationUser ApplicationUser { get; set; }        
-        public List<PaymentObject> PaymentObjects { get; set; }
+        public List<PaymentObject> PaymentObjects { get; set; }        
         public decimal TotalPrice { get; set; }
     }
 }

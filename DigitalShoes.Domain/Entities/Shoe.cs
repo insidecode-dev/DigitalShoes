@@ -18,10 +18,11 @@ namespace DigitalShoes.Domain.Entities
         public Color Color { get; set; }
         public int CategoryId { get; set; }
         public Category Category { get; set; }
-        public List<ShoeImage> ShoeImages { get; set; }
-        public List<Review> Reviews { get; set; }                
+        public List<ShoeImage> ShoeImages { get; set; }        
+        public List<ShoeHashtag> ShoeHashtags { get; set; }
         public List<ShoeWishlist> ShoeWishlists { get; set; }
         public List<CartItem> CartItems { get; set; }
+        public List<Review> Reviews { get; set; }
         public List<PaymentObject> PaymentObjects { get; set; }
     }
 }
