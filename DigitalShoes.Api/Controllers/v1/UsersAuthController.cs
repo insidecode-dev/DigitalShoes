@@ -45,6 +45,19 @@ namespace DigitalShoes.Api.Controllers.v1
             return Ok(apiResponse);
         }
 
+        [Authorize]
+        [HttpPost("mynewrole")]
+        public async Task<IActionResult> AddMyNewRole([FromBody] MyNewRoleRequestDTO myNewRoleRequestDTO)
+        {
+            var apiResponse = await _userService.AddMyNewRole(myNewRoleRequestDTO);
+            if (!apiResponse.IsSuccess || apiResponse.ErrorMessages.Count > 0)
+            {
+                return BadRequest(apiResponse);
+            }
 
+            return Ok(apiResponse);
+        }
+
+        
     }
 }

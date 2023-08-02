@@ -7,5 +7,6 @@ namespace DigitalShoes.Api.AuthOperations.Repositories
         bool IsUniqueUser(string username);
         Task<LogInResponseDTO> LogIn(LogInRequestDto logInRequestDTO);
         Task<RegistrationResponseDTO> Register(RegistrationRequestDTO registrationRequestDTO);
+        Task<MyNewRoleResponseDTO> AddMyNewRole(MyNewRoleRequestDTO myNewRoleDTO);
     }
 }

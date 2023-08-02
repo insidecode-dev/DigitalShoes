@@ -18,6 +18,7 @@ namespace DigitalShoes.Api.AuthOperations.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly ApplicationDbContext _dbContext;
+
         private string? secretKey;
 
         // after identity 
@@ -149,7 +150,42 @@ namespace DigitalShoes.Api.AuthOperations.Repositories
             {
                 return new RegistrationResponseDTO { RegisteredUser = null, ErrorMessage = ex.Message.ToString() };
             }
-            
+
+        } 
+
+        public async Task<MyNewRoleResponseDTO> AddMyNewRole(MyNewRoleRequestDTO myNewRoleDTO)
+        {
+            try
+            {
+                Dictionary<string, string> claims = new Dictionary<string, string>();
+                var handler = new JwtSecurityTokenHandler();
+                var jwt = handler.ReadJwtToken(myNewRoleDTO._JWT);
+                foreach (var item in jwt.Claims)
+                {
+                    claims.Add(item.Type.ToString(), item.Value.ToString());
+                }
+
+                ApplicationUser? user = await _dbContext
+                             .ApplicationUsers
+                             .FirstOrDefaultAsync(x => x.UserName.ToLower() == claims["unique_name"].ToLower());
+
+                var roles = await _userManager.GetRolesAsync(user);
+                var newRole = roles.FirstOrDefault(r => r == myNewRoleDTO.RoleName);
+
+                if (newRole != null)
+                {
+                    return new MyNewRoleResponseDTO() { Message = $"you have {myNewRoleDTO.RoleName} account", Succeeded = false };
+                }
+
+                await _userManager.AddToRoleAsync(user: user, role: myNewRoleDTO.RoleName);
+                return new MyNewRoleResponseDTO() { Message = $"Your {myNewRoleDTO.RoleName} account created successfully !!" , Succeeded = true };
+
+            }
+            catch (Exception ex)
+            {
+                return new MyNewRoleResponseDTO() { Message = ex.Message.ToString(), Succeeded = false };
+            }
+
         }
     }
 }

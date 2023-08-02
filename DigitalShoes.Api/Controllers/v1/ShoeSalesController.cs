@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DigitalShoes.Domain.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace DigitalShoes.Api.Controllers.v1
 {
@@ -10,25 +12,28 @@ namespace DigitalShoes.Api.Controllers.v1
     public class ShoeSalesController : ControllerBase
     {
 
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "buyer")]
+        [Authorize(Roles = "buyer")]
         [HttpPost("buyer")]
         public IActionResult GetBuyer()
         {
             return Ok("Buyer is here");
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "admin")]
+        [Authorize(Roles = "admin")]
         [HttpPost("admin")]
         public IActionResult GetAdmin()
         {
             return Ok("Admin is here");
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer", Roles = "admin,buyer")]
+        [Authorize(Roles = "admin,buyer")]
         [HttpPost]
         public IActionResult GetEveryOne()
         {
             return Ok("everyone is here");
         }
+
+
+
     }
 }
