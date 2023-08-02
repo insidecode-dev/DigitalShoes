@@ -21,8 +21,7 @@ namespace DigitalShoes.Dal.Context
         public DbSet<PaymentObject> PaymentObjects { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Shoe> Shoes { get; set; }
-        public DbSet<ShoeHashtag> ShoeHashtags { get; set; }
-        public DbSet<ShoeImage> ShoeImages { get; set; }
+        public DbSet<ShoeHashtag> ShoeHashtags { get; set; }        
         public DbSet<ShoeWishlist> ShoeWishlists { get; set; }
         public DbSet<Wishlist> Wishlists { get; set; }                      
         

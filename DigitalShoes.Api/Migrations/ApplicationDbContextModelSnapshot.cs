@@ -258,7 +258,12 @@ namespace DigitalShoes.Api.Migrations
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("ShoeId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ShoeId");
 
                     b.ToTable("Images");
                 });
@@ -378,6 +383,9 @@ namespace DigitalShoes.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("ApplicationUserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Brand")
                         .IsRequired()
                         .HasColumnType("nvarchar(40)");
@@ -416,6 +424,8 @@ namespace DigitalShoes.Api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicationUserId");
+
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Shoes");
@@ -443,30 +453,6 @@ namespace DigitalShoes.Api.Migrations
                     b.HasIndex("HashtagId");
 
                     b.ToTable("ShoeHashtags");
-                });
-
-            modelBuilder.Entity("DigitalShoes.Domain.Entities.ShoeImage", b =>
-                {
-                    b.Property<int>("ShoeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ImageId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("DataStatus")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("ShoeId", "ImageId");
-
-                    b.HasIndex("ImageId");
-
-                    b.ToTable("ShoeImages");
                 });
 
             modelBuilder.Entity("DigitalShoes.Domain.Entities.ShoeWishlist", b =>
@@ -684,6 +670,17 @@ namespace DigitalShoes.Api.Migrations
                     b.Navigation("Shoe");
                 });
 
+            modelBuilder.Entity("DigitalShoes.Domain.Entities.Image", b =>
+                {
+                    b.HasOne("DigitalShoes.Domain.Entities.Shoe", "Shoe")
+                        .WithMany("Images")
+                        .HasForeignKey("ShoeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Shoe");
+                });
+
             modelBuilder.Entity("DigitalShoes.Domain.Entities.Payment", b =>
                 {
                     b.HasOne("DigitalShoes.Domain.Entities.ApplicationUser", "ApplicationUser")
@@ -735,11 +732,19 @@ namespace DigitalShoes.Api.Migrations
 
             modelBuilder.Entity("DigitalShoes.Domain.Entities.Shoe", b =>
                 {
+                    b.HasOne("DigitalShoes.Domain.Entities.ApplicationUser", "ApplicationUser")
+                        .WithMany("Shoes")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("DigitalShoes.Domain.Entities.Category", "Category")
                         .WithMany("Shoes")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ApplicationUser");
 
                     b.Navigation("Category");
                 });
@@ -759,25 +764,6 @@ namespace DigitalShoes.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("Hashtag");
-
-                    b.Navigation("Shoe");
-                });
-
-            modelBuilder.Entity("DigitalShoes.Domain.Entities.ShoeImage", b =>
-                {
-                    b.HasOne("DigitalShoes.Domain.Entities.Image", "Image")
-                        .WithMany("ShoeImages")
-                        .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DigitalShoes.Domain.Entities.Shoe", "Shoe")
-                        .WithMany("ShoeImages")
-                        .HasForeignKey("ShoeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Image");
 
                     b.Navigation("Shoe");
                 });
@@ -871,6 +857,8 @@ namespace DigitalShoes.Api.Migrations
 
                     b.Navigation("Reviews");
 
+                    b.Navigation("Shoes");
+
                     b.Navigation("Wishlist");
                 });
 
@@ -889,11 +877,6 @@ namespace DigitalShoes.Api.Migrations
                     b.Navigation("ShoeHashtags");
                 });
 
-            modelBuilder.Entity("DigitalShoes.Domain.Entities.Image", b =>
-                {
-                    b.Navigation("ShoeImages");
-                });
-
             modelBuilder.Entity("DigitalShoes.Domain.Entities.Payment", b =>
                 {
                     b.Navigation("PaymentObjects");
@@ -903,13 +886,13 @@ namespace DigitalShoes.Api.Migrations
                 {
                     b.Navigation("CartItems");
 
+                    b.Navigation("Images");
+
                     b.Navigation("PaymentObjects");
 
                     b.Navigation("Reviews");
 
                     b.Navigation("ShoeHashtags");
-
-                    b.Navigation("ShoeImages");
 
                     b.Navigation("ShoeWishlists");
                 });

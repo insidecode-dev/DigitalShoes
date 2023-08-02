@@ -10,6 +10,7 @@ namespace DigitalShoes.Domain.Entities
     {        
         public string ImageUrl { get; set; }
         public string ImageLocalPath { get; set; }
-        public List<ShoeImage> ShoeImages { get; set; }
+        public int ShoeId { get; set; }
+        public Shoe Shoe{ get; set; }
     }
 }

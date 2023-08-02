@@ -21,9 +21,16 @@ namespace DigitalShoes.Dal.Configurations
                 .HasForeignKey(c => c.CategoryId);
 
             builder
-                .HasMany(u => u.ShoeImages)
+                .HasOne(u => u.ApplicationUser)
+                .WithMany(c => c.Shoes)
+                .HasForeignKey(c => c.ApplicationUserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder
+                .HasMany(u => u.Images)
                 .WithOne(c => c.Shoe)
-                .HasForeignKey(c => c.ShoeId);
+                .HasForeignKey(c => c.ShoeId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder
                 .HasMany(u => u.Reviews)

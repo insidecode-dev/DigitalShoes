@@ -18,7 +18,9 @@ namespace DigitalShoes.Domain.Entities
         public Color Color { get; set; }
         public int CategoryId { get; set; }
         public Category Category { get; set; }
-        public List<ShoeImage> ShoeImages { get; set; }        
+        public int ApplicationUserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
+        public List<Image> Images { get; set; }        
         public List<ShoeHashtag> ShoeHashtags { get; set; }
         public List<ShoeWishlist> ShoeWishlists { get; set; }
         public List<CartItem> CartItems { get; set; }

@@ -11,6 +11,7 @@ namespace DigitalShoes.Domain.Entities
         public Wishlist Wishlist { get; set; }
         public List<Review> Reviews { get; set; }
         public List<Payment> Payments { get; set; }
+        public List<Shoe> Shoes { get; set; }
         public decimal Balance { get; set; }
     }
 }

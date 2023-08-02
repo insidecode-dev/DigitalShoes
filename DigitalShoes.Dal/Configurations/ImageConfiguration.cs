@@ -15,9 +15,10 @@ namespace DigitalShoes.Dal.Configurations
         {
             //relation
             builder
-                .HasMany(u => u.ShoeImages)
-                .WithOne(c => c.Image) 
-                .HasForeignKey(c => c.ImageId);
+                .HasOne(u => u.Shoe)
+                .WithMany(c => c.Images) 
+                .HasForeignKey(c => c.ShoeId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             //
 

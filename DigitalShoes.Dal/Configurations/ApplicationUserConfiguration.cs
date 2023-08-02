@@ -30,7 +30,11 @@ namespace DigitalShoes.Dal.Configurations
                 .WithOne(u => u.ApplicationUser)
                 .HasForeignKey(x => x.ApplicationUserId);
 
-            
+            builder
+                .HasMany(c => c.Shoes)
+                .WithOne(u => u.ApplicationUser)
+                .HasForeignKey(x => x.ApplicationUserId)
+                .OnDelete(DeleteBehavior.Cascade);
             //
             builder
                 .Property(a => a.Name)
