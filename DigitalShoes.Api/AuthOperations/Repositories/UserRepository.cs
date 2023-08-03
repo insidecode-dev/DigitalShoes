@@ -88,7 +88,7 @@ namespace DigitalShoes.Api.AuthOperations.Repositories
                     {
                         new Claim(ClaimTypes.Name, user.Name.ToString()),
                         new Claim(ClaimTypes.Email, user.Email.ToString()),
-                        new Claim(ClaimTypes.Role, logInRole),
+                        new Claim(ClaimTypes.Role, logInRole)                        
                     }),
 
                 Expires = DateTime.UtcNow.AddDays(7),
@@ -156,25 +156,17 @@ namespace DigitalShoes.Api.AuthOperations.Repositories
         public async Task<MyNewRoleResponseDTO> AddMyNewRole(MyNewRoleRequestDTO myNewRoleDTO)
         {
             try
-            {
-                Dictionary<string, string> claims = new Dictionary<string, string>();
-                var handler = new JwtSecurityTokenHandler();
-                var jwt = handler.ReadJwtToken(myNewRoleDTO._JWT);
-                foreach (var item in jwt.Claims)
-                {
-                    claims.Add(item.Type.ToString(), item.Value.ToString());
-                }
-
+            {               
                 ApplicationUser? user = await _dbContext
                              .ApplicationUsers
-                             .FirstOrDefaultAsync(x => x.UserName.ToLower() == claims["unique_name"].ToLower());
+                             .FirstOrDefaultAsync(x => x.UserName.ToLower() == myNewRoleDTO.UserName.ToLower());
 
                 var roles = await _userManager.GetRolesAsync(user);
                 var newRole = roles.FirstOrDefault(r => r == myNewRoleDTO.RoleName);
 
                 if (newRole != null)
                 {
-                    return new MyNewRoleResponseDTO() { Message = $"you have {myNewRoleDTO.RoleName} account", Succeeded = false };
+                    return new MyNewRoleResponseDTO() { Message = $"you have {newRole} account", Succeeded = false };
                 }
 
                 await _userManager.AddToRoleAsync(user: user, role: myNewRoleDTO.RoleName);

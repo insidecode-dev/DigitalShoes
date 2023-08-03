@@ -9,6 +9,6 @@ namespace DigitalShoes.Domain.DTOs
     public class MyNewRoleRequestDTO
     {
         public string RoleName { get; set; }
-        public string _JWT { get; set; }
+        public string UserName { get; set; }
     }
 }
