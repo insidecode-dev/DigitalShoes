@@ -58,6 +58,17 @@ namespace DigitalShoes.Api.Controllers.v1
             return Ok(apiResponse);
         }
 
-        
+        [Authorize(Roles = "admin")]
+        [HttpPost("newrole")]
+        public async Task<IActionResult> CreateNewRole([FromBody] NewRoleRequestDTO newRoleRequestDTO)
+        {
+            var apiResponse = await _userService.CreateNewRole(newRoleRequestDTO);
+            if (!apiResponse.IsSuccess || apiResponse.ErrorMessages.Count > 0)
+            {
+                return BadRequest(apiResponse);
+            }
+
+            return Ok(apiResponse);
+        }
     }
 }

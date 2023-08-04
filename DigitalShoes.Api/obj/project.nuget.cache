@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "TuQLKu7aDq1a8XnWNmXibjTk70wbXkytok/0K2m34ExS09FGgq3zdVwyGBiICh6+GlquKev7bJYyd6543y7Crw==",
+  "dgSpecHash": "goAWhtTDhdgPL6qitywwY3N6JiGNp5qfdPQaZ2oQK6Y0h0vB0Iic4VHD5XGgF5ySnl6XrVGQWbD1ZcMxIbxlkA==",
   "success": true,
   "projectFilePath": "C:\\Users\\Admino\\source\\repos\\DigitalShoes\\DigitalShoes.Api\\DigitalShoes.Api.csproj",
   "expectedPackageFiles": [
@@ -48,6 +48,7 @@
     "C:\\Users\\Admino\\.nuget\\packages\\microsoft.identitymodel.protocols\\6.21.0\\microsoft.identitymodel.protocols.6.21.0.nupkg.sha512",
     "C:\\Users\\Admino\\.nuget\\packages\\microsoft.identitymodel.protocols.openidconnect\\6.21.0\\microsoft.identitymodel.protocols.openidconnect.6.21.0.nupkg.sha512",
     "C:\\Users\\Admino\\.nuget\\packages\\microsoft.identitymodel.tokens\\6.21.0\\microsoft.identitymodel.tokens.6.21.0.nupkg.sha512",
+    "C:\\Users\\Admino\\.nuget\\packages\\microsoft.net.build.containers\\7.0.304\\microsoft.net.build.containers.7.0.304.nupkg.sha512",
     "C:\\Users\\Admino\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
     "C:\\Users\\Admino\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "C:\\Users\\Admino\\.nuget\\packages\\microsoft.openapi\\1.4.3\\microsoft.openapi.1.4.3.nupkg.sha512",

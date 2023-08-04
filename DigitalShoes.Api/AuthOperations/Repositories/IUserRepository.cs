@@ -8,5 +8,6 @@ namespace DigitalShoes.Api.AuthOperations.Repositories
         Task<LogInResponseDTO> LogIn(LogInRequestDto logInRequestDTO);
         Task<RegistrationResponseDTO> Register(RegistrationRequestDTO registrationRequestDTO);
         Task<MyNewRoleResponseDTO> AddMyNewRole(MyNewRoleRequestDTO myNewRoleDTO);
+        Task<NewRoleResponseDTO> CreateNewRole(NewRoleRequestDTO newRoleRequestDTO);
     }
 }

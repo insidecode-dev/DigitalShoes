@@ -61,7 +61,23 @@ namespace DigitalShoes.Api.AuthOperations.Services
             _apiResponse.IsSuccess = true;
             _apiResponse.StatusCode = HttpStatusCode.OK;
             _apiResponse.Result = myNewRoleResponseDTO;
-            return _apiResponse;            
-        }
+            return _apiResponse;
+        }//CreateNewRole
+
+        public async Task<ApiResponseDTO> CreateNewRole(NewRoleRequestDTO newRoleRequestDTO)
+        {
+            var newRoleResponseDTO = await _userRepository.CreateNewRole(newRoleRequestDTO);            
+            if (!newRoleResponseDTO.Succeeded)
+            {
+                _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                _apiResponse.IsSuccess = false;
+                _apiResponse.ErrorMessages.Add(newRoleResponseDTO.Message);
+                return _apiResponse;
+            }
+            _apiResponse.IsSuccess = true;
+            _apiResponse.StatusCode = HttpStatusCode.OK;
+            _apiResponse.Result = newRoleResponseDTO;
+            return _apiResponse;
+        }//CreateNewRole
     }
 }
