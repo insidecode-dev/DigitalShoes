@@ -3,6 +3,8 @@ using DigitalShoes.Api.AuthOperations.Services;
 using DigitalShoes.Dal.Context;
 using DigitalShoes.Domain;
 using DigitalShoes.Domain.Entities;
+using DigitalShoes.Domain.FluentValidators;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -46,8 +48,9 @@ builder.Services.AddVersionedApiExplorer(options =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 
+// fluent validation
+builder.Services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ShoeValidator>()).AddXmlDataContractSerializerFormatters();
 
-builder.Services.AddControllers().AddXmlDataContractSerializerFormatters();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 

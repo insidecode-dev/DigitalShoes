@@ -1,6 +1,6 @@
 ﻿using DigitalShoes.Api.AuthOperations.Repositories;
 using DigitalShoes.Api.AuthOperations.Services;
-using DigitalShoes.Domain.DTOs;
+using DigitalShoes.Domain.DTOs.AuthDTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -69,6 +69,18 @@ namespace DigitalShoes.Api.Controllers.v1
             }
 
             return Ok(apiResponse);
+        }
+
+        [HttpPut]
+        public IActionResult UpdateProfile()
+        {
+            return Ok();
+        }
+
+        [HttpGet]
+        public IActionResult AccountDetails()
+        {
+            return Ok();
         }
     }
 }

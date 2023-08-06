@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using DigitalShoes.Dal.Context;
-using DigitalShoes.Domain.DTOs;
+using DigitalShoes.Domain.DTOs.AuthDTOs;
 using DigitalShoes.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -38,7 +38,7 @@ namespace DigitalShoes.Api.AuthOperations.Repositories
         {
             var user = _dbContext
                        .ApplicationUsers
-                       .FirstOrDefault(x => x.UserName == username);
+                       .FirstOrDefault(x => x.UserName.ToLower() == username.ToLower());
 
             if (user == null) { return true; }
             return false;
@@ -86,7 +86,7 @@ namespace DigitalShoes.Api.AuthOperations.Repositories
             {
                 Subject = new ClaimsIdentity(new Claim[]
                     {
-                        new Claim(ClaimTypes.Name, user.Name.ToString()),
+                        new Claim(ClaimTypes.Name, user.UserName.ToString()),
                         new Claim(ClaimTypes.Email, user.Email.ToString()),
                         new Claim(ClaimTypes.Role, logInRole)
                     }),

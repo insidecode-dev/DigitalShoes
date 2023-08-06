@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DigitalShoes.Domain.DTOs
+namespace DigitalShoes.Domain.DTOs.AuthDTOs
 {
-    public class MyNewRoleRequestDTO
+    public class NewRoleRequestDTO
     {
         public string RoleName { get; set; }
-        public string UserName { get; set; }
     }
 }

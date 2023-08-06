@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ssHYcnuSU/AyTGbpFewJ+KugcFfT4RGje5MNkEVgW2Az1aDyo+xbgpgFIqtQs2VHOTsl0ZVh54b6g7dPx7ysag==",
+  "dgSpecHash": "FvZyTR5/pw5Mr0k9q3CBc2JGBu231EhymI9ssf4wPCqX2EP/Y/zqgCQ+lPiKgl7Kfq01754IZzI1DeOjwbWvtA==",
   "success": true,
   "projectFilePath": "C:\\Users\\Admino\\source\\repos\\DigitalShoes\\DigitalShoes.Domain\\DigitalShoes.Domain.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,9 @@
     "C:\\Users\\Admino\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "C:\\Users\\Admino\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\Admino\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
+    "C:\\Users\\Admino\\.nuget\\packages\\fluentvalidation\\11.5.1\\fluentvalidation.11.5.1.nupkg.sha512",
+    "C:\\Users\\Admino\\.nuget\\packages\\fluentvalidation.aspnetcore\\11.3.0\\fluentvalidation.aspnetcore.11.3.0.nupkg.sha512",
+    "C:\\Users\\Admino\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.5.1\\fluentvalidation.dependencyinjectionextensions.11.5.1.nupkg.sha512",
     "C:\\Users\\Admino\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Admino\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\7.0.9\\microsoft.aspnetcore.cryptography.internal.7.0.9.nupkg.sha512",
     "C:\\Users\\Admino\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\7.0.9\\microsoft.aspnetcore.cryptography.keyderivation.7.0.9.nupkg.sha512",

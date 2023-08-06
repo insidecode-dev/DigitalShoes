@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DigitalShoes.Dal\DigitalShoes.Dal.csproj" />
+  </ItemGroup>
+
 </Project>

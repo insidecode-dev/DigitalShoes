@@ -1,11 +1,19 @@
 {
   "Version": 1,
-  "Hash": "qaWJju13oTW+qhsKhJUVIa3uBDBsYsi522z74BDMghs=",
+  "Hash": "5xsOYO92vt2nyw6YMKD2rbhSb8/zMHGsW888KZZJsVs=",
   "Source": "DigitalShoes.Api",
   "BasePath": "_content/DigitalShoes.Api",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "DigitalShoes.Api\\wwwroot",
+      "Source": "DigitalShoes.Api",
+      "ContentRoot": "C:\\Users\\Admino\\source\\repos\\DigitalShoes\\DigitalShoes.Api\\wwwroot\\",
+      "BasePath": "_content/DigitalShoes.Api",
+      "Pattern": "**"
+    }
+  ],
   "Assets": []
 }

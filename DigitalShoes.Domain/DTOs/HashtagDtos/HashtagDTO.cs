@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DigitalShoes.Domain.DTOs
+namespace DigitalShoes.Domain.DTOs.HashtagDtos
 {
-    public class NewRoleRequestDTO
+    public class HashtagDTO
     {
-        public string RoleName { get; set; }
+        public string Text { get; set; }
     }
 }

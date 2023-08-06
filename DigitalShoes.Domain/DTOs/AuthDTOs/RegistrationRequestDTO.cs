@@ -1,4 +1,4 @@
-﻿namespace DigitalShoes.Domain.DTOs
+﻿namespace DigitalShoes.Domain.DTOs.AuthDTOs
 {
     public class RegistrationRequestDTO
     {

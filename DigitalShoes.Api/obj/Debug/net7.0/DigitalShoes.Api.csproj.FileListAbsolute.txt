@@ -89,3 +89,9 @@ C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api\obj\Debug\net7.0\Digi
 C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api\bin\Debug\net7.0\Microsoft.AspNetCore.Mvc.Versioning.dll
 C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api\bin\Debug\net7.0\Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer.dll
 C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api\bin\Debug\net7.0\DigitalShoes.Api.staticwebassets.runtime.json
+C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api\bin\Debug\net7.0\FluentValidation.dll
+C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api\bin\Debug\net7.0\FluentValidation.AspNetCore.dll
+C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api\bin\Debug\net7.0\FluentValidation.DependencyInjectionExtensions.dll
+C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api\bin\Debug\net7.0\DigitalShoes.Service.dll
+C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api\bin\Debug\net7.0\DigitalShoes.Service.pdb

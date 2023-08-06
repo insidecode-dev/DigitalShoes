@@ -1,5 +1,6 @@
 ﻿using DigitalShoes.Api.AuthOperations.Repositories;
 using DigitalShoes.Domain.DTOs;
+using DigitalShoes.Domain.DTOs.AuthDTOs;
 using System.Net;
 
 namespace DigitalShoes.Api.AuthOperations.Services
@@ -7,14 +8,14 @@ namespace DigitalShoes.Api.AuthOperations.Services
     public class UserService:IUserService
     {
         private readonly IUserRepository _userRepository;
-        private readonly ApiResponseDTO _apiResponse;
+        private readonly ApiResponse _apiResponse;
         public UserService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
             _apiResponse = new();
         }
 
-        public async Task<ApiResponseDTO> LogIn(LogInRequestDto logInRequestDTO)
+        public async Task<ApiResponse> LogIn(LogInRequestDto logInRequestDTO)
         {
             var logInResponseDTO = await _userRepository.LogIn(logInRequestDTO);
 
@@ -32,7 +33,7 @@ namespace DigitalShoes.Api.AuthOperations.Services
             return _apiResponse;
         }
 
-        public async Task<ApiResponseDTO> Register(RegistrationRequestDTO registrationRequestDTO)
+        public async Task<ApiResponse> Register(RegistrationRequestDTO registrationRequestDTO)
         {
             var registrationResponseDTO = await _userRepository.Register(registrationRequestDTO);
             if (registrationResponseDTO.RegisteredUser == null)
@@ -48,7 +49,7 @@ namespace DigitalShoes.Api.AuthOperations.Services
             return _apiResponse;
         }
 
-        public async Task<ApiResponseDTO> AddMyNewRole(MyNewRoleRequestDTO myNewRoleRequestDTO)
+        public async Task<ApiResponse> AddMyNewRole(MyNewRoleRequestDTO myNewRoleRequestDTO)
         {
             var myNewRoleResponseDTO = await _userRepository.AddMyNewRole(myNewRoleRequestDTO);
             if (!myNewRoleResponseDTO.Succeeded)
@@ -64,7 +65,7 @@ namespace DigitalShoes.Api.AuthOperations.Services
             return _apiResponse;
         }//CreateNewRole
 
-        public async Task<ApiResponseDTO> CreateNewRole(NewRoleRequestDTO newRoleRequestDTO)
+        public async Task<ApiResponse> CreateNewRole(NewRoleRequestDTO newRoleRequestDTO)
         {
             var newRoleResponseDTO = await _userRepository.CreateNewRole(newRoleRequestDTO);            
             if (!newRoleResponseDTO.Succeeded)

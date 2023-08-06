@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DigitalShoes.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -15,6 +16,11 @@ namespace DigitalShoes.Dal.Repository.Interfaces
         Task UpdateAsync(T entity);
         Task RemoveAsync(T entity);
         Task SaveAsync();
-
+        int Count();
+        bool Any(Expression<Func<T, bool>> expression);
+        List<T> GetActives();
+        Task HardDeleteAsync(int id);
+        Task SoftDeleteAsync(int id);
+        T Default(Expression<Func<T, bool>> exp);
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DigitalShoes.Domain.DTOs
+namespace DigitalShoes.Domain.DTOs.AuthDTOs
 {
     public class RegistrationResponseDTO
     {

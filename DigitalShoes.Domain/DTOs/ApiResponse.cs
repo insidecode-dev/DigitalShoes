@@ -2,9 +2,9 @@
 
 namespace DigitalShoes.Domain.DTOs
 {
-    public class ApiResponseDTO
+    public class ApiResponse
     {
-        public ApiResponseDTO()
+        public ApiResponse()
         {
             ErrorMessages = new List<string>();    
         }

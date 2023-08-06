@@ -1,4 +1,4 @@
-﻿using DigitalShoes.Domain.DTOs;
+﻿using DigitalShoes.Domain.DTOs.AuthDTOs;
 
 namespace DigitalShoes.Api.AuthOperations.Repositories
 {
