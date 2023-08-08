@@ -1,6 +1,8 @@
 ﻿using DigitalShoes.Domain.DTOs.HashtagDtos;
 using DigitalShoes.Domain.DTOs.ImageDTOs;
 using DigitalShoes.Domain.Entities;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static DigitalShoes.Domain.StaticDetails;
 
-namespace DigitalShoes.Domain.DTOs.ProductDTOs
+namespace DigitalShoes.Domain.DTOs.ShoeDTOs
 {
     public class ShoeCreateDTO
     {
@@ -17,11 +19,9 @@ namespace DigitalShoes.Domain.DTOs.ProductDTOs
         public int Count { get; set; }
         public int Size { get; set; }
         public string Description { get; set; }
-        public Gender Gender { get; set; }
-        public Color Color { get; set; }
-        public int CategoryName { get; set; }                
-        public List<HashtagDTO> Hashtags { get; set; }
-        public List<ImageCreateDTO> _Images { get; set; }
-
+        public string Gender { get; set; }
+        public string Color { get; set; }
+        public string CTName { get; set; }                
+        public List<HashtagDTO> Hashtags { get; set; }                
     }
 }

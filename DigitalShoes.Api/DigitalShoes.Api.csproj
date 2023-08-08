@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\ProductImage\insidecode_buyProducts\" />
     <Folder Include="wwwroot\ProfileImage\" />
     <Folder Include="wwwroot\ProductImage\" />
   </ItemGroup>

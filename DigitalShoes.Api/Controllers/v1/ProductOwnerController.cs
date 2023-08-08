@@ -1,5 +1,8 @@
 ﻿using DigitalShoes.Domain.DTOs;
-using DigitalShoes.Domain.DTOs.ProductDTOs;
+using DigitalShoes.Domain.DTOs.CategoryDTOs;
+using DigitalShoes.Domain.DTOs.ImageDTOs;
+using DigitalShoes.Domain.DTOs.ShoeDTOs;
+using DigitalShoes.Domain.Entities;
 using DigitalShoes.Service.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,33 +18,64 @@ namespace DigitalShoes.Api.Controllers.v1
     public class ProductOwnerController : ControllerBase
     {
         private readonly IShoeService _shoeService;
-
-        public ProductOwnerController(IShoeService shoeService)
+        private readonly IMageService _imageService;
+        private readonly ICategoryService _categoryService;
+        public ProductOwnerController(IShoeService shoeService, IMageService imageService, ICategoryService categoryService)
         {
             _shoeService = shoeService;
+            _imageService = imageService;
+            _categoryService = categoryService;
         }
 
         [Authorize]
-        [HttpPost]
-        public IActionResult AddProduct(/*[FromBody] ShoeCreateDTO shoeCreateDTO*/)
+        [HttpPost("AddShoe")]        
+        public async Task<IActionResult> AddShoeAsync([FromBody]ShoeCreateDTO shoeCreateDTO)
         {
-            if (ModelState.IsValid)
+            string username = HttpContext
+                .User
+                .Identities
+                .FirstOrDefault(identity => identity.Claims.Any(claim => claim.Type == ClaimTypes.Name))?
+                .Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?
+                .Value;
+            var shoe = await _shoeService.CreateAsync(shoeCreateDTO, username);
+            if (!shoe.IsSuccess)
             {
-
+                return BadRequest(shoe);
             }
-
-            var x = HttpContext.Request;
-
-            string username = HttpContext.User.Identities.FirstOrDefault(identity => identity.Claims.Any(claim => claim.Type == ClaimTypes.Name))
-        ?.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?.Value;
-            _shoeService.Create(new ShoeCreateDTO(), username, x );
-            return Ok();
+            return Ok(shoe);
         }
 
-        [HttpPut("add product image")]
-        public IActionResult AddProductImage([FromBody] ShoeCreateDTO shoeCreateDTO)
+        [Authorize]
+        [HttpPost("AddShoeImage")]
+        public async Task<IActionResult> AddShoeImageAsync([FromForm] ImageCreateDTO imageCreateDTO)
         {
-            return Ok();
+            string username = HttpContext
+                .User
+                .Identities
+                .FirstOrDefault(identity => identity.Claims.Any(claim => claim.Type == ClaimTypes.Name))?
+                .Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?
+                .Value;
+            var request = HttpContext.Request;
+            var image = await _imageService.CreateAsync(imageCreateDTO, username, request);
+            if (!image.IsSuccess)
+            {
+                return BadRequest(image);
+            }
+
+            return Ok(image);
+        }
+
+        [Authorize]
+        [HttpPost("AddCategory")]
+        public async Task<IActionResult> AddCategoryAsync([FromForm] CategoryCreateDTO categoryCreateDTO)
+        {
+            var category = await _categoryService.CreateAsync(categoryCreateDTO);
+            if (!category.IsSuccess)
+            {
+                return BadRequest(category);
+            }
+
+            return Ok(category);
         }
 
         [HttpPut]

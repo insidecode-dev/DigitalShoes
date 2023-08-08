@@ -6,7 +6,7 @@ using DigitalShoes.Domain.Entities;
 
 namespace DigitalShoes.Dal.Repository
 {
-    internal class ImageRepository : Repository<Image>, IMageRepository
+    public class ImageRepository : Repository<Image>, IMageRepository
     {
         public ImageRepository(ApplicationDbContext dbContext) : base(dbContext)
         {

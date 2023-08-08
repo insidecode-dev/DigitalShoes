@@ -1,9 +1,13 @@
 using DigitalShoes.Api.AuthOperations.Repositories;
 using DigitalShoes.Api.AuthOperations.Services;
 using DigitalShoes.Dal.Context;
+using DigitalShoes.Dal.Repository;
+using DigitalShoes.Dal.Repository.Interfaces;
 using DigitalShoes.Domain;
 using DigitalShoes.Domain.Entities;
 using DigitalShoes.Domain.FluentValidators;
+using DigitalShoes.Service;
+using DigitalShoes.Service.Abstractions;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -44,12 +48,24 @@ builder.Services.AddVersionedApiExplorer(options =>
     options.SubstituteApiVersionInUrl = true;
 });
 
+
 // services
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<IUserRepository, UserRepository>(); // auth
+builder.Services.AddScoped<IUserService, UserService>(); // auth
+builder.Services.AddScoped<IShoeRepository, ShoeRespository>();
+builder.Services.AddScoped<IMageRepository, ImageRepository>();
+builder.Services.AddScoped<IHashtagRepository, HashtagRepository>();
+builder.Services.AddScoped<IShoeHashtagRepository, ShoeHashtagRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IShoeService, ShoeService>();
+builder.Services.AddScoped<IMageService, ImageService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+
 
 // fluent validation
-builder.Services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ShoeValidator>()).AddXmlDataContractSerializerFormatters();
+builder.Services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<HashtagValidator>()).AddXmlDataContractSerializerFormatters();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

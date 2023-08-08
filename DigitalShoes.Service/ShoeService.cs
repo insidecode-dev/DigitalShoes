@@ -1,6 +1,6 @@
 ﻿using DigitalShoes.Dal.Repository.Interfaces;
 using DigitalShoes.Domain.DTOs;
-using DigitalShoes.Domain.DTOs.ProductDTOs;
+using DigitalShoes.Domain.DTOs.ShoeDTOs;
 using DigitalShoes.Service.Abstractions;
 using DigitalShoes.Domain.FluentValidators;
 using DigitalShoes.Domain.Entities;
@@ -10,115 +10,165 @@ using System.Net;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using static DigitalShoes.Domain.StaticDetails;
+using Azure.Core;
 
 namespace DigitalShoes.Service
 {
-    public class ShoeService:IShoeService
+    public class ShoeService : IShoeService
     {
-        private readonly IShoeRepository _shoeRepository;
-        private readonly IMageRepository _imageRepository;
+        private readonly IShoeRepository _shoeRepository;        
+        private readonly IHashtagRepository _hashtagRepository;
+        private readonly IShoeHashtagRepository _shoeHashtagRepository;
+        private readonly ICategoryRepository _categoryRepository;
+        //
         private readonly IMapper _mapper;
         protected ApiResponse _apiResponse;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public ShoeService(IMapper mapper, IShoeRepository shoeRepository, IMageRepository imageRepository, IWebHostEnvironment webHostEnvironment)
+        //
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public ShoeService(IMapper mapper, IShoeRepository shoeRepository, IWebHostEnvironment webHostEnvironment, IHashtagRepository hashtagRepository, IShoeHashtagRepository shoeHashtagRepository, UserManager<ApplicationUser> userManager, ICategoryRepository categoryRepository)
         {
             _mapper = mapper;
             _shoeRepository = shoeRepository;
-            _apiResponse = new();
-            _imageRepository = imageRepository;
+            _apiResponse = new();            
             _webHostEnvironment = webHostEnvironment;
+            _hashtagRepository = hashtagRepository;
+            _shoeHashtagRepository = shoeHashtagRepository;
+            _userManager = userManager;
+            _categoryRepository = categoryRepository;
         }
 
-        public async Task<ApiResponse> Create(ShoeCreateDTO shoeCreateDTO, string username, HttpRequest httpRequest)
+        public async Task<ApiResponse> CreateAsync(ShoeCreateDTO shoeCreateDTO, string username)
         {
             try
             {
-                // shoe
-                var shoe = _mapper.Map<Shoe>(shoeCreateDTO);
-                ValidationResult shoeValidationResult = new ShoeValidator().Validate(shoe);
-                if (!shoeValidationResult.IsValid)
+                ValidationResult shoeCreateDTOValidationResult = new ShoeCreateDTOValidator().Validate(shoeCreateDTO);
+                if (!shoeCreateDTOValidationResult.IsValid)
                 {
-                    _apiResponse.IsSuccess = false;
                     _apiResponse.StatusCode = HttpStatusCode.BadRequest;
-                    foreach (var error in shoeValidationResult.Errors)
+                    _apiResponse.IsSuccess = false;
+                    foreach (var error in shoeCreateDTOValidationResult.Errors)
                     {
                         _apiResponse.ErrorMessages.Add(error.ErrorMessage);
                     }
+                    _apiResponse.Result = shoeCreateDTOValidationResult;
                     return _apiResponse;
                 }
+
+                // checking if user have this product in database
+                var user = await _userManager.FindByNameAsync(username);
+                var existingShoe = await _shoeRepository.GetAsync(sh => sh.Brand == shoeCreateDTO.Brand && sh.Model == shoeCreateDTO.Model && sh.ApplicationUserId == user.Id, tracked:false);
+                if (existingShoe != null)
+                {
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.ErrorMessages.Add($"You have {shoeCreateDTO.Model} mdoel of {shoeCreateDTO.Brand} brand in your products, you can increase size intead");
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    return _apiResponse;
+                }
+
+                // gender 
+                if (!Enum.TryParse<Gender>(shoeCreateDTO.Gender, ignoreCase: true, out var gender))
+                {                    
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.ErrorMessages.Add($"gender is not valid");
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    _apiResponse.Result = shoeCreateDTOValidationResult;
+                    return _apiResponse;
+                }
+
+                // color 
+                if (!Enum.TryParse<Color>(shoeCreateDTO.Color, ignoreCase: true, out var color))
+                {
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.ErrorMessages.Add($"color is not valid");
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    _apiResponse.Result = shoeCreateDTOValidationResult;
+                    return _apiResponse;
+                }
+                
+                // category                
+                var category = await _categoryRepository.GetAsync(ct => ct.Name == shoeCreateDTO.CTName, tracked:false);
+                if (category == null)
+                {
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.ErrorMessages.Add($"category does not exist");
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    return _apiResponse;
+                }
+
+                // shoe                
+                var shoe = _mapper.Map<Shoe>(shoeCreateDTO);                
+                shoe.Gender = gender;
+                shoe.Color = color;                
+                shoe.ApplicationUserId = user.Id;
+                shoe.CategoryId = category.Id;
+
                 await _shoeRepository.CreateAsync(shoe);
 
-                // image (no validation)
-                if (!Directory.Exists(Path.Combine(_webHostEnvironment.WebRootPath, "ProductImage", username)))
+                // hashtag
+                if (shoeCreateDTO.Hashtags.Count > 0)
                 {
-                    // Folder does not exist, create a new folder with the specified name
-                    Directory.CreateDirectory(Path.Combine(_webHostEnvironment.WebRootPath, "ProductImage", username));                    
-                }
-
-                foreach (var item in shoeCreateDTO._Images)
-                {
-                    item.ShoeId = shoe.Id;
-                    if (item.Image != null)
+                    foreach (var item in shoeCreateDTO.Hashtags)
                     {
-                        
-                        string fileName = new Guid().ToString() + Path.GetExtension(item.Image.FileName);
-                        
-                        string filePath = Path.Combine(_webHostEnvironment.WebRootPath, "ProductImage", username, fileName);
-
-                        // creating path to file, includes path to project
-                        var directoryLocation = Path.Combine(Directory.GetCurrentDirectory(), filePath);
-
-                        
-
-                        // adding file to specified folder 
-                        using (var fileStream = new FileStream(directoryLocation, FileMode.Create))
+                        var hashTag = await _hashtagRepository.GetAsync(x => x.Text == item.Text);
+                        if (hashTag is null)
                         {
-                            await item.Image.CopyToAsync(fileStream);
+                            var hashTagCreated = _mapper.Map<Hashtag>(item);
+                            ValidationResult hashtagResult = new HashtagValidator().Validate(hashTagCreated);
+                            if (!hashtagResult.IsValid)
+                            {
+                                _apiResponse.IsSuccess = false;
+                                _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                                foreach (var error in hashtagResult.Errors)
+                                {
+                                    _apiResponse.ErrorMessages.Add(error.ErrorMessage);
+                                }
+                                return _apiResponse;
+                            }
+                            await _hashtagRepository.CreateAsync(hashTagCreated);
+
+                            // shoeHashtag
+                            await _shoeHashtagRepository.CreateAsync(new ShoeHashtag
+                            {
+                                HashtagId = hashTagCreated.Id,
+                                ShoeId = shoe.Id
+                            });
                         }
-
-
-                        // generating section url for image on web 
-
-                        // HttpContext.Request.Scheme => returns https of https://example.com/somepage
-                        // HttpContext.Request.Host.Value => returns localhost:44329 of https://localhost:44329
-                        // HttpContext.Request.PathBase.Value => returns /myapp of https://example.com/myapp/home/index
-
-                        var baseUrl = $"{httpRequest.Scheme}://{httpRequest.Host.Value}";
-
-                        // generating and initializing url for image on web 
-                        item.ImageUrl = baseUrl + "/ProductImage/" + fileName;
-
-                        // initializing localpath to image file inside project
-                        item.ImageLocalPath = filePath;
+                        else
+                        {
+                            // shoehashtag
+                            await _shoeHashtagRepository.CreateAsync(new ShoeHashtag
+                            {
+                                HashtagId = hashTag.Id,
+                                ShoeId = shoe.Id
+                            });
+                        }
                     }
-                    else
-                    {
-                        item.ImageUrl = "htttps://placehold.co/600x400";
-                    }
-
-                    var image = _mapper.Map<Image>(item);
-
-                    await _imageRepository.CreateAsync(image);
                 }
 
-                
-                //var existingShoe = _shoeRepository.GetAsync(sh => sh.Brand == shoeCreateDTO.Brand && sh.Model == shoeCreateDTO.Model);
-                //if (existingShoe != null)
-                //{
-                //    _apiResponse.IsSuccess = false;
-                //    _apiResponse.ErrorMessages.Add("");
 
-                //    return new ApiResponse()
-                //}
+                var shoeDTO = _mapper.Map<ShoeDTO>(shoe);
+                foreach (var item in shoeCreateDTO.Hashtags)
+                {
+                    shoeDTO.Hashtags.Add(item.Text);
+                }
 
-
+                _apiResponse.IsSuccess = true;
+                _apiResponse.StatusCode = HttpStatusCode.Created;
+                _apiResponse.Result = shoeDTO;
                 return _apiResponse;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
-            }            
+                _apiResponse.IsSuccess = false;
+                _apiResponse.ErrorMessages.Add(ex.Message);
+                _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                _apiResponse.Result = ex;
+                return _apiResponse;
+            }
         }
     }
 }

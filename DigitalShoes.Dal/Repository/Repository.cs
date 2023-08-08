@@ -12,15 +12,15 @@ namespace DigitalShoes.Dal.Repository
     public class Repository<T>:IRepository<T> where T : BaseEntity
     {
         private readonly ApplicationDbContext _dbContext;
-        internal readonly DbSet<T> _table;
+        protected readonly DbSet<T> _table;
         public Repository(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
             _table = _dbContext.Set<T>();
         }
-        public async Task CreateAsync(T villa)
-        {
-            await _table.AddAsync(villa);
+        public async Task CreateAsync(T entity)
+        {            
+            await _table.AddAsync(entity);
             await SaveAsync();
         }
 
