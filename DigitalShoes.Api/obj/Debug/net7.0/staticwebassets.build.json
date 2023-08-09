@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "5xsOYO92vt2nyw6YMKD2rbhSb8/zMHGsW888KZZJsVs=",
+  "Hash": "ZlC+PMw6mAIqZ5Onmzr00AIHSQVTlD2nc36lkIRepdI=",
   "Source": "DigitalShoes.Api",
   "BasePath": "_content/DigitalShoes.Api",
   "Mode": "Default",
@@ -15,5 +15,23 @@
       "Pattern": "**"
     }
   ],
-  "Assets": []
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\Admino\\source\\repos\\DigitalShoes\\DigitalShoes.Api\\wwwroot\\ProductImage\\insidecode_buyProducts\\2eb4ed74-c396-44e9-b9ae-1eecc1af925d.jpg",
+      "SourceId": "DigitalShoes.Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admino\\source\\repos\\DigitalShoes\\DigitalShoes.Api\\wwwroot\\",
+      "BasePath": "_content/DigitalShoes.Api",
+      "RelativePath": "ProductImage/insidecode_buyProducts/2eb4ed74-c396-44e9-b9ae-1eecc1af925d.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\ProductImage\\insidecode_buyProducts\\2eb4ed74-c396-44e9-b9ae-1eecc1af925d.jpg"
+    }
+  ]
 }

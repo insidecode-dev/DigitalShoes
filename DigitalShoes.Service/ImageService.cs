@@ -86,14 +86,7 @@ namespace DigitalShoes.Service
                     {
                         await item.CopyToAsync(fileStream);
                     }
-
-
-                    // generating section url for image on web 
-
-                    // HttpContext.Request.Scheme => returns https of https://example.com/somepage
-                    // HttpContext.Request.Host.Value => returns localhost:44329 of https://localhost:44329
-                    // HttpContext.Request.PathBase.Value => returns /myapp of https://example.com/myapp/home/index
-
+                    
                     var baseUrl = $"{httpRequest.Scheme}://{httpRequest.Host.Value}";
 
                     var image = new Image

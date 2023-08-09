@@ -115,14 +115,14 @@ namespace DigitalShoes.Dal.Repository
             return _table.Where(t => t.DataStatus != StaticDetails.DataStatus.Deleted).ToList();
         }
 
-        public async Task HardDeleteAsync(int id)
+        public async Task HardDeleteAsync(int? id)
         {
             T _object = await GetAsync(x=>x.Id==id);
             _table.Remove(_object);
             await SaveAsync();
         }
 
-        public async Task SoftDeleteAsync(int id)
+        public async Task SoftDeleteAsync(int? id)
         {
             T _object = await GetAsync(x => x.Id == id);
             _object.DataStatus = StaticDetails.DataStatus.Deleted;

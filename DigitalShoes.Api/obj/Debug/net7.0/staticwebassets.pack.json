@@ -1,0 +1,25 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\Admino\\source\\repos\\DigitalShoes\\DigitalShoes.Api\\wwwroot\\ProductImage\\insidecode_buyProducts\\2eb4ed74-c396-44e9-b9ae-1eecc1af925d.jpg",
+      "PackagePath": "staticwebassets\\ProductImage\\insidecode_buyProducts\\2eb4ed74-c396-44e9-b9ae-1eecc1af925d.jpg"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.DigitalShoes.Api.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.build.DigitalShoes.Api.props",
+      "PackagePath": "build\\DigitalShoes.Api.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildMultiTargeting.DigitalShoes.Api.props",
+      "PackagePath": "buildMultiTargeting\\DigitalShoes.Api.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildTransitive.DigitalShoes.Api.props",
+      "PackagePath": "buildTransitive\\DigitalShoes.Api.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

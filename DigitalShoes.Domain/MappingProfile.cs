@@ -1,5 +1,4 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using DigitalShoes.Domain.DTOs.AuthDTOs;
 using DigitalShoes.Domain.DTOs.CategoryDTOs;
 using DigitalShoes.Domain.DTOs.HashtagDtos;
@@ -22,6 +21,16 @@ namespace DigitalShoes.Domain
             // shoe
             CreateMap<Shoe, ShoeCreateDTO>().ReverseMap();
             CreateMap<Shoe, ShoeDTO>().ReverseMap();
+            CreateMap<Shoe, ShoeUpdateDTO>().ReverseMap();
+            
+            CreateMap<Shoe, ShoeGetDTO>()
+            .ForMember(dest => dest.Hashtag, opt => opt.Ignore())
+            .AfterMap((src, dest) =>
+            {                
+                dest.Hashtag = src.ShoeHashtags
+                    .Select(sh => sh.Hashtag.Text)
+                    .ToList();
+            });
 
             // hashtag
             CreateMap<Hashtag, HashtagDTO>().ReverseMap();

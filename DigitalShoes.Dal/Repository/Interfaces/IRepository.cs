@@ -19,8 +19,8 @@ namespace DigitalShoes.Dal.Repository.Interfaces
         int Count();
         bool Any(Expression<Func<T, bool>> expression);
         List<T> GetActives();
-        Task HardDeleteAsync(int id);
-        Task SoftDeleteAsync(int id);
+        Task HardDeleteAsync(int? id);
+        Task SoftDeleteAsync(int? id);
         T Default(Expression<Func<T, bool>> exp);
     }
 }

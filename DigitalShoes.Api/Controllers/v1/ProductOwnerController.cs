@@ -27,9 +27,46 @@ namespace DigitalShoes.Api.Controllers.v1
             _categoryService = categoryService;
         }
 
+
         [Authorize]
-        [HttpPost("AddShoe")]        
-        public async Task<IActionResult> AddShoeAsync([FromBody]ShoeCreateDTO shoeCreateDTO)
+        [HttpGet("GetMyProducts")]
+        public async Task<IActionResult> GetMyProductsAsync()
+        {
+            string username = HttpContext
+                .User
+                .Identities
+                .FirstOrDefault(identity => identity.Claims.Any(claim => claim.Type == ClaimTypes.Name))?
+                .Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?
+                .Value;
+            var shoes = await _shoeService.GetAllAsync(username);
+            if (!shoes.IsSuccess)
+            {
+                return BadRequest(shoes);
+            }
+            return Ok(shoes);
+        }
+
+        [Authorize]
+        [HttpGet("{id:int}/GetMyProductById")]
+        public async Task<IActionResult> GetMyProductByIdAsync([FromRoute] int? id)
+        {
+            string username = HttpContext
+                .User
+                .Identities
+                .FirstOrDefault(identity => identity.Claims.Any(claim => claim.Type == ClaimTypes.Name))?
+                .Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?
+                .Value;
+            var shoes = await _shoeService.GetByIdAsync(id, username);
+            if (!shoes.IsSuccess)
+            {
+                return BadRequest(shoes);
+            }
+            return Ok(shoes);
+        }
+
+        [Authorize]
+        [HttpPost("AddShoe")]
+        public async Task<IActionResult> AddShoeAsync([FromBody] ShoeCreateDTO shoeCreateDTO)
         {
             string username = HttpContext
                 .User
@@ -43,6 +80,42 @@ namespace DigitalShoes.Api.Controllers.v1
                 return BadRequest(shoe);
             }
             return Ok(shoe);
+        }
+
+        [Authorize]
+        [HttpPut("{id:int}/UpdateShoe")]
+        public async Task<IActionResult> UpdateShoeAsync([FromRoute] int? id, [FromBody] ShoeUpdateDTO shoeUpdateDTO)
+        {
+            string username = HttpContext
+                .User
+                .Identities
+                .FirstOrDefault(identity => identity.Claims.Any(claim => claim.Type == ClaimTypes.Name))?
+                .Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?
+                .Value;
+            var shoe = await _shoeService.UpdateAsync(id, shoeUpdateDTO, username);
+            if (!shoe.IsSuccess)
+            {
+                return BadRequest(shoe);
+            }
+            return Ok(shoe);
+        }
+
+        [Authorize]
+        [HttpDelete("{id:int}/DeleteProductById")]
+        public async Task<IActionResult> DeleteProductByIdAsync([FromRoute] int? id)
+        {
+            string username = HttpContext
+                .User
+                .Identities
+                .FirstOrDefault(identity => identity.Claims.Any(claim => claim.Type == ClaimTypes.Name))?
+                .Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?
+                .Value;
+            var shoes = await _shoeService.DeleteProductByIdAsync(id, username);
+            if (!shoes.IsSuccess)
+            {
+                return BadRequest(shoes);
+            }
+            return Ok(shoes);
         }
 
         [Authorize]

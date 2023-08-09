@@ -1,17 +1,15 @@
 ﻿using DigitalShoes.Domain.DTOs.ShoeDTOs;
 using DigitalShoes.Domain.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using DigitalShoes.Domain.DTOs.ShoeDTOs;
+
 
 namespace DigitalShoes.Service.Abstractions
 {
     public interface IShoeService
     {
         Task<ApiResponse> CreateAsync(ShoeCreateDTO shoeCreateDTO, string username);
+        Task<ApiResponse> UpdateAsync(int? id, ShoeUpdateDTO shoeUpdateDTO, string username);
+        Task<ApiResponse> GetAllAsync(string username);
+        Task<ApiResponse> GetByIdAsync(int? id, string username);
+        Task<ApiResponse> DeleteProductByIdAsync(int? id, string username);
     }
 }
