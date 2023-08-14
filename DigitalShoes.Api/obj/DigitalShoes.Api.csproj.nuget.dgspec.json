@@ -83,6 +83,18 @@
               "version": "[7.0.304, )",
               "autoReferenced": true
             },
+            "Serilog": {
+              "target": "Package",
+              "version": "[3.0.2-dev-02044, )"
+            },
+            "Serilog.AspNetCore": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "Serilog.Sinks.MSSqlServer": {
+              "target": "Package",
+              "version": "[6.3.0, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.5.0, )"

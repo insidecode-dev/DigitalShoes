@@ -187,7 +187,7 @@ namespace DigitalShoes.Service
                 }
 
                 var user = await _userManager.FindByNameAsync(username);
-                var existingShoe = await _shoeRepository.GetAsync(sh => sh.Id == id && sh.ApplicationUserId == user.Id);
+                var existingShoe = await _shoeRepository.GetAsync(sh => sh.Id == id && sh.ApplicationUserId == user.Id, includeProperties:"ShoeHashtags");
                 if (existingShoe == null)
                 {
                     _apiResponse.IsSuccess = false;

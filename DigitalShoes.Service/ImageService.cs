@@ -6,9 +6,12 @@ using DigitalShoes.Domain.DTOs.ShoeDTOs;
 using DigitalShoes.Domain.Entities;
 using DigitalShoes.Domain.FluentValidators;
 using DigitalShoes.Service.Abstractions;
+using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 
@@ -27,14 +30,17 @@ namespace DigitalShoes.Service
         private readonly IMapper _mapper;
         protected ApiResponse _apiResponse;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        //
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ImageService(IMapper mapper, IWebHostEnvironment webHostEnvironment, IShoeRepository shoeRepository, IMageRepository imageRepository)
+        public ImageService(IMapper mapper, IWebHostEnvironment webHostEnvironment, IShoeRepository shoeRepository, IMageRepository imageRepository, UserManager<ApplicationUser> userManager)
         {
             _mapper = mapper;
             _apiResponse = new();
             _webHostEnvironment = webHostEnvironment;
             _shoeRepository = shoeRepository;
             _imageRepository = imageRepository;
+            _userManager = userManager;
         }
 
         public async Task<ApiResponse> CreateAsync(ImageCreateDTO imageCreateDTO, string username, HttpRequest httpRequest)
@@ -106,6 +112,66 @@ namespace DigitalShoes.Service
                 _apiResponse.IsSuccess = true;
                 _apiResponse.StatusCode = HttpStatusCode.Created;
                 _apiResponse.Result = _mapper.Map<List<ImageDTO>>(await _imageRepository.GetAllAsync(img => img.ShoeId == existingShoe.Id));
+                return _apiResponse;
+            }
+            catch (Exception ex)
+            {
+                _apiResponse.IsSuccess = false;
+                _apiResponse.ErrorMessages.Add(ex.Message);
+                _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                _apiResponse.Result = ex;
+                return _apiResponse;
+            }
+        }
+
+        public async Task<ApiResponse> DeleteAsync(ImageDeleteDTO imageDeleteDTO, string username)
+        {
+            try
+            {
+                ValidationResult imageDeleteDTOValidationResult = new ImageDeleteDTOValidator().Validate(imageDeleteDTO);
+                if (!imageDeleteDTOValidationResult.IsValid)
+                {
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    _apiResponse.IsSuccess = false;
+                    foreach (var error in imageDeleteDTOValidationResult.Errors)
+                    {
+                        _apiResponse.ErrorMessages.Add(error.ErrorMessage);
+                    }
+                    _apiResponse.Result = imageDeleteDTO;
+                    return _apiResponse;
+                }
+
+                var user = await _userManager
+                    .Users                    
+                    .Include(u => u.Shoes)
+                    .ThenInclude(img=>img.Images)
+                    .FirstOrDefaultAsync(u => u.UserName == username);
+
+
+                var existingImage = user.Shoes.Where(x => x.Id == imageDeleteDTO.ShoeId).FirstOrDefault().Images.Where(x=>x.Id==imageDeleteDTO.ImageId).FirstOrDefault();
+
+                if (existingImage == null)
+                {
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.ErrorMessages.Add($"You don't have a image with {imageDeleteDTO.ImageId} id of any shoe that id is  {imageDeleteDTO.ShoeId}");
+                    _apiResponse.StatusCode = HttpStatusCode.NotFound;
+                    _apiResponse.Result= imageDeleteDTO;
+                    return _apiResponse;
+                }
+
+                if (!string.IsNullOrEmpty(existingImage.ImageLocalPath))
+                {                    
+                    FileInfo file = new FileInfo(existingImage.ImageLocalPath);
+                    if (file.Exists)
+                    {
+                        file.Delete();
+                    }
+                }
+
+                await _imageRepository.RemoveAsync(existingImage);
+                _apiResponse.IsSuccess = true;
+                _apiResponse.StatusCode = HttpStatusCode.NoContent;
+                _apiResponse.Result= $"your image that id was {imageDeleteDTO.ImageId} of shoe that id is {imageDeleteDTO.ShoeId} was deleted";
                 return _apiResponse;
             }
             catch (Exception ex)

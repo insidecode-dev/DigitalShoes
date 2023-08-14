@@ -139,6 +139,29 @@ namespace DigitalShoes.Api.Controllers.v1
         }
 
         [Authorize]
+        [HttpDelete("DeleteShoeImage")]
+        public async Task<IActionResult> DeleteShoeImageAsync([FromBody] ImageDeleteDTO imageDeleteDTO)
+        {
+            string username = HttpContext
+                .User
+                .Identities
+                .FirstOrDefault(identity => identity.Claims.Any(claim => claim.Type == ClaimTypes.Name))?
+                .Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?
+                .Value;
+            
+            var image = await _imageService.DeleteAsync(imageDeleteDTO, username);
+            //if (!image.IsSuccess)
+            //{
+            //    return BadRequest(image);
+            //}
+
+            //return Ok(image);
+            return StatusCode((int)image.StatusCode, image);
+        }
+
+
+        // move to admin
+        [Authorize]
         [HttpPost("AddCategory")]
         public async Task<IActionResult> AddCategoryAsync([FromForm] CategoryCreateDTO categoryCreateDTO)
         {
@@ -150,73 +173,5 @@ namespace DigitalShoes.Api.Controllers.v1
 
             return Ok(category);
         }
-
-        [HttpPut]
-        public IActionResult UpdateProduct()
-        {
-            return Ok();
-        }
-
-        [HttpPut("remove product image")]
-        public IActionResult RemoveProductImage()
-        {
-            return Ok();
-        }
-
-        [HttpDelete]
-        public IActionResult RemoveProduct()
-        {
-            return Ok();
-        }
-
-        [HttpGet]
-        public IActionResult GetMyProducts()
-        {
-            return Ok();
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // test 
-
-        //[Authorize(Roles = "buyer")]
-        //[HttpPost("buyer")]
-        //public IActionResult GetBuyer()
-        //{
-        //    return Ok("Buyer is here");
-        //}
-
-        //[Authorize(Roles = "admin")]
-        //[HttpPost("admin")]
-        //public IActionResult GetAdmin()
-        //{
-        //    return Ok("Admin is here");
-        //}
-
-        //[Authorize(Roles = "admin,buyer")]
-        //[HttpPost]
-        //public IActionResult GetEveryOne()
-        //{
-        //    return Ok("everyone is here");
-        //}
-
-
-
     }
 }

@@ -1,8 +1,16 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\Admino\\source\\repos\\DigitalShoes\\DigitalShoes.Api\\wwwroot\\ProductImage\\insidecode_buyProducts\\2eb4ed74-c396-44e9-b9ae-1eecc1af925d.jpg",
-      "PackagePath": "staticwebassets\\ProductImage\\insidecode_buyProducts\\2eb4ed74-c396-44e9-b9ae-1eecc1af925d.jpg"
+      "Id": "C:\\Users\\Admino\\source\\repos\\DigitalShoes\\DigitalShoes.Api\\wwwroot\\ProductImage\\insidecode_buyProducts\\13f20e0c-1e6e-4500-a5ae-ff47cc903b4c.jpg",
+      "PackagePath": "staticwebassets\\ProductImage\\insidecode_buyProducts\\13f20e0c-1e6e-4500-a5ae-ff47cc903b4c.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Admino\\source\\repos\\DigitalShoes\\DigitalShoes.Api\\wwwroot\\ProductImage\\insidecode_buyProducts\\9797733a-f6a6-4489-9f64-0671ac398599.jpg",
+      "PackagePath": "staticwebassets\\ProductImage\\insidecode_buyProducts\\9797733a-f6a6-4489-9f64-0671ac398599.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Admino\\source\\repos\\DigitalShoes\\DigitalShoes.Api\\wwwroot\\ProductImage\\insidecode_buyProducts\\ed112da2-e625-4e1f-bb2f-bade0e5cdf69.jpg",
+      "PackagePath": "staticwebassets\\ProductImage\\insidecode_buyProducts\\ed112da2-e625-4e1f-bb2f-bade0e5cdf69.jpg"
     },
     {
       "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.DigitalShoes.Api.Microsoft.AspNetCore.StaticWebAssets.props",

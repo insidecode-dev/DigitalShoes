@@ -64,7 +64,7 @@ namespace DigitalShoes.Api.AuthOperations.Repositories
                 };
             }
 
-            // we use user's role when generating token inside tokenDescription, that's why we retrieve user's role
+            // I use user's role when generating token inside tokenDescription, that's why we retrieve user's role
             var roles = await _userManager.GetRolesAsync(user);
             var logInRole = roles.FirstOrDefault(r => r == logInRequestDTO.Role);
             if (logInRole == null)

@@ -1,5 +1,7 @@
+#nullable disable
 using DigitalShoes.Api.AuthOperations.Repositories;
 using DigitalShoes.Api.AuthOperations.Services;
+using DigitalShoes.Api.logs;
 using DigitalShoes.Dal.Context;
 using DigitalShoes.Dal.Repository;
 using DigitalShoes.Dal.Repository.Interfaces;
@@ -10,12 +12,20 @@ using DigitalShoes.Service;
 using DigitalShoes.Service.Abstractions;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using Serilog.Context;
+using Serilog.Core;
+using Serilog.Sinks.MSSqlServer;
+using System.Collections.ObjectModel;
+using System.Data;
 using System.Text;
+using static System.Net.Mime.MediaTypeNames;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +39,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>()
     .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+
 
 // automapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));
@@ -62,6 +73,8 @@ builder.Services.AddScoped<IShoeService, ShoeService>();
 builder.Services.AddScoped<IMageService, ImageService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 
+// how to ignore navigation property  
+// global exception handling
 
 
 // fluent validation
@@ -85,10 +98,32 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
         ValidateIssuer = false,
-        ValidateAudience = false,
+        ValidateAudience = false
     };
 });
 builder.Services.AddAuthorization();
+
+// logging
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSingleton<ILogEventEnricher, UserNameEnricher>();
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.File("logs/log.txt")
+    .WriteTo.MSSqlServer(
+    connectionString: builder.Configuration.GetConnectionString("DefaultSQLConnection"),
+    tableName: "logs",
+    autoCreateSqlTable: true,
+    columnOptions: new ColumnOptions
+    {
+        AdditionalColumns = new Collection<SqlColumn>
+            {                
+                new SqlColumn { ColumnName = "user_name", DataType = SqlDbType.NVarChar, DataLength = 256 }
+            }
+    })
+    .Enrich.FromLogContext()
+    .CreateLogger();
+
+builder.Host.UseSerilog(Log.Logger);
 
 // documenting swagger
 builder.Services.AddSwaggerGen(options =>
@@ -164,8 +199,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(options =>
-    {   
-        options.SwaggerEndpoint("/swagger/v2/swagger.json", "Digital_ShoesV2");
+    {
+        options.SwaggerEndpoint("/swagger/v2/swagger.json", "Digital_ShoesV2");        
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "Digital_ShoesV1");
     });
 }
@@ -175,12 +210,24 @@ app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseSerilogRequestLogging();
+app.Use(async (context, next) =>
+{   
+    var username = context.User?.Identity?.IsAuthenticated != null || true ? context.User.Identity.Name : null; 
+    LogContext.PushProperty("user_name", username);
+    await next.Invoke();
+});
+
+
+
+
 
 app.UseStatusCodePages();
 
 app.MapControllers();
 
 app.Run();
+
+#nullable enable
