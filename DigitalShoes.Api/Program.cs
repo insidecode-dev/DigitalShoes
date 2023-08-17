@@ -3,8 +3,6 @@ using DigitalShoes.Api.AuthOperations.Repositories;
 using DigitalShoes.Api.AuthOperations.Services;
 using DigitalShoes.Api.logs;
 using DigitalShoes.Dal.Context;
-using DigitalShoes.Dal.Repository;
-using DigitalShoes.Dal.Repository.Interfaces;
 using DigitalShoes.Domain;
 using DigitalShoes.Domain.Entities;
 using DigitalShoes.Domain.FluentValidators;
@@ -61,17 +59,12 @@ builder.Services.AddVersionedApiExplorer(options =>
 
 
 // services
-builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IUserRepository, UserRepository>(); // auth
 builder.Services.AddScoped<IUserService, UserService>(); // auth
-builder.Services.AddScoped<IShoeRepository, ShoeRespository>();
-builder.Services.AddScoped<IMageRepository, ImageRepository>();
-builder.Services.AddScoped<IHashtagRepository, HashtagRepository>();
-builder.Services.AddScoped<IShoeHashtagRepository, ShoeHashtagRepository>();
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IShoeService, ShoeService>();
 builder.Services.AddScoped<IMageService, ImageService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICartService, CartService>();
 
 // how to ignore navigation property  
 // global exception handling
@@ -213,16 +206,12 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSerilogRequestLogging();
-app.Use(async (context, next) =>
-{   
-    var username = context.User?.Identity?.IsAuthenticated != null || true ? context.User.Identity.Name : null; 
-    LogContext.PushProperty("user_name", username);
-    await next.Invoke();
-});
-
-
-
-
+//app.Use(async (context, next) =>
+//{   
+//    var username = context.User?.Identity?.IsAuthenticated != null || true ? context.User.Identity.Name : null; 
+//    LogContext.PushProperty("user_name", username);
+//    await next.Invoke();
+//});
 
 app.UseStatusCodePages();
 

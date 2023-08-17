@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "zdhrdd+8KS0c2DJsJbinuXlyX78Pe3lUmzgVFQPIyVU=",
+  "Hash": "tFVuJM2fgjfPMF7VtGfzI1pnTiXqJiqVMqNHmzYine0=",
   "Source": "DigitalShoes.Api",
   "BasePath": "_content/DigitalShoes.Api",
   "Mode": "Default",
@@ -49,6 +49,40 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\ProductImage\\insidecode_buyProducts\\9797733a-f6a6-4489-9f64-0671ac398599.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\Admino\\source\\repos\\DigitalShoes\\DigitalShoes.Api\\wwwroot\\ProductImage\\insidecode_buyProducts\\caeaafa1-1d2e-4903-a8e9-7d3a34d4b798.jpg",
+      "SourceId": "DigitalShoes.Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admino\\source\\repos\\DigitalShoes\\DigitalShoes.Api\\wwwroot\\",
+      "BasePath": "_content/DigitalShoes.Api",
+      "RelativePath": "ProductImage/insidecode_buyProducts/caeaafa1-1d2e-4903-a8e9-7d3a34d4b798.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\ProductImage\\insidecode_buyProducts\\caeaafa1-1d2e-4903-a8e9-7d3a34d4b798.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\Admino\\source\\repos\\DigitalShoes\\DigitalShoes.Api\\wwwroot\\ProductImage\\insidecode_buyProducts\\e599d246-5c33-41cf-86b8-441e3544a310.jpg",
+      "SourceId": "DigitalShoes.Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admino\\source\\repos\\DigitalShoes\\DigitalShoes.Api\\wwwroot\\",
+      "BasePath": "_content/DigitalShoes.Api",
+      "RelativePath": "ProductImage/insidecode_buyProducts/e599d246-5c33-41cf-86b8-441e3544a310.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\ProductImage\\insidecode_buyProducts\\e599d246-5c33-41cf-86b8-441e3544a310.jpg"
     },
     {
       "Identity": "C:\\Users\\Admino\\source\\repos\\DigitalShoes\\DigitalShoes.Api\\wwwroot\\ProductImage\\insidecode_buyProducts\\ed112da2-e625-4e1f-bb2f-bade0e5cdf69.jpg",

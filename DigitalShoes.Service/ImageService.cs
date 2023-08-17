@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using DigitalShoes.Dal.Repository.Interfaces;
+using DigitalShoes.Dal.Context;
 using DigitalShoes.Domain.DTOs;
 using DigitalShoes.Domain.DTOs.ImageDTOs;
 using DigitalShoes.Domain.DTOs.ShoeDTOs;
@@ -12,20 +12,14 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace DigitalShoes.Service
 {
     public class ImageService : IMageService
-    {
-        private readonly IShoeRepository _shoeRepository;
-        private readonly IMageRepository _imageRepository;
+    {   
+        private readonly ApplicationDbContext _dbContext;
         //
         private readonly IMapper _mapper;
         protected ApiResponse _apiResponse;
@@ -33,17 +27,16 @@ namespace DigitalShoes.Service
         //
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public ImageService(IMapper mapper, IWebHostEnvironment webHostEnvironment, IShoeRepository shoeRepository, IMageRepository imageRepository, UserManager<ApplicationUser> userManager)
+        public ImageService(IMapper mapper, IWebHostEnvironment webHostEnvironment, UserManager<ApplicationUser> userManager, ApplicationDbContext dbContext)
         {
             _mapper = mapper;
             _apiResponse = new();
-            _webHostEnvironment = webHostEnvironment;
-            _shoeRepository = shoeRepository;
-            _imageRepository = imageRepository;
+            _webHostEnvironment = webHostEnvironment;            
             _userManager = userManager;
+            _dbContext = dbContext;
         }
 
-        public async Task<ApiResponse> CreateAsync(ImageCreateDTO imageCreateDTO, string username, HttpRequest httpRequest)
+        public async Task<ApiResponse> CreateAsync(ImageCreateDTO imageCreateDTO, HttpContext httpContext)
         {
             try
             {
@@ -60,14 +53,26 @@ namespace DigitalShoes.Service
                     return _apiResponse;
                 }
 
-                // checking shoe 
-                var existingShoe = await _shoeRepository.GetAsync(sh => sh.Id == imageCreateDTO.ShoeId);
+                var username = httpContext
+                .User
+                .Identities
+                .FirstOrDefault(identity => identity.Claims.Any(claim => claim.Type == ClaimTypes.Name))?
+                .Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?
+                .Value;
+
+                var user = await _userManager
+                .Users
+                .Include(x => x.Shoes)
+                .FirstOrDefaultAsync(u => u.UserName == username);
+
+
+
+                var existingShoe = user.Shoes.Where(sh => sh.Id == imageCreateDTO.ShoeId).FirstOrDefault();
                 if (existingShoe == null)
                 {
                     _apiResponse.StatusCode = HttpStatusCode.NotFound;
                     _apiResponse.IsSuccess = false;
-                    _apiResponse.ErrorMessages.Add("shoe not found");
-                    _apiResponse.Result = imageCreateDTO;
+                    _apiResponse.ErrorMessages.Add($"You don't have any product with {imageCreateDTO.ShoeId} id");
                     return _apiResponse;
                 }
 
@@ -92,8 +97,8 @@ namespace DigitalShoes.Service
                     {
                         await item.CopyToAsync(fileStream);
                     }
-                    
-                    var baseUrl = $"{httpRequest.Scheme}://{httpRequest.Host.Value}";
+
+                    var baseUrl = $"{httpContext.Request.Scheme}://{httpContext.Request.Host.Value}";
 
                     var image = new Image
                     {
@@ -105,13 +110,23 @@ namespace DigitalShoes.Service
                         ShoeId = existingShoe.Id
                     };
 
-                    //
-                    await _imageRepository.CreateAsync(image);
+                    //                    
+                    await _dbContext.Images.AddAsync(image);
+                    await _dbContext.SaveChangesAsync();
+
+                    var ifCreated = await _dbContext.Images.Where(img => img.ImageLocalPath.Contains(fileName)).FirstOrDefaultAsync();
+                    if (ifCreated == null)
+                    {
+                        _apiResponse.IsSuccess = false;
+                        _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                        _apiResponse.ErrorMessages.Add($"error when adding {fileName} image");
+                        return _apiResponse;
+                    }
                 }
 
                 _apiResponse.IsSuccess = true;
                 _apiResponse.StatusCode = HttpStatusCode.Created;
-                _apiResponse.Result = _mapper.Map<List<ImageDTO>>(await _imageRepository.GetAllAsync(img => img.ShoeId == existingShoe.Id));
+                _apiResponse.Result = _mapper.Map<List<ImageDTO>>(await _dbContext.Images.Where(img => img.ShoeId == existingShoe.Id).ToListAsync());
                 return _apiResponse;
             }
             catch (Exception ex)
@@ -124,7 +139,7 @@ namespace DigitalShoes.Service
             }
         }
 
-        public async Task<ApiResponse> DeleteAsync(ImageDeleteDTO imageDeleteDTO, string username)
+        public async Task<ApiResponse> DeleteAsync(ImageDeleteDTO imageDeleteDTO, HttpContext httpContext)
         {
             try
             {
@@ -141,26 +156,42 @@ namespace DigitalShoes.Service
                     return _apiResponse;
                 }
 
+                var username = httpContext
+                .User
+                .Identities
+                .FirstOrDefault(identity => identity.Claims.Any(claim => claim.Type == ClaimTypes.Name))?
+                .Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?
+                .Value;
+
+
                 var user = await _userManager
-                    .Users                    
+                    .Users
                     .Include(u => u.Shoes)
-                    .ThenInclude(img=>img.Images)
+                    .ThenInclude(img => img.Images)
                     .FirstOrDefaultAsync(u => u.UserName == username);
 
 
-                var existingImage = user.Shoes.Where(x => x.Id == imageDeleteDTO.ShoeId).FirstOrDefault().Images.Where(x=>x.Id==imageDeleteDTO.ImageId).FirstOrDefault();
+                var existingShoe = user.Shoes.Where(x => x.Id == imageDeleteDTO.ShoeId).FirstOrDefault();                
+                if (existingShoe == null)
+                {
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.ErrorMessages.Add($"You don't have any product with {imageDeleteDTO.ShoeId} id");
+                    _apiResponse.StatusCode = HttpStatusCode.NotFound;                    
+                    return _apiResponse;
+                }
 
+
+                var existingImage = existingShoe.Images.Where(x => x.Id == imageDeleteDTO.ImageId).FirstOrDefault();
                 if (existingImage == null)
                 {
                     _apiResponse.IsSuccess = false;
                     _apiResponse.ErrorMessages.Add($"You don't have a image with {imageDeleteDTO.ImageId} id of any shoe that id is  {imageDeleteDTO.ShoeId}");
-                    _apiResponse.StatusCode = HttpStatusCode.NotFound;
-                    _apiResponse.Result= imageDeleteDTO;
+                    _apiResponse.StatusCode = HttpStatusCode.NotFound;                    
                     return _apiResponse;
                 }
 
                 if (!string.IsNullOrEmpty(existingImage.ImageLocalPath))
-                {                    
+                {
                     FileInfo file = new FileInfo(existingImage.ImageLocalPath);
                     if (file.Exists)
                     {
@@ -168,17 +199,28 @@ namespace DigitalShoes.Service
                     }
                 }
 
-                await _imageRepository.RemoveAsync(existingImage);
-                _apiResponse.IsSuccess = true;
-                _apiResponse.StatusCode = HttpStatusCode.NoContent;
-                _apiResponse.Result= $"your image that id was {imageDeleteDTO.ImageId} of shoe that id is {imageDeleteDTO.ShoeId} was deleted";
+                
+                _dbContext.Images.Remove(existingImage);
+                await _dbContext.SaveChangesAsync();
+
+                var ifDeleted = user.Shoes.Where(x => x.Id == imageDeleteDTO.ShoeId).FirstOrDefault().Images.Where(x => x.Id == imageDeleteDTO.ImageId).FirstOrDefault();
+                if (ifDeleted == null)
+                {
+                    _apiResponse.IsSuccess = true;
+                    _apiResponse.StatusCode = HttpStatusCode.NoContent;                  
+                    return _apiResponse;
+                }
+
+                _apiResponse.IsSuccess = false;
+                _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                _apiResponse.ErrorMessages.Add($"your image that id was {imageDeleteDTO.ImageId} of shoe that id is {imageDeleteDTO.ShoeId} was not deleted");
                 return _apiResponse;
             }
             catch (Exception ex)
             {
                 _apiResponse.IsSuccess = false;
                 _apiResponse.ErrorMessages.Add(ex.Message);
-                _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
                 _apiResponse.Result = ex;
                 return _apiResponse;
             }

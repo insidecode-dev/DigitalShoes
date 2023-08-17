@@ -18,7 +18,9 @@ namespace DigitalShoes.Dal.Configurations
             builder
                 .HasOne(u => u.Category)
                 .WithMany(c => c.Shoes)
-                .HasForeignKey(c => c.CategoryId);
+                .HasForeignKey(c => c.CategoryId)
+                .OnDelete(DeleteBehavior.SetNull);
+
 
             builder
                 .HasOne(u => u.ApplicationUser)
@@ -75,9 +77,19 @@ namespace DigitalShoes.Dal.Configurations
                 .HasColumnType("int");
 
             builder
+                .Property(a => a.Price)
+                .IsRequired()
+                .HasColumnType("decimal(6, 2)");
+
+            builder
                 .Property(a => a.Description)
                 .IsRequired()
                 .HasColumnType("nvarchar(200)");
+
+            builder
+                .Property(a => a.CategoryId)
+                .IsRequired(false)
+                .HasColumnType("int");
         }
     }
 }

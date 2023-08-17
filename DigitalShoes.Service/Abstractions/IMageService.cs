@@ -13,7 +13,7 @@ namespace DigitalShoes.Service.Abstractions
 {
     public interface IMageService
     {        
-        Task<ApiResponse> CreateAsync(ImageCreateDTO imageCreateDTO, string username, HttpRequest httpRequest);
-        Task<ApiResponse> DeleteAsync(ImageDeleteDTO imageDeleteDTO, string username);
+        Task<ApiResponse> CreateAsync(ImageCreateDTO imageCreateDTO, HttpContext httpContext);
+        Task<ApiResponse> DeleteAsync(ImageDeleteDTO imageDeleteDTO, HttpContext httpContext);
     }
 }

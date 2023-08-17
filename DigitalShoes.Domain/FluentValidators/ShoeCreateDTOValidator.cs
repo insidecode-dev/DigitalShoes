@@ -18,10 +18,16 @@ namespace DigitalShoes.Domain.FluentValidators
                 .MinimumLength(2).WithMessage("minimum character size is 2");
 
             RuleFor(p => p.Count)
-                .NotNull().NotEmpty().WithMessage("count should be added");
+                .NotNull().NotEmpty().WithMessage("count should be added")
+                .Must(x => x.ToString().All(char.IsDigit)).WithMessage("count can only contain numeric characters"); 
 
             RuleFor(p => p.Size)
-                .NotNull().NotEmpty().WithMessage("size should be added");
+                .NotNull().NotEmpty().WithMessage("size should be added")
+                .Must(x => x.ToString().All(char.IsDigit)).WithMessage("size can only contain numeric characters"); ;
+
+            RuleFor(p => p.Price)
+                .NotNull().NotEmpty().WithMessage("price should be added")
+                .Must(x => x.ToString().All(char.IsDigit)).WithMessage("price can only contain numeric characters"); ;
 
             RuleFor(p => p.Description)
                 .NotNull().NotEmpty().WithMessage("description should not be empty")

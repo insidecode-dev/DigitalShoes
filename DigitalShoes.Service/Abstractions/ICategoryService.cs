@@ -11,6 +11,8 @@ namespace DigitalShoes.Service.Abstractions
 {
     public interface ICategoryService
     {
-        Task<ApiResponse> CreateAsync(CategoryCreateDTO categoryCreateDTO);
+        Task<ApiResponse> CreateAsync(CategoryCreateDTO categoryCreateDTO); 
+        Task<ApiResponse> GetByIdAsync(int? id); 
+        Task<ApiResponse> DeleteCategoryByIdAsync(int? id); 
     }
 }

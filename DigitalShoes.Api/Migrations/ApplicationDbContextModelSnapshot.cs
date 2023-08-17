@@ -390,7 +390,7 @@ namespace DigitalShoes.Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(40)");
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<int>("Color")
@@ -418,6 +418,9 @@ namespace DigitalShoes.Api.Migrations
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(6, 2)");
 
                     b.Property<int>("Size")
                         .HasColumnType("int");
@@ -741,8 +744,7 @@ namespace DigitalShoes.Api.Migrations
                     b.HasOne("DigitalShoes.Domain.Entities.Category", "Category")
                         .WithMany("Shoes")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("ApplicationUser");
 

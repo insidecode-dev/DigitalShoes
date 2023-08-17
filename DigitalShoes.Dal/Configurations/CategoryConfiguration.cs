@@ -17,7 +17,8 @@ namespace DigitalShoes.Dal.Configurations
             builder
                 .HasMany(u => u.Shoes)
                 .WithOne(c => c.Category)
-                .HasForeignKey(i => i.CategoryId);
+                .HasForeignKey(i => i.CategoryId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             //
 
