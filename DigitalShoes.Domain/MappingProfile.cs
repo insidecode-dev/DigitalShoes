@@ -12,9 +12,7 @@ namespace DigitalShoes.Domain
     public class MappingProfile : Profile
     {
         public MappingProfile()
-        {
-            //CreateMap<CommentForInsertionDTO, Comment>().ForMember(dest => dest.ID, opt => opt.Ignore());
-            //CreateMap<VillaNumberDTO, VillaNumberUpdateDTO>().ReverseMap();
+        {            
             
             // auth
             CreateMap<ApplicationUser, UserDTO>().ReverseMap();
@@ -31,7 +29,7 @@ namespace DigitalShoes.Domain
                 dest.Hashtag = src.ShoeHashtags
                     .Select(sh => sh.Hashtag.Text)
                     .ToList();
-            }); // HashtagGetDTO
+            }); 
 
             // hashtag
             CreateMap<Hashtag, HashtagDTO>().ReverseMap();

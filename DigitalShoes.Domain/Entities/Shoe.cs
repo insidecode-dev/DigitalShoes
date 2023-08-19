@@ -16,6 +16,7 @@ namespace DigitalShoes.Domain.Entities
         public decimal Price { get; set; }
         public string Description { get; set; }
         public Gender Gender { get; set; }
+        public Rating Rating { get; set; }
         public Color Color { get; set; }
         public int? CategoryId { get; set; }
         public Category Category { get; set; }

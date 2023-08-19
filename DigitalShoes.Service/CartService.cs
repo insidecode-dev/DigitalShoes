@@ -9,7 +9,9 @@ using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
 
 
@@ -32,7 +34,6 @@ namespace DigitalShoes.Service
             _apiResponse = new();
             _userManager = userManager;
         }
-
         public async Task<ApiResponse> CreateCartAsync(HttpContext httpContext)
         {
             try
@@ -85,9 +86,9 @@ namespace DigitalShoes.Service
                 return _apiResponse;
             }
         }
-
         public async Task<ApiResponse> AddToCartAsync(List<CartItemCreateDTO> cartItemCreateDTO, HttpContext httpContext)
         {
+            IDbContextTransaction _dbContextTransaction = await _dbContext.Database.BeginTransactionAsync();
             try
             {
 
@@ -188,6 +189,7 @@ namespace DigitalShoes.Service
 
                     if (await _dbContext.CartItems.Where(x=>x.Id==cartItem.Id).FirstOrDefaultAsync() is null)
                     {
+                        await _dbContextTransaction.RollbackAsync();
                         _apiResponse.ErrorMessages.Add($"shoe with {item.ShoeId} id could not be added to cart");
                         _apiResponse.IsSuccess = false;
                         _apiResponse.StatusCode= HttpStatusCode.InternalServerError;
@@ -195,6 +197,30 @@ namespace DigitalShoes.Service
                     }
                 }
 
+                //updating count and totalprice of cart 
+                var prc = _dbContext.CartItems.Where(x => x.CartId == cart.Id).Select(x => x.Price).Sum();
+                var cnt = _dbContext.CartItems.Where(x => x.CartId == cart.Id).ToList().Count;
+                cart.ItemsCount = cnt;
+                cart.TotalPrice = prc;
+                
+                _dbContext.Carts.Update(cart);
+                await _dbContext.SaveChangesAsync();
+
+                // checking if totalprice or count updated
+                
+                if (cart.ItemsCount != cnt || cart.TotalPrice!=prc)
+                {
+                    await _dbContextTransaction.RollbackAsync();
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                    _apiResponse.ErrorMessages.Add("operation is not successful");
+                    return _apiResponse;
+                }
+
+                // transaction finished
+                _dbContextTransaction.Commit();
+
+                //
                 _apiResponse.IsSuccess = true;
                 _apiResponse.StatusCode = HttpStatusCode.Created;
                 return _apiResponse;
@@ -202,13 +228,13 @@ namespace DigitalShoes.Service
             }
             catch (Exception ex)
             {
+                await _dbContextTransaction.RollbackAsync();
                 _apiResponse.ErrorMessages.Add(ex.Message.ToString());
                 _apiResponse.IsSuccess = false;
                 _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
                 return _apiResponse;
             }
         }
-
         public async Task<ApiResponse> MyCartItemsAsync(HttpContext httpContext)
         {
             try
@@ -257,9 +283,9 @@ namespace DigitalShoes.Service
                 return _apiResponse;
             }
         }
-
         public async Task<ApiResponse> UpdateCartItemCountAsync(int? id, CartItemUpdateDTO cartItemUpdateDTO, HttpContext httpContext)
         {
+            IDbContextTransaction _dbContextTransaction = await _dbContext.Database.BeginTransactionAsync();
             try
             {
                 if (id == null)
@@ -269,7 +295,7 @@ namespace DigitalShoes.Service
                     _apiResponse.StatusCode = HttpStatusCode.BadRequest;                    
                     return _apiResponse;
                 }
-
+                
                 // validation
                 ValidationResult cartItemUpdateDTOValidationResult = new CartItemUpdateDTOValidator().Validate(cartItemUpdateDTO);
                 if (!cartItemUpdateDTOValidationResult.IsValid)
@@ -298,6 +324,10 @@ namespace DigitalShoes.Service
                     .ThenInclude(s=>s.Shoe)
                     .FirstOrDefaultAsync(u => u.UserName == username);
 
+                // 
+                var existingShoe = user.Cart.CartItems.Where(x => x.Id == id).Select(x=>x.Shoe).FirstOrDefault();
+                
+
                 // checking if cart item with provided id exists
                 var cartItem = user.Cart.CartItems.Where(x => x.Id == id).FirstOrDefault();
                 if (cartItem == null)
@@ -309,7 +339,7 @@ namespace DigitalShoes.Service
                 }
 
                 // chechking if requested count is passing existing count
-                if (cartItem.Shoe.Count < cartItemUpdateDTO.ItemsCount)
+                if (cartItem.Shoe.Count < cartItemUpdateDTO.ItemsCount || cartItem.Shoe.Count==0)
                 {
                     _apiResponse.ErrorMessages.Add($"there is not enough shoe with {cartItem.Shoe.Id} id for your request");
                     _apiResponse.IsSuccess = false;
@@ -317,26 +347,220 @@ namespace DigitalShoes.Service
                     return _apiResponse;
                 }
 
-                // mapping and updating
+                // mapping and updating cartitem
                 _mapper.Map(cartItemUpdateDTO, cartItem);
+                cartItem.Price = existingShoe.Price * cartItemUpdateDTO.ItemsCount;
                 _dbContext.CartItems.Update(cartItem);
                 await _dbContext.SaveChangesAsync();
 
-                // checking if operation successful
-                if (cartItem.ItemsCount==cartItemUpdateDTO.ItemsCount)
+                // checking if cartitem count updated
+                if (await _dbContext.CartItems.Where(x=>x.Id==cartItem.Id).Select(x=>x.ItemsCount).FirstOrDefaultAsync()!=cartItemUpdateDTO.ItemsCount)
                 {
-                    _apiResponse.IsSuccess = true;
-                    _apiResponse.StatusCode = HttpStatusCode.NoContent;
+                    await _dbContextTransaction.RollbackAsync();
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                    _apiResponse.ErrorMessages.Add("operation is not successful");
                     return _apiResponse;
                 }
 
-                _apiResponse.IsSuccess = false;
-                _apiResponse.ErrorMessages.Add($"count of cartItem with {cartItem.Id} id was not updated");
-                _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+
+                var cart = await _dbContext.CartItems.Include(x=>x.Cart).Where(x=>x.Id==id).Select(x=>x.Cart).FirstOrDefaultAsync();
+                var prc = _dbContext.CartItems.Where(x => x.CartId == cart.Id).Select(x=>x.Price).Sum();
+                cart.TotalPrice = prc;
+                _dbContext.Carts.Update(cart);
+                await _dbContext.SaveChangesAsync();
+
+                // checking if totalprice updated                
+                if (await _dbContext.Carts.Where(x=>x.Id==cart.Id).Select(x=>x.TotalPrice).FirstOrDefaultAsync() != prc)
+                {
+                    await _dbContextTransaction.RollbackAsync();
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                    _apiResponse.ErrorMessages.Add("operation is not successful");
+                    return _apiResponse;
+                }
+
+                // transaction finished
+                _dbContextTransaction.Commit();
+
+                // response                 
+                _apiResponse.IsSuccess = true;                
+                _apiResponse.StatusCode = HttpStatusCode.NoContent;
                 return _apiResponse;
             }
             catch (Exception ex)
             {
+                await _dbContextTransaction.RollbackAsync();
+                _apiResponse.ErrorMessages.Add(ex.Message.ToString());
+                _apiResponse.IsSuccess = false;
+                _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                return _apiResponse;
+            }
+        }
+        public async Task<ApiResponse> MyCartItemAsync(int? id, HttpContext httpContext)
+        {
+            try
+            {
+                if (id == null)
+                {
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.ErrorMessages.Add($"id is null");
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    return _apiResponse;
+                }
+
+                string username = httpContext
+                .User
+                .Identities
+                .FirstOrDefault(identity => identity.Claims.Any(claim => claim.Type == ClaimTypes.Name))?
+                .Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?
+                .Value;
+
+
+                var user = await _userManager
+                    .Users
+                    .Include(u => u.Cart)
+                    .ThenInclude(ci => ci.CartItems)
+                    .FirstOrDefaultAsync(u => u.UserName == username);
+
+                // if user has cart
+                var cart = user.Cart;
+                if (cart is null)
+                {
+                    _apiResponse.ErrorMessages.Add("you don't have cart");
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    return _apiResponse;
+                }
+
+                // if user have item in his cart
+                if (cart.CartItems.Count == 0)
+                {
+                    _apiResponse.ErrorMessages.Add("you don't have items in your cart");
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    return _apiResponse;
+                }
+
+                var cartItem = cart.CartItems.Where(x=>x.Id==id).FirstOrDefault();
+                if (cartItem is null)
+                {
+                    _apiResponse.ErrorMessages.Add($"you don't have item with {id} id in your cart");
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.StatusCode = HttpStatusCode.NotFound;
+                    return _apiResponse;
+                }
+                
+
+                _apiResponse.IsSuccess = true;
+                _apiResponse.StatusCode = HttpStatusCode.OK;
+                _apiResponse.Result = _mapper.Map<CartItemGetDTO>(cartItem);
+                return _apiResponse;
+            }
+            catch (Exception ex)
+            {
+                _apiResponse.ErrorMessages.Add(ex.Message.ToString());
+                _apiResponse.IsSuccess = false;
+                _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                return _apiResponse;
+            }
+        }
+
+        public async Task<ApiResponse> RemoveCartItemAsync(int? id, HttpContext httpContext)
+        {
+            IDbContextTransaction _dbContextTransaction = await _dbContext.Database.BeginTransactionAsync();
+            try
+            {
+                if (id == null)
+                {
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.ErrorMessages.Add($"id is null");
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    return _apiResponse;
+                }
+             
+                string username = httpContext
+                .User
+                .Identities
+                .FirstOrDefault(identity => identity.Claims.Any(claim => claim.Type == ClaimTypes.Name))?
+                .Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?
+                .Value;
+
+                var user = await _userManager
+                    .Users
+                    .Include(u => u.Cart)
+                    .ThenInclude(ci => ci.CartItems)                    
+                    .FirstOrDefaultAsync(u => u.UserName == username);                
+
+
+                // checking if cart item with provided id exists
+                var cartItem = user.Cart.CartItems.Where(x => x.Id == id).FirstOrDefault();
+                if (cartItem == null)
+                {
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.ErrorMessages.Add($"you don't have cart item with {id} id");
+                    _apiResponse.StatusCode = HttpStatusCode.NotFound;
+                    return _apiResponse;
+                }
+
+                // removing cartitem
+                _dbContext.CartItems.Remove(cartItem);
+                await _dbContext.SaveChangesAsync();
+
+                // chechking if cartitem with the provided id exists in cart 
+                if (await _dbContext.CartItems.Where(x => x.Id==id).FirstOrDefaultAsync() != null)
+                {
+                    await _dbContextTransaction.RollbackAsync();
+                    _apiResponse.ErrorMessages.Add($"your cartitem with {id} id was not removed");
+                    _apiResponse.IsSuccess =false;
+                    _apiResponse.StatusCode=HttpStatusCode.InternalServerError;
+                    return _apiResponse;
+                }
+
+
+                //var cart =  await _dbContext.CartItems.Where(x => x.Id == id).Include(x => x.Cart).Select(x=>x.Cart).FirstOrDefaultAsync();
+                var cart = user.Cart;// await _dbContext.CartItems.Include(x => x.Cart).Where(x => x.Id == id).Select(x => x.Cart).FirstOrDefaultAsync();
+
+                //var seller = await _dbContext
+                //    .Shoes
+                //    .Include(x => x.ApplicationUser)
+                //    .Where(x => x.Id == item.ShoeId)
+                //    .Select(x => x.ApplicationUser)
+                //    .FirstOrDefaultAsync();
+
+                // updating price
+                var prc = _dbContext.CartItems.Where(x => x.CartId == cart.Id).Select(x => x.Price).ToList().Sum();
+                cart.TotalPrice = prc;
+
+                // updating count 
+                var cnt = _dbContext.CartItems.Where(x => x.CartId == cart.Id).Count();
+                cart.ItemsCount = cnt;
+
+                // updating complete
+                _dbContext.Carts.Update(cart);
+                await _dbContext.SaveChangesAsync();
+
+                // checking if totalprice or count updated                
+                if (await _dbContext.Carts.Where(x => x.Id == cart.Id && x.TotalPrice==prc && x.ItemsCount==cnt).FirstOrDefaultAsync() is null)
+                {
+                    await _dbContextTransaction.RollbackAsync();
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                    _apiResponse.ErrorMessages.Add("operation is not successful");
+                    return _apiResponse;
+                }
+
+                // transaction finished
+                _dbContextTransaction.Commit();
+
+                // response
+                _apiResponse.IsSuccess=true;
+                _apiResponse.StatusCode = HttpStatusCode.NoContent; 
+                return _apiResponse;
+            }
+            catch (Exception ex)
+            {
+                await _dbContextTransaction.RollbackAsync();
                 _apiResponse.ErrorMessages.Add(ex.Message.ToString());
                 _apiResponse.IsSuccess = false;
                 _apiResponse.StatusCode = HttpStatusCode.InternalServerError;

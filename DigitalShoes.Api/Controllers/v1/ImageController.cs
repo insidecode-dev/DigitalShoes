@@ -24,8 +24,8 @@ namespace DigitalShoes.Api.Controllers.v1
         }
 
         [Authorize]
-        [HttpGet("{id:int}/GetImageByShoeId")]
-        public async Task<IActionResult> GetImageByShoeIdAsync([FromRoute] int? id)
+        [HttpGet("{id:int}/GetImagesByShoeId")]
+        public async Task<IActionResult> GetImagesByShoeIdAsync([FromRoute] int? id)
         {
             var image = await _imageService.GetImageByShoeIdAsync(id, _httpContextAccessor.HttpContext);
             return StatusCode((int)image.StatusCode, image);

@@ -15200,3 +15200,954 @@ System.NotSupportedException: Serialization and deserialization of 'System.Type'
    at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
    at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
 2023-08-19 18:55:31.162 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/api/v1/Image/31/GetImageByShoeId - - - 500 - text/plain;+charset=utf-8 55124.7226ms
+2023-08-19 18:59:51.735 +04:00 [INF] User profile is available. Using 'C:\Users\Admino\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-08-19 18:59:51.985 +04:00 [INF] Now listening on: https://localhost:7249
+2023-08-19 18:59:51.987 +04:00 [INF] Now listening on: http://localhost:5161
+2023-08-19 18:59:51.988 +04:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-08-19 18:59:51.988 +04:00 [INF] Hosting environment: Development
+2023-08-19 18:59:51.989 +04:00 [INF] Content root path: C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api
+2023-08-19 18:59:53.563 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/swagger/index.html - -
+2023-08-19 18:59:53.844 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/_vs/browserLink - -
+2023-08-19 18:59:53.844 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/_framework/aspnetcore-browser-refresh.js - -
+2023-08-19 18:59:53.845 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/swagger/index.html - - - 200 - text/html;charset=utf-8 282.9318ms
+2023-08-19 18:59:53.883 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 38.5373ms
+2023-08-19 18:59:53.934 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 89.1320ms
+2023-08-19 18:59:54.011 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/swagger/v2/swagger.json - -
+2023-08-19 18:59:54.189 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/swagger/v2/swagger.json - - - 200 - application/json;charset=utf-8 178.2657ms
+2023-08-19 19:00:02.822 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/swagger/v1/swagger.json - -
+2023-08-19 19:00:02.884 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 61.8477ms
+2023-08-19 19:00:11.870 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/api/v1/Image - -
+2023-08-19 19:00:12.194 +04:00 [INF] Executing endpoint 'DigitalShoes.Api.Controllers.v1.ImageController.GetAllShoeImagesAsync (DigitalShoes.Api)'
+2023-08-19 19:00:12.224 +04:00 [INF] Route matched with {action = "GetAllShoeImages", controller = "Image"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAllShoeImagesAsync() on controller DigitalShoes.Api.Controllers.v1.ImageController (DigitalShoes.Api).
+2023-08-19 19:00:18.449 +04:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2023-08-19 19:00:19.593 +04:00 [INF] Executed DbCommand (37ms) [Parameters=[@__username_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[AccessFailedCount], [t].[Balance], [t].[ConcurrencyStamp], [t].[Email], [t].[EmailConfirmed], [t].[LockoutEnabled], [t].[LockoutEnd], [t].[Name], [t].[NormalizedEmail], [t].[NormalizedUserName], [t].[PasswordHash], [t].[PhoneNumber], [t].[PhoneNumberConfirmed], [t].[ProfileImageLocalPath], [t].[ProfileImageUrl], [t].[SecurityStamp], [t].[TwoFactorEnabled], [t].[UserName], [t0].[Id], [t0].[ApplicationUserId], [t0].[Brand], [t0].[CategoryId], [t0].[Color], [t0].[Count], [t0].[CreatedDate], [t0].[DataStatus], [t0].[Description], [t0].[Gender], [t0].[Model], [t0].[ModifiedDate], [t0].[Price], [t0].[Rating], [t0].[Size], [t0].[Id0], [t0].[CreatedDate0], [t0].[DataStatus0], [t0].[ImageLocalPath], [t0].[ImageUrl], [t0].[ModifiedDate0], [t0].[ShoeId]
+FROM (
+    SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[Balance], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[Name], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[ProfileImageLocalPath], [a].[ProfileImageUrl], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+    FROM [AspNetUsers] AS [a]
+    WHERE [a].[UserName] = @__username_0
+) AS [t]
+LEFT JOIN (
+    SELECT [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size], [i].[Id] AS [Id0], [i].[CreatedDate] AS [CreatedDate0], [i].[DataStatus] AS [DataStatus0], [i].[ImageLocalPath], [i].[ImageUrl], [i].[ModifiedDate] AS [ModifiedDate0], [i].[ShoeId]
+    FROM [Shoes] AS [s]
+    LEFT JOIN [Images] AS [i] ON [s].[Id] = [i].[ShoeId]
+) AS [t0] ON [t].[Id] = [t0].[ApplicationUserId]
+ORDER BY [t].[Id], [t0].[Id]
+2023-08-19 19:00:19.836 +04:00 [INF] Executing ObjectResult, writing value of type 'DigitalShoes.Domain.DTOs.ApiResponse'.
+2023-08-19 19:00:19.856 +04:00 [INF] Executed action DigitalShoes.Api.Controllers.v1.ImageController.GetAllShoeImagesAsync (DigitalShoes.Api) in 7626.8869ms
+2023-08-19 19:00:19.858 +04:00 [INF] Executed endpoint 'DigitalShoes.Api.Controllers.v1.ImageController.GetAllShoeImagesAsync (DigitalShoes.Api)'
+2023-08-19 19:00:19.862 +04:00 [INF] HTTP GET /api/v1/Image responded 200 in 7669.4176 ms
+2023-08-19 19:00:19.876 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/api/v1/Image - - - 200 - application/json;+charset=utf-8 8005.5658ms
+2023-08-19 19:00:34.056 +04:00 [INF] Request starting HTTP/2 POST https://localhost:7249/api/v1/Image multipart/form-data;+boundary=----WebKitFormBoundaryNA0BBFVm02jePZ8p 12292
+2023-08-19 19:00:34.067 +04:00 [INF] Executing endpoint 'DigitalShoes.Api.Controllers.v1.ImageController.AddShoeImageAsync (DigitalShoes.Api)'
+2023-08-19 19:00:34.085 +04:00 [INF] Route matched with {action = "AddShoeImage", controller = "Image"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] AddShoeImageAsync(DigitalShoes.Domain.DTOs.ImageDTOs.ImageCreateDTO) on controller DigitalShoes.Api.Controllers.v1.ImageController (DigitalShoes.Api).
+2023-08-19 19:00:34.298 +04:00 [INF] Executed DbCommand (8ms) [Parameters=[@__username_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[AccessFailedCount], [t].[Balance], [t].[ConcurrencyStamp], [t].[Email], [t].[EmailConfirmed], [t].[LockoutEnabled], [t].[LockoutEnd], [t].[Name], [t].[NormalizedEmail], [t].[NormalizedUserName], [t].[PasswordHash], [t].[PhoneNumber], [t].[PhoneNumberConfirmed], [t].[ProfileImageLocalPath], [t].[ProfileImageUrl], [t].[SecurityStamp], [t].[TwoFactorEnabled], [t].[UserName], [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size]
+FROM (
+    SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[Balance], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[Name], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[ProfileImageLocalPath], [a].[ProfileImageUrl], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+    FROM [AspNetUsers] AS [a]
+    WHERE [a].[UserName] = @__username_0
+) AS [t]
+LEFT JOIN [Shoes] AS [s] ON [t].[Id] = [s].[ApplicationUserId]
+ORDER BY [t].[Id]
+2023-08-19 19:00:34.526 +04:00 [INF] Executed DbCommand (4ms) [Parameters=[@p0='?' (DbType = DateTime2), @p1='?' (DbType = Int32), @p2='?' (Size = 200), @p3='?' (Size = 200), @p4='?' (DbType = DateTime2), @p5='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Images] ([CreatedDate], [DataStatus], [ImageLocalPath], [ImageUrl], [ModifiedDate], [ShoeId])
+OUTPUT INSERTED.[Id]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+2023-08-19 19:00:34.581 +04:00 [INF] Executed DbCommand (2ms) [Parameters=[@__fileName_0='?' (Size = 200)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [i].[Id], [i].[CreatedDate], [i].[DataStatus], [i].[ImageLocalPath], [i].[ImageUrl], [i].[ModifiedDate], [i].[ShoeId]
+FROM [Images] AS [i]
+WHERE (@__fileName_0 LIKE N'') OR CHARINDEX(@__fileName_0, [i].[ImageLocalPath]) > 0
+2023-08-19 19:00:34.594 +04:00 [INF] Executed DbCommand (2ms) [Parameters=[@__existingShoe_Id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [i].[Id], [i].[CreatedDate], [i].[DataStatus], [i].[ImageLocalPath], [i].[ImageUrl], [i].[ModifiedDate], [i].[ShoeId]
+FROM [Images] AS [i]
+WHERE [i].[ShoeId] = @__existingShoe_Id_0
+2023-08-19 19:00:34.597 +04:00 [INF] Executing ObjectResult, writing value of type 'DigitalShoes.Domain.DTOs.ApiResponse'.
+2023-08-19 19:00:34.598 +04:00 [INF] Executed action DigitalShoes.Api.Controllers.v1.ImageController.AddShoeImageAsync (DigitalShoes.Api) in 511.9418ms
+2023-08-19 19:00:34.598 +04:00 [INF] Executed endpoint 'DigitalShoes.Api.Controllers.v1.ImageController.AddShoeImageAsync (DigitalShoes.Api)'
+2023-08-19 19:00:34.598 +04:00 [INF] HTTP POST /api/v1/Image responded 201 in 530.6444 ms
+2023-08-19 19:00:34.600 +04:00 [INF] Request finished HTTP/2 POST https://localhost:7249/api/v1/Image multipart/form-data;+boundary=----WebKitFormBoundaryNA0BBFVm02jePZ8p 12292 - 201 - application/json;+charset=utf-8 544.0086ms
+2023-08-19 19:00:40.129 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/api/v1/Image - -
+2023-08-19 19:00:40.133 +04:00 [INF] Executing endpoint 'DigitalShoes.Api.Controllers.v1.ImageController.GetAllShoeImagesAsync (DigitalShoes.Api)'
+2023-08-19 19:00:40.133 +04:00 [INF] Route matched with {action = "GetAllShoeImages", controller = "Image"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAllShoeImagesAsync() on controller DigitalShoes.Api.Controllers.v1.ImageController (DigitalShoes.Api).
+2023-08-19 19:00:40.170 +04:00 [INF] Executed DbCommand (9ms) [Parameters=[@__username_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[AccessFailedCount], [t].[Balance], [t].[ConcurrencyStamp], [t].[Email], [t].[EmailConfirmed], [t].[LockoutEnabled], [t].[LockoutEnd], [t].[Name], [t].[NormalizedEmail], [t].[NormalizedUserName], [t].[PasswordHash], [t].[PhoneNumber], [t].[PhoneNumberConfirmed], [t].[ProfileImageLocalPath], [t].[ProfileImageUrl], [t].[SecurityStamp], [t].[TwoFactorEnabled], [t].[UserName], [t0].[Id], [t0].[ApplicationUserId], [t0].[Brand], [t0].[CategoryId], [t0].[Color], [t0].[Count], [t0].[CreatedDate], [t0].[DataStatus], [t0].[Description], [t0].[Gender], [t0].[Model], [t0].[ModifiedDate], [t0].[Price], [t0].[Rating], [t0].[Size], [t0].[Id0], [t0].[CreatedDate0], [t0].[DataStatus0], [t0].[ImageLocalPath], [t0].[ImageUrl], [t0].[ModifiedDate0], [t0].[ShoeId]
+FROM (
+    SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[Balance], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[Name], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[ProfileImageLocalPath], [a].[ProfileImageUrl], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+    FROM [AspNetUsers] AS [a]
+    WHERE [a].[UserName] = @__username_0
+) AS [t]
+LEFT JOIN (
+    SELECT [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size], [i].[Id] AS [Id0], [i].[CreatedDate] AS [CreatedDate0], [i].[DataStatus] AS [DataStatus0], [i].[ImageLocalPath], [i].[ImageUrl], [i].[ModifiedDate] AS [ModifiedDate0], [i].[ShoeId]
+    FROM [Shoes] AS [s]
+    LEFT JOIN [Images] AS [i] ON [s].[Id] = [i].[ShoeId]
+) AS [t0] ON [t].[Id] = [t0].[ApplicationUserId]
+ORDER BY [t].[Id], [t0].[Id]
+2023-08-19 19:00:40.170 +04:00 [INF] Executing ObjectResult, writing value of type 'DigitalShoes.Domain.DTOs.ApiResponse'.
+2023-08-19 19:00:40.171 +04:00 [INF] Executed action DigitalShoes.Api.Controllers.v1.ImageController.GetAllShoeImagesAsync (DigitalShoes.Api) in 37.4842ms
+2023-08-19 19:00:40.171 +04:00 [INF] Executed endpoint 'DigitalShoes.Api.Controllers.v1.ImageController.GetAllShoeImagesAsync (DigitalShoes.Api)'
+2023-08-19 19:00:40.171 +04:00 [INF] HTTP GET /api/v1/Image responded 200 in 38.0392 ms
+2023-08-19 19:00:40.171 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/api/v1/Image - - - 200 - application/json;+charset=utf-8 42.0900ms
+2023-08-19 19:00:54.024 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/api/v1/Image/31/GetImagesByShoeId - -
+2023-08-19 19:00:54.026 +04:00 [INF] Executing endpoint 'DigitalShoes.Api.Controllers.v1.ImageController.GetImagesByShoeIdAsync (DigitalShoes.Api)'
+2023-08-19 19:00:54.029 +04:00 [INF] Route matched with {action = "GetImagesByShoeId", controller = "Image"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetImagesByShoeIdAsync(System.Nullable`1[System.Int32]) on controller DigitalShoes.Api.Controllers.v1.ImageController (DigitalShoes.Api).
+2023-08-19 19:01:01.249 +04:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2023-08-19 19:01:01.255 +04:00 [INF] Executed DbCommand (2ms) [Parameters=[@__username_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[AccessFailedCount], [t].[Balance], [t].[ConcurrencyStamp], [t].[Email], [t].[EmailConfirmed], [t].[LockoutEnabled], [t].[LockoutEnd], [t].[Name], [t].[NormalizedEmail], [t].[NormalizedUserName], [t].[PasswordHash], [t].[PhoneNumber], [t].[PhoneNumberConfirmed], [t].[ProfileImageLocalPath], [t].[ProfileImageUrl], [t].[SecurityStamp], [t].[TwoFactorEnabled], [t].[UserName], [t0].[Id], [t0].[ApplicationUserId], [t0].[Brand], [t0].[CategoryId], [t0].[Color], [t0].[Count], [t0].[CreatedDate], [t0].[DataStatus], [t0].[Description], [t0].[Gender], [t0].[Model], [t0].[ModifiedDate], [t0].[Price], [t0].[Rating], [t0].[Size], [t0].[Id0], [t0].[CreatedDate0], [t0].[DataStatus0], [t0].[ImageLocalPath], [t0].[ImageUrl], [t0].[ModifiedDate0], [t0].[ShoeId]
+FROM (
+    SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[Balance], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[Name], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[ProfileImageLocalPath], [a].[ProfileImageUrl], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+    FROM [AspNetUsers] AS [a]
+    WHERE [a].[UserName] = @__username_0
+) AS [t]
+LEFT JOIN (
+    SELECT [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size], [i].[Id] AS [Id0], [i].[CreatedDate] AS [CreatedDate0], [i].[DataStatus] AS [DataStatus0], [i].[ImageLocalPath], [i].[ImageUrl], [i].[ModifiedDate] AS [ModifiedDate0], [i].[ShoeId]
+    FROM [Shoes] AS [s]
+    LEFT JOIN [Images] AS [i] ON [s].[Id] = [i].[ShoeId]
+) AS [t0] ON [t].[Id] = [t0].[ApplicationUserId]
+ORDER BY [t].[Id], [t0].[Id]
+2023-08-19 19:01:08.265 +04:00 [INF] Executing ObjectResult, writing value of type 'DigitalShoes.Domain.DTOs.ApiResponse'.
+2023-08-19 19:01:10.057 +04:00 [INF] Executed action DigitalShoes.Api.Controllers.v1.ImageController.GetImagesByShoeIdAsync (DigitalShoes.Api) in 16027.3911ms
+2023-08-19 19:01:10.057 +04:00 [INF] Executed endpoint 'DigitalShoes.Api.Controllers.v1.ImageController.GetImagesByShoeIdAsync (DigitalShoes.Api)'
+2023-08-19 19:01:10.057 +04:00 [INF] HTTP GET /api/v1/Image/31/GetImagesByShoeId responded 200 in 16030.9798 ms
+2023-08-19 19:01:10.057 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/api/v1/Image/31/GetImagesByShoeId - - - 200 - application/json;+charset=utf-8 16033.1823ms
+2023-08-19 19:51:14.036 +04:00 [INF] User profile is available. Using 'C:\Users\Admino\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-08-19 19:51:14.296 +04:00 [INF] Now listening on: https://localhost:7249
+2023-08-19 19:51:14.297 +04:00 [INF] Now listening on: http://localhost:5161
+2023-08-19 19:51:14.299 +04:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-08-19 19:51:14.300 +04:00 [INF] Hosting environment: Development
+2023-08-19 19:51:14.300 +04:00 [INF] Content root path: C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api
+2023-08-19 19:51:15.695 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/swagger/index.html - -
+2023-08-19 19:51:15.977 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/_vs/browserLink - -
+2023-08-19 19:51:15.998 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/_framework/aspnetcore-browser-refresh.js - -
+2023-08-19 19:51:16.008 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/swagger/index.html - - - 200 - text/html;charset=utf-8 310.9420ms
+2023-08-19 19:51:16.038 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 40.3241ms
+2023-08-19 19:51:16.087 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 110.5614ms
+2023-08-19 19:51:16.170 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/swagger/v2/swagger.json - -
+2023-08-19 19:51:16.368 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/swagger/v2/swagger.json - - - 200 - application/json;charset=utf-8 198.3640ms
+2023-08-19 19:51:17.902 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/swagger/v1/swagger.json - -
+2023-08-19 19:51:17.977 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 75.1750ms
+2023-08-19 19:51:26.739 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/api/v1/Shoe - -
+2023-08-19 19:51:27.018 +04:00 [INF] Executing endpoint 'DigitalShoes.Api.Controllers.v1.ShoeController.GetMyProductsAsync (DigitalShoes.Api)'
+2023-08-19 19:51:27.038 +04:00 [INF] Route matched with {action = "GetMyProducts", controller = "Shoe"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetMyProductsAsync() on controller DigitalShoes.Api.Controllers.v1.ShoeController (DigitalShoes.Api).
+2023-08-19 19:51:28.639 +04:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2023-08-19 19:51:29.798 +04:00 [INF] Executed DbCommand (41ms) [Parameters=[@__username_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[AccessFailedCount], [t].[Balance], [t].[ConcurrencyStamp], [t].[Email], [t].[EmailConfirmed], [t].[LockoutEnabled], [t].[LockoutEnd], [t].[Name], [t].[NormalizedEmail], [t].[NormalizedUserName], [t].[PasswordHash], [t].[PhoneNumber], [t].[PhoneNumberConfirmed], [t].[ProfileImageLocalPath], [t].[ProfileImageUrl], [t].[SecurityStamp], [t].[TwoFactorEnabled], [t].[UserName], [t0].[Id], [t0].[ApplicationUserId], [t0].[Brand], [t0].[CategoryId], [t0].[Color], [t0].[Count], [t0].[CreatedDate], [t0].[DataStatus], [t0].[Description], [t0].[Gender], [t0].[Model], [t0].[ModifiedDate], [t0].[Price], [t0].[Rating], [t0].[Size], [t0].[Id0], [t0].[CreatedDate0], [t0].[DataStatus0], [t0].[ImageLocalPath], [t0].[ImageUrl], [t0].[ModifiedDate0], [t0].[ShoeId], [t0].[ShoeId0], [t0].[HashtagId], [t0].[CreatedDate1], [t0].[DataStatus1], [t0].[ModifiedDate1], [t0].[Id1], [t0].[CreatedDate00], [t0].[DataStatus00], [t0].[ModifiedDate00], [t0].[Text]
+FROM (
+    SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[Balance], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[Name], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[ProfileImageLocalPath], [a].[ProfileImageUrl], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+    FROM [AspNetUsers] AS [a]
+    WHERE [a].[UserName] = @__username_0
+) AS [t]
+LEFT JOIN (
+    SELECT [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size], [i].[Id] AS [Id0], [i].[CreatedDate] AS [CreatedDate0], [i].[DataStatus] AS [DataStatus0], [i].[ImageLocalPath], [i].[ImageUrl], [i].[ModifiedDate] AS [ModifiedDate0], [i].[ShoeId], [t1].[ShoeId] AS [ShoeId0], [t1].[HashtagId], [t1].[CreatedDate] AS [CreatedDate1], [t1].[DataStatus] AS [DataStatus1], [t1].[ModifiedDate] AS [ModifiedDate1], [t1].[Id] AS [Id1], [t1].[CreatedDate0] AS [CreatedDate00], [t1].[DataStatus0] AS [DataStatus00], [t1].[ModifiedDate0] AS [ModifiedDate00], [t1].[Text]
+    FROM [Shoes] AS [s]
+    LEFT JOIN [Images] AS [i] ON [s].[Id] = [i].[ShoeId]
+    LEFT JOIN (
+        SELECT [s0].[ShoeId], [s0].[HashtagId], [s0].[CreatedDate], [s0].[DataStatus], [s0].[ModifiedDate], [h].[Id], [h].[CreatedDate] AS [CreatedDate0], [h].[DataStatus] AS [DataStatus0], [h].[ModifiedDate] AS [ModifiedDate0], [h].[Text]
+        FROM [ShoeHashtags] AS [s0]
+        INNER JOIN [Hashtags] AS [h] ON [s0].[HashtagId] = [h].[Id]
+    ) AS [t1] ON [s].[Id] = [t1].[ShoeId]
+) AS [t0] ON [t].[Id] = [t0].[ApplicationUserId]
+ORDER BY [t].[Id], [t0].[Id], [t0].[Id0], [t0].[ShoeId0], [t0].[HashtagId]
+2023-08-19 19:51:30.057 +04:00 [INF] Executing ObjectResult, writing value of type 'DigitalShoes.Domain.DTOs.ApiResponse'.
+2023-08-19 19:51:30.090 +04:00 [INF] Executed action DigitalShoes.Api.Controllers.v1.ShoeController.GetMyProductsAsync (DigitalShoes.Api) in 3047.3137ms
+2023-08-19 19:51:30.092 +04:00 [INF] Executed endpoint 'DigitalShoes.Api.Controllers.v1.ShoeController.GetMyProductsAsync (DigitalShoes.Api)'
+2023-08-19 19:51:30.094 +04:00 [INF] HTTP GET /api/v1/Shoe responded 200 in 3076.7881 ms
+2023-08-19 19:51:30.105 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/api/v1/Shoe - - - 200 - application/json;+charset=utf-8 3365.4026ms
+2023-08-19 19:53:35.613 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/api/v1/Shoe/31 - -
+2023-08-19 19:53:35.628 +04:00 [INF] Executing endpoint 'DigitalShoes.Api.Controllers.v1.ShoeController.GetMyProductByIdAsync (DigitalShoes.Api)'
+2023-08-19 19:53:35.640 +04:00 [INF] Route matched with {action = "GetMyProductById", controller = "Shoe"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[DigitalShoes.Domain.DTOs.ApiResponse]] GetMyProductByIdAsync(System.Nullable`1[System.Int32]) on controller DigitalShoes.Api.Controllers.v1.ShoeController (DigitalShoes.Api).
+2023-08-19 19:53:35.769 +04:00 [INF] Executed DbCommand (21ms) [Parameters=[@__username_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[AccessFailedCount], [t].[Balance], [t].[ConcurrencyStamp], [t].[Email], [t].[EmailConfirmed], [t].[LockoutEnabled], [t].[LockoutEnd], [t].[Name], [t].[NormalizedEmail], [t].[NormalizedUserName], [t].[PasswordHash], [t].[PhoneNumber], [t].[PhoneNumberConfirmed], [t].[ProfileImageLocalPath], [t].[ProfileImageUrl], [t].[SecurityStamp], [t].[TwoFactorEnabled], [t].[UserName], [t0].[Id], [t0].[ApplicationUserId], [t0].[Brand], [t0].[CategoryId], [t0].[Color], [t0].[Count], [t0].[CreatedDate], [t0].[DataStatus], [t0].[Description], [t0].[Gender], [t0].[Model], [t0].[ModifiedDate], [t0].[Price], [t0].[Rating], [t0].[Size], [t0].[Id0], [t0].[CreatedDate0], [t0].[DataStatus0], [t0].[ImageLocalPath], [t0].[ImageUrl], [t0].[ModifiedDate0], [t0].[ShoeId], [t0].[ShoeId0], [t0].[HashtagId], [t0].[CreatedDate1], [t0].[DataStatus1], [t0].[ModifiedDate1], [t0].[Id1], [t0].[CreatedDate00], [t0].[DataStatus00], [t0].[ModifiedDate00], [t0].[Text]
+FROM (
+    SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[Balance], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[Name], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[ProfileImageLocalPath], [a].[ProfileImageUrl], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+    FROM [AspNetUsers] AS [a]
+    WHERE [a].[UserName] = @__username_0
+) AS [t]
+LEFT JOIN (
+    SELECT [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size], [i].[Id] AS [Id0], [i].[CreatedDate] AS [CreatedDate0], [i].[DataStatus] AS [DataStatus0], [i].[ImageLocalPath], [i].[ImageUrl], [i].[ModifiedDate] AS [ModifiedDate0], [i].[ShoeId], [t1].[ShoeId] AS [ShoeId0], [t1].[HashtagId], [t1].[CreatedDate] AS [CreatedDate1], [t1].[DataStatus] AS [DataStatus1], [t1].[ModifiedDate] AS [ModifiedDate1], [t1].[Id] AS [Id1], [t1].[CreatedDate0] AS [CreatedDate00], [t1].[DataStatus0] AS [DataStatus00], [t1].[ModifiedDate0] AS [ModifiedDate00], [t1].[Text]
+    FROM [Shoes] AS [s]
+    LEFT JOIN [Images] AS [i] ON [s].[Id] = [i].[ShoeId]
+    LEFT JOIN (
+        SELECT [s0].[ShoeId], [s0].[HashtagId], [s0].[CreatedDate], [s0].[DataStatus], [s0].[ModifiedDate], [h].[Id], [h].[CreatedDate] AS [CreatedDate0], [h].[DataStatus] AS [DataStatus0], [h].[ModifiedDate] AS [ModifiedDate0], [h].[Text]
+        FROM [ShoeHashtags] AS [s0]
+        INNER JOIN [Hashtags] AS [h] ON [s0].[HashtagId] = [h].[Id]
+    ) AS [t1] ON [s].[Id] = [t1].[ShoeId]
+) AS [t0] ON [t].[Id] = [t0].[ApplicationUserId]
+ORDER BY [t].[Id], [t0].[Id], [t0].[Id0], [t0].[ShoeId0], [t0].[HashtagId]
+2023-08-19 19:53:35.777 +04:00 [INF] Executing ObjectResult, writing value of type 'DigitalShoes.Domain.DTOs.ApiResponse'.
+2023-08-19 19:53:35.778 +04:00 [INF] Executed action DigitalShoes.Api.Controllers.v1.ShoeController.GetMyProductByIdAsync (DigitalShoes.Api) in 137.8355ms
+2023-08-19 19:53:35.778 +04:00 [INF] Executed endpoint 'DigitalShoes.Api.Controllers.v1.ShoeController.GetMyProductByIdAsync (DigitalShoes.Api)'
+2023-08-19 19:53:35.778 +04:00 [INF] HTTP GET /api/v1/Shoe/31 responded 200 in 150.3364 ms
+2023-08-19 19:53:35.779 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/api/v1/Shoe/31 - - - 200 - application/json;+charset=utf-8 165.8960ms
+2023-08-19 19:54:51.655 +04:00 [INF] Request starting HTTP/2 PUT https://localhost:7249/api/v1/Shoe/31 application/json 188
+2023-08-19 19:54:51.671 +04:00 [INF] Executing endpoint 'DigitalShoes.Api.Controllers.v1.ShoeController.UpdateShoeAsync (DigitalShoes.Api)'
+2023-08-19 19:54:51.675 +04:00 [INF] Route matched with {action = "UpdateShoe", controller = "Shoe"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] UpdateShoeAsync(System.Nullable`1[System.Int32], DigitalShoes.Domain.DTOs.ShoeDTOs.ShoeUpdateDTO) on controller DigitalShoes.Api.Controllers.v1.ShoeController (DigitalShoes.Api).
+2023-08-19 19:55:07.195 +04:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2023-08-19 19:55:07.239 +04:00 [INF] Executed DbCommand (38ms) [Parameters=[@__username_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[AccessFailedCount], [t].[Balance], [t].[ConcurrencyStamp], [t].[Email], [t].[EmailConfirmed], [t].[LockoutEnabled], [t].[LockoutEnd], [t].[Name], [t].[NormalizedEmail], [t].[NormalizedUserName], [t].[PasswordHash], [t].[PhoneNumber], [t].[PhoneNumberConfirmed], [t].[ProfileImageLocalPath], [t].[ProfileImageUrl], [t].[SecurityStamp], [t].[TwoFactorEnabled], [t].[UserName], [t0].[Id], [t0].[ApplicationUserId], [t0].[Brand], [t0].[CategoryId], [t0].[Color], [t0].[Count], [t0].[CreatedDate], [t0].[DataStatus], [t0].[Description], [t0].[Gender], [t0].[Model], [t0].[ModifiedDate], [t0].[Price], [t0].[Rating], [t0].[Size], [t0].[ShoeId], [t0].[HashtagId], [t0].[CreatedDate0], [t0].[DataStatus0], [t0].[ModifiedDate0], [t0].[Id0], [t0].[CreatedDate00], [t0].[DataStatus00], [t0].[ModifiedDate00], [t0].[Text]
+FROM (
+    SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[Balance], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[Name], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[ProfileImageLocalPath], [a].[ProfileImageUrl], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+    FROM [AspNetUsers] AS [a]
+    WHERE [a].[UserName] = @__username_0
+) AS [t]
+LEFT JOIN (
+    SELECT [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size], [t1].[ShoeId], [t1].[HashtagId], [t1].[CreatedDate] AS [CreatedDate0], [t1].[DataStatus] AS [DataStatus0], [t1].[ModifiedDate] AS [ModifiedDate0], [t1].[Id] AS [Id0], [t1].[CreatedDate0] AS [CreatedDate00], [t1].[DataStatus0] AS [DataStatus00], [t1].[ModifiedDate0] AS [ModifiedDate00], [t1].[Text]
+    FROM [Shoes] AS [s]
+    LEFT JOIN (
+        SELECT [s0].[ShoeId], [s0].[HashtagId], [s0].[CreatedDate], [s0].[DataStatus], [s0].[ModifiedDate], [h].[Id], [h].[CreatedDate] AS [CreatedDate0], [h].[DataStatus] AS [DataStatus0], [h].[ModifiedDate] AS [ModifiedDate0], [h].[Text]
+        FROM [ShoeHashtags] AS [s0]
+        INNER JOIN [Hashtags] AS [h] ON [s0].[HashtagId] = [h].[Id]
+    ) AS [t1] ON [s].[Id] = [t1].[ShoeId]
+) AS [t0] ON [t].[Id] = [t0].[ApplicationUserId]
+ORDER BY [t].[Id], [t0].[Id], [t0].[ShoeId], [t0].[HashtagId]
+2023-08-19 19:55:18.228 +04:00 [INF] Executed DbCommand (3ms) [Parameters=[@__shoeUpdateDTO_CTName_0='?' (Size = 60)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [c].[Id], [c].[CreatedDate], [c].[DataStatus], [c].[ModifiedDate], [c].[Name]
+FROM [Categories] AS [c]
+WHERE [c].[Name] = @__shoeUpdateDTO_CTName_0
+2023-08-19 19:55:29.391 +04:00 [INF] Executing ObjectResult, writing value of type 'DigitalShoes.Domain.DTOs.ApiResponse'.
+2023-08-19 19:55:31.428 +04:00 [INF] Executed action DigitalShoes.Api.Controllers.v1.ShoeController.UpdateShoeAsync (DigitalShoes.Api) in 39753.1904ms
+2023-08-19 19:55:31.429 +04:00 [INF] Executed endpoint 'DigitalShoes.Api.Controllers.v1.ShoeController.UpdateShoeAsync (DigitalShoes.Api)'
+2023-08-19 19:55:31.429 +04:00 [INF] HTTP PUT /api/v1/Shoe/31 responded 404 in 39757.2095 ms
+2023-08-19 19:55:31.438 +04:00 [INF] Request finished HTTP/2 PUT https://localhost:7249/api/v1/Shoe/31 application/json 188 - 404 - application/json;+charset=utf-8 39783.0902ms
+2023-08-19 19:56:02.290 +04:00 [INF] Request starting HTTP/2 PUT https://localhost:7249/api/v1/Shoe/31 application/json 197
+2023-08-19 19:56:02.291 +04:00 [INF] Executing endpoint 'DigitalShoes.Api.Controllers.v1.ShoeController.UpdateShoeAsync (DigitalShoes.Api)'
+2023-08-19 19:56:02.291 +04:00 [INF] Route matched with {action = "UpdateShoe", controller = "Shoe"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] UpdateShoeAsync(System.Nullable`1[System.Int32], DigitalShoes.Domain.DTOs.ShoeDTOs.ShoeUpdateDTO) on controller DigitalShoes.Api.Controllers.v1.ShoeController (DigitalShoes.Api).
+2023-08-19 19:56:08.835 +04:00 [INF] Executed DbCommand (56ms) [Parameters=[@__username_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[AccessFailedCount], [t].[Balance], [t].[ConcurrencyStamp], [t].[Email], [t].[EmailConfirmed], [t].[LockoutEnabled], [t].[LockoutEnd], [t].[Name], [t].[NormalizedEmail], [t].[NormalizedUserName], [t].[PasswordHash], [t].[PhoneNumber], [t].[PhoneNumberConfirmed], [t].[ProfileImageLocalPath], [t].[ProfileImageUrl], [t].[SecurityStamp], [t].[TwoFactorEnabled], [t].[UserName], [t0].[Id], [t0].[ApplicationUserId], [t0].[Brand], [t0].[CategoryId], [t0].[Color], [t0].[Count], [t0].[CreatedDate], [t0].[DataStatus], [t0].[Description], [t0].[Gender], [t0].[Model], [t0].[ModifiedDate], [t0].[Price], [t0].[Rating], [t0].[Size], [t0].[ShoeId], [t0].[HashtagId], [t0].[CreatedDate0], [t0].[DataStatus0], [t0].[ModifiedDate0], [t0].[Id0], [t0].[CreatedDate00], [t0].[DataStatus00], [t0].[ModifiedDate00], [t0].[Text]
+FROM (
+    SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[Balance], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[Name], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[ProfileImageLocalPath], [a].[ProfileImageUrl], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+    FROM [AspNetUsers] AS [a]
+    WHERE [a].[UserName] = @__username_0
+) AS [t]
+LEFT JOIN (
+    SELECT [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size], [t1].[ShoeId], [t1].[HashtagId], [t1].[CreatedDate] AS [CreatedDate0], [t1].[DataStatus] AS [DataStatus0], [t1].[ModifiedDate] AS [ModifiedDate0], [t1].[Id] AS [Id0], [t1].[CreatedDate0] AS [CreatedDate00], [t1].[DataStatus0] AS [DataStatus00], [t1].[ModifiedDate0] AS [ModifiedDate00], [t1].[Text]
+    FROM [Shoes] AS [s]
+    LEFT JOIN (
+        SELECT [s0].[ShoeId], [s0].[HashtagId], [s0].[CreatedDate], [s0].[DataStatus], [s0].[ModifiedDate], [h].[Id], [h].[CreatedDate] AS [CreatedDate0], [h].[DataStatus] AS [DataStatus0], [h].[ModifiedDate] AS [ModifiedDate0], [h].[Text]
+        FROM [ShoeHashtags] AS [s0]
+        INNER JOIN [Hashtags] AS [h] ON [s0].[HashtagId] = [h].[Id]
+    ) AS [t1] ON [s].[Id] = [t1].[ShoeId]
+) AS [t0] ON [t].[Id] = [t0].[ApplicationUserId]
+ORDER BY [t].[Id], [t0].[Id], [t0].[ShoeId], [t0].[HashtagId]
+2023-08-19 19:56:16.291 +04:00 [INF] Executed DbCommand (3ms) [Parameters=[@__shoeUpdateDTO_CTName_0='?' (Size = 60)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [c].[Id], [c].[CreatedDate], [c].[DataStatus], [c].[ModifiedDate], [c].[Name]
+FROM [Categories] AS [c]
+WHERE [c].[Name] = @__shoeUpdateDTO_CTName_0
+2023-08-19 19:56:35.110 +04:00 [WRN] Savepoints are disabled because Multiple Active Result Sets (MARS) is enabled. If 'SaveChanges' fails, then the transaction cannot be automatically rolled back to a known clean state. Instead, the transaction should be rolled back by the application before retrying 'SaveChanges'. See https://go.microsoft.com/fwlink/?linkid=2149338 for more information and examples. To identify the code which triggers this warning, call 'ConfigureWarnings(w => w.Throw(SqlServerEventId.SavepointsDisabledBecauseOfMARS))'.
+2023-08-19 19:56:35.132 +04:00 [INF] Executed DbCommand (12ms) [Parameters=[@p14='?' (DbType = Int32), @p0='?' (DbType = Int32), @p1='?' (Size = 40), @p2='?' (DbType = Int32), @p3='?' (DbType = Int32), @p4='?' (DbType = Int32), @p5='?' (DbType = DateTime2), @p6='?' (DbType = Int32), @p7='?' (Size = 200), @p8='?' (DbType = Int32), @p9='?' (Size = 40), @p10='?' (DbType = DateTime2), @p11='?' (Precision = 6) (Scale = 2) (DbType = Decimal), @p12='?' (DbType = Int32), @p13='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+UPDATE [Shoes] SET [ApplicationUserId] = @p0, [Brand] = @p1, [CategoryId] = @p2, [Color] = @p3, [Count] = @p4, [CreatedDate] = @p5, [DataStatus] = @p6, [Description] = @p7, [Gender] = @p8, [Model] = @p9, [ModifiedDate] = @p10, [Price] = @p11, [Rating] = @p12, [Size] = @p13
+OUTPUT 1
+WHERE [Id] = @p14;
+2023-08-19 19:56:41.263 +04:00 [INF] Executed DbCommand (37ms) [Parameters=[@__existingShoe_Id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[ApplicationUserId], [t].[Brand], [t].[CategoryId], [t].[Color], [t].[Count], [t].[CreatedDate], [t].[DataStatus], [t].[Description], [t].[Gender], [t].[Model], [t].[ModifiedDate], [t].[Price], [t].[Rating], [t].[Size], [t0].[Id], [t0].[CartId], [t0].[CreatedDate], [t0].[DataStatus], [t0].[ItemsCount], [t0].[ModifiedDate], [t0].[Price], [t0].[ShoeId], [t0].[Id0], [t0].[ApplicationUserId], [t0].[CreatedDate0], [t0].[DataStatus0], [t0].[ItemsCount0], [t0].[ModifiedDate0], [t0].[TotalPrice]
+FROM (
+    SELECT TOP(1) [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size]
+    FROM [Shoes] AS [s]
+    WHERE [s].[Id] = @__existingShoe_Id_0
+) AS [t]
+LEFT JOIN (
+    SELECT [c].[Id], [c].[CartId], [c].[CreatedDate], [c].[DataStatus], [c].[ItemsCount], [c].[ModifiedDate], [c].[Price], [c].[ShoeId], [c0].[Id] AS [Id0], [c0].[ApplicationUserId], [c0].[CreatedDate] AS [CreatedDate0], [c0].[DataStatus] AS [DataStatus0], [c0].[ItemsCount] AS [ItemsCount0], [c0].[ModifiedDate] AS [ModifiedDate0], [c0].[TotalPrice]
+    FROM [CartItems] AS [c]
+    INNER JOIN [Carts] AS [c0] ON [c].[CartId] = [c0].[Id]
+) AS [t0] ON [t].[Id] = [t0].[ShoeId]
+ORDER BY [t].[Id], [t0].[Id]
+2023-08-19 19:58:29.173 +04:00 [INF] User profile is available. Using 'C:\Users\Admino\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-08-19 19:58:29.447 +04:00 [INF] Now listening on: https://localhost:7249
+2023-08-19 19:58:29.447 +04:00 [INF] Now listening on: http://localhost:5161
+2023-08-19 19:58:29.449 +04:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-08-19 19:58:29.449 +04:00 [INF] Hosting environment: Development
+2023-08-19 19:58:29.450 +04:00 [INF] Content root path: C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api
+2023-08-19 19:58:30.968 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/swagger/index.html - -
+2023-08-19 19:58:31.227 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/_framework/aspnetcore-browser-refresh.js - -
+2023-08-19 19:58:31.227 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/_vs/browserLink - -
+2023-08-19 19:58:31.231 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/swagger/index.html - - - 200 - text/html;charset=utf-8 263.9725ms
+2023-08-19 19:58:31.283 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 55.3776ms
+2023-08-19 19:58:31.327 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 99.2774ms
+2023-08-19 19:58:31.409 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/swagger/v2/swagger.json - -
+2023-08-19 19:58:31.575 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/swagger/v2/swagger.json - - - 200 - application/json;charset=utf-8 165.7845ms
+2023-08-19 19:59:17.998 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/swagger/v1/swagger.json - -
+2023-08-19 19:59:18.063 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 66.0321ms
+2023-08-19 19:59:37.676 +04:00 [INF] Request starting HTTP/2 POST https://localhost:7249/api/v1/UsersAuth/login application/json 73
+2023-08-19 19:59:37.794 +04:00 [INF] Executing endpoint 'DigitalShoes.Api.Controllers.v1.UsersAuthController.Login (DigitalShoes.Api)'
+2023-08-19 19:59:37.824 +04:00 [INF] Route matched with {action = "Login", controller = "UsersAuth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(DigitalShoes.Domain.DTOs.AuthDTOs.LogInRequestDto) on controller DigitalShoes.Api.Controllers.v1.UsersAuthController (DigitalShoes.Api).
+2023-08-19 19:59:40.851 +04:00 [INF] Executed DbCommand (31ms) [Parameters=[@__ToLower_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[Balance], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[Name], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[ProfileImageLocalPath], [a].[ProfileImageUrl], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+FROM [AspNetUsers] AS [a]
+WHERE LOWER([a].[UserName]) = @__ToLower_0
+2023-08-19 19:59:41.147 +04:00 [INF] Executed DbCommand (5ms) [Parameters=[@__userId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [a0].[Name]
+FROM [AspNetUserRoles] AS [a]
+INNER JOIN [AspNetRoles] AS [a0] ON [a].[RoleId] = [a0].[Id]
+WHERE [a].[UserId] = @__userId_0
+2023-08-19 19:59:41.310 +04:00 [INF] Executing OkObjectResult, writing value of type 'DigitalShoes.Domain.DTOs.ApiResponse'.
+2023-08-19 19:59:41.329 +04:00 [INF] Executed action DigitalShoes.Api.Controllers.v1.UsersAuthController.Login (DigitalShoes.Api) in 3500.8479ms
+2023-08-19 19:59:41.330 +04:00 [INF] Executed endpoint 'DigitalShoes.Api.Controllers.v1.UsersAuthController.Login (DigitalShoes.Api)'
+2023-08-19 19:59:41.333 +04:00 [INF] HTTP POST /api/v1/UsersAuth/login responded 200 in 3539.5697 ms
+2023-08-19 19:59:41.346 +04:00 [INF] Request finished HTTP/2 POST https://localhost:7249/api/v1/UsersAuth/login application/json 73 - 200 - application/json;+charset=utf-8 3670.8642ms
+2023-08-19 19:59:59.816 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/api/v1/Cart/MyCartItems - -
+2023-08-19 19:59:59.887 +04:00 [INF] Executing endpoint 'DigitalShoes.Api.Controllers.v1.CartController.MyCartItemsAsync (DigitalShoes.Api)'
+2023-08-19 19:59:59.891 +04:00 [INF] Route matched with {action = "MyCartItems", controller = "Cart"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] MyCartItemsAsync() on controller DigitalShoes.Api.Controllers.v1.CartController (DigitalShoes.Api).
+2023-08-19 20:00:00.001 +04:00 [INF] Executed DbCommand (7ms) [Parameters=[@__username_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[AccessFailedCount], [t].[Balance], [t].[ConcurrencyStamp], [t].[Email], [t].[EmailConfirmed], [t].[LockoutEnabled], [t].[LockoutEnd], [t].[Name], [t].[NormalizedEmail], [t].[NormalizedUserName], [t].[PasswordHash], [t].[PhoneNumber], [t].[PhoneNumberConfirmed], [t].[ProfileImageLocalPath], [t].[ProfileImageUrl], [t].[SecurityStamp], [t].[TwoFactorEnabled], [t].[UserName], [t].[Id0], [t].[ApplicationUserId], [t].[CreatedDate], [t].[DataStatus], [t].[ItemsCount], [t].[ModifiedDate], [t].[TotalPrice], [c0].[Id], [c0].[CartId], [c0].[CreatedDate], [c0].[DataStatus], [c0].[ItemsCount], [c0].[ModifiedDate], [c0].[Price], [c0].[ShoeId]
+FROM (
+    SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[Balance], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[Name], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[ProfileImageLocalPath], [a].[ProfileImageUrl], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName], [c].[Id] AS [Id0], [c].[ApplicationUserId], [c].[CreatedDate], [c].[DataStatus], [c].[ItemsCount], [c].[ModifiedDate], [c].[TotalPrice]
+    FROM [AspNetUsers] AS [a]
+    LEFT JOIN [Carts] AS [c] ON [a].[Id] = [c].[ApplicationUserId]
+    WHERE [a].[UserName] = @__username_0
+) AS [t]
+LEFT JOIN [CartItems] AS [c0] ON [t].[Id0] = [c0].[CartId]
+ORDER BY [t].[Id], [t].[Id0]
+2023-08-19 20:00:00.085 +04:00 [INF] Executing ObjectResult, writing value of type 'DigitalShoes.Domain.DTOs.ApiResponse'.
+2023-08-19 20:00:00.097 +04:00 [INF] Executed action DigitalShoes.Api.Controllers.v1.CartController.MyCartItemsAsync (DigitalShoes.Api) in 205.8755ms
+2023-08-19 20:00:00.097 +04:00 [INF] Executed endpoint 'DigitalShoes.Api.Controllers.v1.CartController.MyCartItemsAsync (DigitalShoes.Api)'
+2023-08-19 20:00:00.097 +04:00 [INF] HTTP GET /api/v1/Cart/MyCartItems responded 200 in 210.0313 ms
+2023-08-19 20:00:00.099 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/api/v1/Cart/MyCartItems - - - 200 - application/json;+charset=utf-8 282.7957ms
+2023-08-19 20:00:13.994 +04:00 [INF] Request starting HTTP/2 POST https://localhost:7249/api/v1/Cart/AddToCart application/json 49
+2023-08-19 20:00:14.004 +04:00 [INF] Executing endpoint 'DigitalShoes.Api.Controllers.v1.CartController.AddToCartAsync (DigitalShoes.Api)'
+2023-08-19 20:00:14.011 +04:00 [INF] Route matched with {action = "AddToCart", controller = "Cart"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] AddToCartAsync(System.Collections.Generic.List`1[DigitalShoes.Domain.DTOs.CartItemDTOs.CartItemCreateDTO]) on controller DigitalShoes.Api.Controllers.v1.CartController (DigitalShoes.Api).
+2023-08-19 20:00:14.160 +04:00 [INF] Executed DbCommand (4ms) [Parameters=[@__item_ShoeId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size]
+FROM [Shoes] AS [s]
+WHERE [s].[Id] = @__item_ShoeId_0
+2023-08-19 20:00:14.167 +04:00 [INF] Executed DbCommand (2ms) [Parameters=[@__username_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[AccessFailedCount], [t].[Balance], [t].[ConcurrencyStamp], [t].[Email], [t].[EmailConfirmed], [t].[LockoutEnabled], [t].[LockoutEnd], [t].[Name], [t].[NormalizedEmail], [t].[NormalizedUserName], [t].[PasswordHash], [t].[PhoneNumber], [t].[PhoneNumberConfirmed], [t].[ProfileImageLocalPath], [t].[ProfileImageUrl], [t].[SecurityStamp], [t].[TwoFactorEnabled], [t].[UserName], [t].[Id0], [t].[ApplicationUserId], [t].[CreatedDate], [t].[DataStatus], [t].[ItemsCount], [t].[ModifiedDate], [t].[TotalPrice], [c0].[Id], [c0].[CartId], [c0].[CreatedDate], [c0].[DataStatus], [c0].[ItemsCount], [c0].[ModifiedDate], [c0].[Price], [c0].[ShoeId]
+FROM (
+    SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[Balance], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[Name], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[ProfileImageLocalPath], [a].[ProfileImageUrl], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName], [c].[Id] AS [Id0], [c].[ApplicationUserId], [c].[CreatedDate], [c].[DataStatus], [c].[ItemsCount], [c].[ModifiedDate], [c].[TotalPrice]
+    FROM [AspNetUsers] AS [a]
+    LEFT JOIN [Carts] AS [c] ON [a].[Id] = [c].[ApplicationUserId]
+    WHERE [a].[UserName] = @__username_0
+) AS [t]
+LEFT JOIN [CartItems] AS [c0] ON [t].[Id0] = [c0].[CartId]
+ORDER BY [t].[Id], [t].[Id0]
+2023-08-19 20:00:14.189 +04:00 [INF] Executed DbCommand (2ms) [Parameters=[@__item_ShoeId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [s].[Price]
+FROM [Shoes] AS [s]
+WHERE [s].[Id] = @__item_ShoeId_0
+2023-08-19 20:00:14.371 +04:00 [WRN] Savepoints are disabled because Multiple Active Result Sets (MARS) is enabled. If 'SaveChanges' fails, then the transaction cannot be automatically rolled back to a known clean state. Instead, the transaction should be rolled back by the application before retrying 'SaveChanges'. See https://go.microsoft.com/fwlink/?linkid=2149338 for more information and examples. To identify the code which triggers this warning, call 'ConfigureWarnings(w => w.Throw(SqlServerEventId.SavepointsDisabledBecauseOfMARS))'.
+2023-08-19 20:00:14.382 +04:00 [INF] Executed DbCommand (5ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (DbType = DateTime2), @p2='?' (DbType = Int32), @p3='?' (DbType = Int32), @p4='?' (DbType = DateTime2), @p5='?' (Precision = 6) (Scale = 2) (DbType = Decimal), @p6='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [CartItems] ([CartId], [CreatedDate], [DataStatus], [ItemsCount], [ModifiedDate], [Price], [ShoeId])
+OUTPUT INSERTED.[Id]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6);
+2023-08-19 20:00:14.430 +04:00 [INF] Executed DbCommand (2ms) [Parameters=[@__cartItem_Id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [c].[Id], [c].[CartId], [c].[CreatedDate], [c].[DataStatus], [c].[ItemsCount], [c].[ModifiedDate], [c].[Price], [c].[ShoeId]
+FROM [CartItems] AS [c]
+WHERE [c].[Id] = @__cartItem_Id_0
+2023-08-19 20:00:14.452 +04:00 [INF] Executed DbCommand (4ms) [Parameters=[@__cart_Id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT COALESCE(SUM([c].[Price]), 0.0)
+FROM [CartItems] AS [c]
+WHERE [c].[CartId] = @__cart_Id_0
+2023-08-19 20:00:14.463 +04:00 [INF] Executed DbCommand (1ms) [Parameters=[@__cart_Id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [c].[Id], [c].[CartId], [c].[CreatedDate], [c].[DataStatus], [c].[ItemsCount], [c].[ModifiedDate], [c].[Price], [c].[ShoeId]
+FROM [CartItems] AS [c]
+WHERE [c].[CartId] = @__cart_Id_0
+2023-08-19 20:00:14.480 +04:00 [WRN] Savepoints are disabled because Multiple Active Result Sets (MARS) is enabled. If 'SaveChanges' fails, then the transaction cannot be automatically rolled back to a known clean state. Instead, the transaction should be rolled back by the application before retrying 'SaveChanges'. See https://go.microsoft.com/fwlink/?linkid=2149338 for more information and examples. To identify the code which triggers this warning, call 'ConfigureWarnings(w => w.Throw(SqlServerEventId.SavepointsDisabledBecauseOfMARS))'.
+2023-08-19 20:00:14.485 +04:00 [INF] Executed DbCommand (4ms) [Parameters=[@p6='?' (DbType = Int32), @p0='?' (DbType = Int32), @p1='?' (DbType = DateTime2), @p2='?' (DbType = Int32), @p3='?' (DbType = Int32), @p4='?' (DbType = DateTime2), @p5='?' (Precision = 6) (Scale = 2) (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+UPDATE [Carts] SET [ApplicationUserId] = @p0, [CreatedDate] = @p1, [DataStatus] = @p2, [ItemsCount] = @p3, [ModifiedDate] = @p4, [TotalPrice] = @p5
+OUTPUT 1
+WHERE [Id] = @p6;
+2023-08-19 20:00:14.497 +04:00 [INF] Executing ObjectResult, writing value of type 'DigitalShoes.Domain.DTOs.ApiResponse'.
+2023-08-19 20:00:14.497 +04:00 [INF] Executed action DigitalShoes.Api.Controllers.v1.CartController.AddToCartAsync (DigitalShoes.Api) in 486.7436ms
+2023-08-19 20:00:14.498 +04:00 [INF] Executed endpoint 'DigitalShoes.Api.Controllers.v1.CartController.AddToCartAsync (DigitalShoes.Api)'
+2023-08-19 20:00:14.498 +04:00 [INF] HTTP POST /api/v1/Cart/AddToCart responded 201 in 493.5066 ms
+2023-08-19 20:00:14.498 +04:00 [INF] Request finished HTTP/2 POST https://localhost:7249/api/v1/Cart/AddToCart application/json 49 - 201 - application/json;+charset=utf-8 503.5896ms
+2023-08-19 20:01:09.097 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/api/v1/Cart/MyCartItems - -
+2023-08-19 20:01:09.103 +04:00 [INF] Authorization failed. These requirements were not met:
+RolesAuthorizationRequirement:User.IsInRole must be true for one of the following roles: (buyer)
+2023-08-19 20:01:09.108 +04:00 [INF] AuthenticationScheme: Bearer was forbidden.
+2023-08-19 20:01:09.108 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/api/v1/Cart/MyCartItems - - - 403 0 - 11.1980ms
+2023-08-19 20:01:48.757 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/api/v1/Shoe - -
+2023-08-19 20:01:48.792 +04:00 [INF] Executing endpoint 'DigitalShoes.Api.Controllers.v1.ShoeController.GetMyProductsAsync (DigitalShoes.Api)'
+2023-08-19 20:01:48.796 +04:00 [INF] Route matched with {action = "GetMyProducts", controller = "Shoe"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetMyProductsAsync() on controller DigitalShoes.Api.Controllers.v1.ShoeController (DigitalShoes.Api).
+2023-08-19 20:01:48.833 +04:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2023-08-19 20:01:48.859 +04:00 [INF] Executed DbCommand (21ms) [Parameters=[@__username_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[AccessFailedCount], [t].[Balance], [t].[ConcurrencyStamp], [t].[Email], [t].[EmailConfirmed], [t].[LockoutEnabled], [t].[LockoutEnd], [t].[Name], [t].[NormalizedEmail], [t].[NormalizedUserName], [t].[PasswordHash], [t].[PhoneNumber], [t].[PhoneNumberConfirmed], [t].[ProfileImageLocalPath], [t].[ProfileImageUrl], [t].[SecurityStamp], [t].[TwoFactorEnabled], [t].[UserName], [t0].[Id], [t0].[ApplicationUserId], [t0].[Brand], [t0].[CategoryId], [t0].[Color], [t0].[Count], [t0].[CreatedDate], [t0].[DataStatus], [t0].[Description], [t0].[Gender], [t0].[Model], [t0].[ModifiedDate], [t0].[Price], [t0].[Rating], [t0].[Size], [t0].[Id0], [t0].[CreatedDate0], [t0].[DataStatus0], [t0].[ImageLocalPath], [t0].[ImageUrl], [t0].[ModifiedDate0], [t0].[ShoeId], [t0].[ShoeId0], [t0].[HashtagId], [t0].[CreatedDate1], [t0].[DataStatus1], [t0].[ModifiedDate1], [t0].[Id1], [t0].[CreatedDate00], [t0].[DataStatus00], [t0].[ModifiedDate00], [t0].[Text]
+FROM (
+    SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[Balance], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[Name], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[ProfileImageLocalPath], [a].[ProfileImageUrl], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+    FROM [AspNetUsers] AS [a]
+    WHERE [a].[UserName] = @__username_0
+) AS [t]
+LEFT JOIN (
+    SELECT [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size], [i].[Id] AS [Id0], [i].[CreatedDate] AS [CreatedDate0], [i].[DataStatus] AS [DataStatus0], [i].[ImageLocalPath], [i].[ImageUrl], [i].[ModifiedDate] AS [ModifiedDate0], [i].[ShoeId], [t1].[ShoeId] AS [ShoeId0], [t1].[HashtagId], [t1].[CreatedDate] AS [CreatedDate1], [t1].[DataStatus] AS [DataStatus1], [t1].[ModifiedDate] AS [ModifiedDate1], [t1].[Id] AS [Id1], [t1].[CreatedDate0] AS [CreatedDate00], [t1].[DataStatus0] AS [DataStatus00], [t1].[ModifiedDate0] AS [ModifiedDate00], [t1].[Text]
+    FROM [Shoes] AS [s]
+    LEFT JOIN [Images] AS [i] ON [s].[Id] = [i].[ShoeId]
+    LEFT JOIN (
+        SELECT [s0].[ShoeId], [s0].[HashtagId], [s0].[CreatedDate], [s0].[DataStatus], [s0].[ModifiedDate], [h].[Id], [h].[CreatedDate] AS [CreatedDate0], [h].[DataStatus] AS [DataStatus0], [h].[ModifiedDate] AS [ModifiedDate0], [h].[Text]
+        FROM [ShoeHashtags] AS [s0]
+        INNER JOIN [Hashtags] AS [h] ON [s0].[HashtagId] = [h].[Id]
+    ) AS [t1] ON [s].[Id] = [t1].[ShoeId]
+) AS [t0] ON [t].[Id] = [t0].[ApplicationUserId]
+ORDER BY [t].[Id], [t0].[Id], [t0].[Id0], [t0].[ShoeId0], [t0].[HashtagId]
+2023-08-19 20:01:48.960 +04:00 [INF] Executing ObjectResult, writing value of type 'DigitalShoes.Domain.DTOs.ApiResponse'.
+2023-08-19 20:01:48.983 +04:00 [INF] Executed action DigitalShoes.Api.Controllers.v1.ShoeController.GetMyProductsAsync (DigitalShoes.Api) in 187.2866ms
+2023-08-19 20:01:48.983 +04:00 [INF] Executed endpoint 'DigitalShoes.Api.Controllers.v1.ShoeController.GetMyProductsAsync (DigitalShoes.Api)'
+2023-08-19 20:01:48.983 +04:00 [INF] HTTP GET /api/v1/Shoe responded 200 in 191.3581 ms
+2023-08-19 20:01:48.984 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/api/v1/Shoe - - - 200 - application/json;+charset=utf-8 227.0652ms
+2023-08-19 20:03:11.643 +04:00 [INF] Request starting HTTP/2 PUT https://localhost:7249/api/v1/Shoe/31 application/json 202
+2023-08-19 20:03:11.651 +04:00 [INF] Executing endpoint 'DigitalShoes.Api.Controllers.v1.ShoeController.UpdateShoeAsync (DigitalShoes.Api)'
+2023-08-19 20:03:11.658 +04:00 [INF] Route matched with {action = "UpdateShoe", controller = "Shoe"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] UpdateShoeAsync(System.Nullable`1[System.Int32], DigitalShoes.Domain.DTOs.ShoeDTOs.ShoeUpdateDTO) on controller DigitalShoes.Api.Controllers.v1.ShoeController (DigitalShoes.Api).
+2023-08-19 20:03:23.974 +04:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2023-08-19 20:03:24.017 +04:00 [INF] Executed DbCommand (39ms) [Parameters=[@__username_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[AccessFailedCount], [t].[Balance], [t].[ConcurrencyStamp], [t].[Email], [t].[EmailConfirmed], [t].[LockoutEnabled], [t].[LockoutEnd], [t].[Name], [t].[NormalizedEmail], [t].[NormalizedUserName], [t].[PasswordHash], [t].[PhoneNumber], [t].[PhoneNumberConfirmed], [t].[ProfileImageLocalPath], [t].[ProfileImageUrl], [t].[SecurityStamp], [t].[TwoFactorEnabled], [t].[UserName], [t0].[Id], [t0].[ApplicationUserId], [t0].[Brand], [t0].[CategoryId], [t0].[Color], [t0].[Count], [t0].[CreatedDate], [t0].[DataStatus], [t0].[Description], [t0].[Gender], [t0].[Model], [t0].[ModifiedDate], [t0].[Price], [t0].[Rating], [t0].[Size], [t0].[ShoeId], [t0].[HashtagId], [t0].[CreatedDate0], [t0].[DataStatus0], [t0].[ModifiedDate0], [t0].[Id0], [t0].[CreatedDate00], [t0].[DataStatus00], [t0].[ModifiedDate00], [t0].[Text]
+FROM (
+    SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[Balance], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[Name], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[ProfileImageLocalPath], [a].[ProfileImageUrl], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+    FROM [AspNetUsers] AS [a]
+    WHERE [a].[UserName] = @__username_0
+) AS [t]
+LEFT JOIN (
+    SELECT [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size], [t1].[ShoeId], [t1].[HashtagId], [t1].[CreatedDate] AS [CreatedDate0], [t1].[DataStatus] AS [DataStatus0], [t1].[ModifiedDate] AS [ModifiedDate0], [t1].[Id] AS [Id0], [t1].[CreatedDate0] AS [CreatedDate00], [t1].[DataStatus0] AS [DataStatus00], [t1].[ModifiedDate0] AS [ModifiedDate00], [t1].[Text]
+    FROM [Shoes] AS [s]
+    LEFT JOIN (
+        SELECT [s0].[ShoeId], [s0].[HashtagId], [s0].[CreatedDate], [s0].[DataStatus], [s0].[ModifiedDate], [h].[Id], [h].[CreatedDate] AS [CreatedDate0], [h].[DataStatus] AS [DataStatus0], [h].[ModifiedDate] AS [ModifiedDate0], [h].[Text]
+        FROM [ShoeHashtags] AS [s0]
+        INNER JOIN [Hashtags] AS [h] ON [s0].[HashtagId] = [h].[Id]
+    ) AS [t1] ON [s].[Id] = [t1].[ShoeId]
+) AS [t0] ON [t].[Id] = [t0].[ApplicationUserId]
+ORDER BY [t].[Id], [t0].[Id], [t0].[ShoeId], [t0].[HashtagId]
+2023-08-19 20:03:35.058 +04:00 [INF] Executed DbCommand (3ms) [Parameters=[@__shoeUpdateDTO_CTName_0='?' (Size = 60)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [c].[Id], [c].[CreatedDate], [c].[DataStatus], [c].[ModifiedDate], [c].[Name]
+FROM [Categories] AS [c]
+WHERE [c].[Name] = @__shoeUpdateDTO_CTName_0
+2023-08-19 20:03:45.484 +04:00 [WRN] Savepoints are disabled because Multiple Active Result Sets (MARS) is enabled. If 'SaveChanges' fails, then the transaction cannot be automatically rolled back to a known clean state. Instead, the transaction should be rolled back by the application before retrying 'SaveChanges'. See https://go.microsoft.com/fwlink/?linkid=2149338 for more information and examples. To identify the code which triggers this warning, call 'ConfigureWarnings(w => w.Throw(SqlServerEventId.SavepointsDisabledBecauseOfMARS))'.
+2023-08-19 20:03:45.520 +04:00 [INF] Executed DbCommand (33ms) [Parameters=[@p14='?' (DbType = Int32), @p0='?' (DbType = Int32), @p1='?' (Size = 40), @p2='?' (DbType = Int32), @p3='?' (DbType = Int32), @p4='?' (DbType = Int32), @p5='?' (DbType = DateTime2), @p6='?' (DbType = Int32), @p7='?' (Size = 200), @p8='?' (DbType = Int32), @p9='?' (Size = 40), @p10='?' (DbType = DateTime2), @p11='?' (Precision = 6) (Scale = 2) (DbType = Decimal), @p12='?' (DbType = Int32), @p13='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+UPDATE [Shoes] SET [ApplicationUserId] = @p0, [Brand] = @p1, [CategoryId] = @p2, [Color] = @p3, [Count] = @p4, [CreatedDate] = @p5, [DataStatus] = @p6, [Description] = @p7, [Gender] = @p8, [Model] = @p9, [ModifiedDate] = @p10, [Price] = @p11, [Rating] = @p12, [Size] = @p13
+OUTPUT 1
+WHERE [Id] = @p14;
+2023-08-19 20:03:50.278 +04:00 [INF] Executed DbCommand (46ms) [Parameters=[@__existingShoe_Id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[ApplicationUserId], [t].[Brand], [t].[CategoryId], [t].[Color], [t].[Count], [t].[CreatedDate], [t].[DataStatus], [t].[Description], [t].[Gender], [t].[Model], [t].[ModifiedDate], [t].[Price], [t].[Rating], [t].[Size], [t0].[Id], [t0].[CartId], [t0].[CreatedDate], [t0].[DataStatus], [t0].[ItemsCount], [t0].[ModifiedDate], [t0].[Price], [t0].[ShoeId], [t0].[Id0], [t0].[ApplicationUserId], [t0].[CreatedDate0], [t0].[DataStatus0], [t0].[ItemsCount0], [t0].[ModifiedDate0], [t0].[TotalPrice]
+FROM (
+    SELECT TOP(1) [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size]
+    FROM [Shoes] AS [s]
+    WHERE [s].[Id] = @__existingShoe_Id_0
+) AS [t]
+LEFT JOIN (
+    SELECT [c].[Id], [c].[CartId], [c].[CreatedDate], [c].[DataStatus], [c].[ItemsCount], [c].[ModifiedDate], [c].[Price], [c].[ShoeId], [c0].[Id] AS [Id0], [c0].[ApplicationUserId], [c0].[CreatedDate] AS [CreatedDate0], [c0].[DataStatus] AS [DataStatus0], [c0].[ItemsCount] AS [ItemsCount0], [c0].[ModifiedDate] AS [ModifiedDate0], [c0].[TotalPrice]
+    FROM [CartItems] AS [c]
+    INNER JOIN [Carts] AS [c0] ON [c].[CartId] = [c0].[Id]
+) AS [t0] ON [t].[Id] = [t0].[ShoeId]
+ORDER BY [t].[Id], [t0].[Id]
+2023-08-19 20:05:32.701 +04:00 [WRN] Savepoints are disabled because Multiple Active Result Sets (MARS) is enabled. If 'SaveChanges' fails, then the transaction cannot be automatically rolled back to a known clean state. Instead, the transaction should be rolled back by the application before retrying 'SaveChanges'. See https://go.microsoft.com/fwlink/?linkid=2149338 for more information and examples. To identify the code which triggers this warning, call 'ConfigureWarnings(w => w.Throw(SqlServerEventId.SavepointsDisabledBecauseOfMARS))'.
+2023-08-19 20:05:32.736 +04:00 [INF] Executed DbCommand (34ms) [Parameters=[@p7='?' (DbType = Int32), @p0='?' (DbType = Int32), @p1='?' (DbType = DateTime2), @p2='?' (DbType = Int32), @p3='?' (DbType = Int32), @p4='?' (DbType = DateTime2), @p5='?' (Precision = 6) (Scale = 2) (DbType = Decimal), @p6='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+UPDATE [CartItems] SET [CartId] = @p0, [CreatedDate] = @p1, [DataStatus] = @p2, [ItemsCount] = @p3, [ModifiedDate] = @p4, [Price] = @p5, [ShoeId] = @p6
+OUTPUT 1
+WHERE [Id] = @p7;
+2023-08-19 20:05:33.504 +04:00 [INF] Executed DbCommand (36ms) [Parameters=[@__item_Id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [c].[Price]
+FROM [CartItems] AS [c]
+WHERE [c].[Id] = @__item_Id_0
+2023-08-19 20:11:04.837 +04:00 [INF] Executing ObjectResult, writing value of type 'DigitalShoes.Domain.DTOs.ApiResponse'.
+2023-08-19 20:11:04.838 +04:00 [INF] Executed action DigitalShoes.Api.Controllers.v1.ShoeController.UpdateShoeAsync (DigitalShoes.Api) in 473179.7075ms
+2023-08-19 20:11:04.838 +04:00 [INF] Executed endpoint 'DigitalShoes.Api.Controllers.v1.ShoeController.UpdateShoeAsync (DigitalShoes.Api)'
+2023-08-19 20:11:04.838 +04:00 [ERR] HTTP PUT /api/v1/Shoe/31 responded 500 in 473186.3980 ms
+2023-08-19 20:11:04.839 +04:00 [INF] Request finished HTTP/2 PUT https://localhost:7249/api/v1/Shoe/31 application/json 202 - 500 - application/json;+charset=utf-8 473195.6333ms
+2023-08-19 20:12:21.086 +04:00 [INF] User profile is available. Using 'C:\Users\Admino\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-08-19 20:12:21.375 +04:00 [INF] Now listening on: https://localhost:7249
+2023-08-19 20:12:21.376 +04:00 [INF] Now listening on: http://localhost:5161
+2023-08-19 20:12:21.378 +04:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-08-19 20:12:21.378 +04:00 [INF] Hosting environment: Development
+2023-08-19 20:12:21.378 +04:00 [INF] Content root path: C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api
+2023-08-19 20:12:23.310 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/swagger/index.html - -
+2023-08-19 20:12:23.617 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/_vs/browserLink - -
+2023-08-19 20:12:23.617 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/_framework/aspnetcore-browser-refresh.js - -
+2023-08-19 20:12:23.629 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/swagger/index.html - - - 200 - text/html;charset=utf-8 312.8938ms
+2023-08-19 20:12:23.638 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 20.5205ms
+2023-08-19 20:12:23.690 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 73.5045ms
+2023-08-19 20:12:23.797 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/swagger/v2/swagger.json - -
+2023-08-19 20:12:23.993 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/swagger/v2/swagger.json - - - 200 - application/json;charset=utf-8 196.1632ms
+2023-08-19 20:12:55.389 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/swagger/v1/swagger.json - -
+2023-08-19 20:12:55.455 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 66.2654ms
+2023-08-19 20:14:13.961 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/api/v1/Shoe/31 - -
+2023-08-19 20:14:14.288 +04:00 [INF] Executing endpoint 'DigitalShoes.Api.Controllers.v1.ShoeController.GetMyProductByIdAsync (DigitalShoes.Api)'
+2023-08-19 20:14:14.321 +04:00 [INF] Route matched with {action = "GetMyProductById", controller = "Shoe"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[DigitalShoes.Domain.DTOs.ApiResponse]] GetMyProductByIdAsync(System.Nullable`1[System.Int32]) on controller DigitalShoes.Api.Controllers.v1.ShoeController (DigitalShoes.Api).
+2023-08-19 20:14:16.205 +04:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2023-08-19 20:14:17.380 +04:00 [INF] Executed DbCommand (50ms) [Parameters=[@__username_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[AccessFailedCount], [t].[Balance], [t].[ConcurrencyStamp], [t].[Email], [t].[EmailConfirmed], [t].[LockoutEnabled], [t].[LockoutEnd], [t].[Name], [t].[NormalizedEmail], [t].[NormalizedUserName], [t].[PasswordHash], [t].[PhoneNumber], [t].[PhoneNumberConfirmed], [t].[ProfileImageLocalPath], [t].[ProfileImageUrl], [t].[SecurityStamp], [t].[TwoFactorEnabled], [t].[UserName], [t0].[Id], [t0].[ApplicationUserId], [t0].[Brand], [t0].[CategoryId], [t0].[Color], [t0].[Count], [t0].[CreatedDate], [t0].[DataStatus], [t0].[Description], [t0].[Gender], [t0].[Model], [t0].[ModifiedDate], [t0].[Price], [t0].[Rating], [t0].[Size], [t0].[Id0], [t0].[CreatedDate0], [t0].[DataStatus0], [t0].[ImageLocalPath], [t0].[ImageUrl], [t0].[ModifiedDate0], [t0].[ShoeId], [t0].[ShoeId0], [t0].[HashtagId], [t0].[CreatedDate1], [t0].[DataStatus1], [t0].[ModifiedDate1], [t0].[Id1], [t0].[CreatedDate00], [t0].[DataStatus00], [t0].[ModifiedDate00], [t0].[Text]
+FROM (
+    SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[Balance], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[Name], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[ProfileImageLocalPath], [a].[ProfileImageUrl], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+    FROM [AspNetUsers] AS [a]
+    WHERE [a].[UserName] = @__username_0
+) AS [t]
+LEFT JOIN (
+    SELECT [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size], [i].[Id] AS [Id0], [i].[CreatedDate] AS [CreatedDate0], [i].[DataStatus] AS [DataStatus0], [i].[ImageLocalPath], [i].[ImageUrl], [i].[ModifiedDate] AS [ModifiedDate0], [i].[ShoeId], [t1].[ShoeId] AS [ShoeId0], [t1].[HashtagId], [t1].[CreatedDate] AS [CreatedDate1], [t1].[DataStatus] AS [DataStatus1], [t1].[ModifiedDate] AS [ModifiedDate1], [t1].[Id] AS [Id1], [t1].[CreatedDate0] AS [CreatedDate00], [t1].[DataStatus0] AS [DataStatus00], [t1].[ModifiedDate0] AS [ModifiedDate00], [t1].[Text]
+    FROM [Shoes] AS [s]
+    LEFT JOIN [Images] AS [i] ON [s].[Id] = [i].[ShoeId]
+    LEFT JOIN (
+        SELECT [s0].[ShoeId], [s0].[HashtagId], [s0].[CreatedDate], [s0].[DataStatus], [s0].[ModifiedDate], [h].[Id], [h].[CreatedDate] AS [CreatedDate0], [h].[DataStatus] AS [DataStatus0], [h].[ModifiedDate] AS [ModifiedDate0], [h].[Text]
+        FROM [ShoeHashtags] AS [s0]
+        INNER JOIN [Hashtags] AS [h] ON [s0].[HashtagId] = [h].[Id]
+    ) AS [t1] ON [s].[Id] = [t1].[ShoeId]
+) AS [t0] ON [t].[Id] = [t0].[ApplicationUserId]
+ORDER BY [t].[Id], [t0].[Id], [t0].[Id0], [t0].[ShoeId0], [t0].[HashtagId]
+2023-08-19 20:14:17.802 +04:00 [INF] Executing ObjectResult, writing value of type 'DigitalShoes.Domain.DTOs.ApiResponse'.
+2023-08-19 20:14:17.845 +04:00 [INF] Executed action DigitalShoes.Api.Controllers.v1.ShoeController.GetMyProductByIdAsync (DigitalShoes.Api) in 3520.3395ms
+2023-08-19 20:14:17.846 +04:00 [INF] Executed endpoint 'DigitalShoes.Api.Controllers.v1.ShoeController.GetMyProductByIdAsync (DigitalShoes.Api)'
+2023-08-19 20:14:17.848 +04:00 [INF] HTTP GET /api/v1/Shoe/31 responded 200 in 3563.1804 ms
+2023-08-19 20:14:17.859 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/api/v1/Shoe/31 - - - 200 - application/json;+charset=utf-8 3898.1244ms
+2023-08-19 20:15:07.052 +04:00 [INF] Request starting HTTP/2 PUT https://localhost:7249/api/v1/Shoe/31 application/json 196
+2023-08-19 20:15:07.069 +04:00 [INF] Executing endpoint 'DigitalShoes.Api.Controllers.v1.ShoeController.UpdateShoeAsync (DigitalShoes.Api)'
+2023-08-19 20:15:07.073 +04:00 [INF] Route matched with {action = "UpdateShoe", controller = "Shoe"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] UpdateShoeAsync(System.Nullable`1[System.Int32], DigitalShoes.Domain.DTOs.ShoeDTOs.ShoeUpdateDTO) on controller DigitalShoes.Api.Controllers.v1.ShoeController (DigitalShoes.Api).
+2023-08-19 20:15:16.644 +04:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2023-08-19 20:15:16.693 +04:00 [INF] Executed DbCommand (40ms) [Parameters=[@__username_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[AccessFailedCount], [t].[Balance], [t].[ConcurrencyStamp], [t].[Email], [t].[EmailConfirmed], [t].[LockoutEnabled], [t].[LockoutEnd], [t].[Name], [t].[NormalizedEmail], [t].[NormalizedUserName], [t].[PasswordHash], [t].[PhoneNumber], [t].[PhoneNumberConfirmed], [t].[ProfileImageLocalPath], [t].[ProfileImageUrl], [t].[SecurityStamp], [t].[TwoFactorEnabled], [t].[UserName], [t0].[Id], [t0].[ApplicationUserId], [t0].[Brand], [t0].[CategoryId], [t0].[Color], [t0].[Count], [t0].[CreatedDate], [t0].[DataStatus], [t0].[Description], [t0].[Gender], [t0].[Model], [t0].[ModifiedDate], [t0].[Price], [t0].[Rating], [t0].[Size], [t0].[ShoeId], [t0].[HashtagId], [t0].[CreatedDate0], [t0].[DataStatus0], [t0].[ModifiedDate0], [t0].[Id0], [t0].[CreatedDate00], [t0].[DataStatus00], [t0].[ModifiedDate00], [t0].[Text]
+FROM (
+    SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[Balance], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[Name], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[ProfileImageLocalPath], [a].[ProfileImageUrl], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+    FROM [AspNetUsers] AS [a]
+    WHERE [a].[UserName] = @__username_0
+) AS [t]
+LEFT JOIN (
+    SELECT [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size], [t1].[ShoeId], [t1].[HashtagId], [t1].[CreatedDate] AS [CreatedDate0], [t1].[DataStatus] AS [DataStatus0], [t1].[ModifiedDate] AS [ModifiedDate0], [t1].[Id] AS [Id0], [t1].[CreatedDate0] AS [CreatedDate00], [t1].[DataStatus0] AS [DataStatus00], [t1].[ModifiedDate0] AS [ModifiedDate00], [t1].[Text]
+    FROM [Shoes] AS [s]
+    LEFT JOIN (
+        SELECT [s0].[ShoeId], [s0].[HashtagId], [s0].[CreatedDate], [s0].[DataStatus], [s0].[ModifiedDate], [h].[Id], [h].[CreatedDate] AS [CreatedDate0], [h].[DataStatus] AS [DataStatus0], [h].[ModifiedDate] AS [ModifiedDate0], [h].[Text]
+        FROM [ShoeHashtags] AS [s0]
+        INNER JOIN [Hashtags] AS [h] ON [s0].[HashtagId] = [h].[Id]
+    ) AS [t1] ON [s].[Id] = [t1].[ShoeId]
+) AS [t0] ON [t].[Id] = [t0].[ApplicationUserId]
+ORDER BY [t].[Id], [t0].[Id], [t0].[ShoeId], [t0].[HashtagId]
+2023-08-19 20:15:32.033 +04:00 [INF] Executed DbCommand (4ms) [Parameters=[@__shoeUpdateDTO_CTName_0='?' (Size = 60)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [c].[Id], [c].[CreatedDate], [c].[DataStatus], [c].[ModifiedDate], [c].[Name]
+FROM [Categories] AS [c]
+WHERE [c].[Name] = @__shoeUpdateDTO_CTName_0
+2023-08-19 20:15:46.371 +04:00 [WRN] Savepoints are disabled because Multiple Active Result Sets (MARS) is enabled. If 'SaveChanges' fails, then the transaction cannot be automatically rolled back to a known clean state. Instead, the transaction should be rolled back by the application before retrying 'SaveChanges'. See https://go.microsoft.com/fwlink/?linkid=2149338 for more information and examples. To identify the code which triggers this warning, call 'ConfigureWarnings(w => w.Throw(SqlServerEventId.SavepointsDisabledBecauseOfMARS))'.
+2023-08-19 20:15:46.395 +04:00 [INF] Executed DbCommand (12ms) [Parameters=[@p14='?' (DbType = Int32), @p0='?' (DbType = Int32), @p1='?' (Size = 40), @p2='?' (DbType = Int32), @p3='?' (DbType = Int32), @p4='?' (DbType = Int32), @p5='?' (DbType = DateTime2), @p6='?' (DbType = Int32), @p7='?' (Size = 200), @p8='?' (DbType = Int32), @p9='?' (Size = 40), @p10='?' (DbType = DateTime2), @p11='?' (Precision = 6) (Scale = 2) (DbType = Decimal), @p12='?' (DbType = Int32), @p13='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+UPDATE [Shoes] SET [ApplicationUserId] = @p0, [Brand] = @p1, [CategoryId] = @p2, [Color] = @p3, [Count] = @p4, [CreatedDate] = @p5, [DataStatus] = @p6, [Description] = @p7, [Gender] = @p8, [Model] = @p9, [ModifiedDate] = @p10, [Price] = @p11, [Rating] = @p12, [Size] = @p13
+OUTPUT 1
+WHERE [Id] = @p14;
+2023-08-19 20:15:51.330 +04:00 [INF] Executed DbCommand (45ms) [Parameters=[@__existingShoe_Id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[ApplicationUserId], [t].[Brand], [t].[CategoryId], [t].[Color], [t].[Count], [t].[CreatedDate], [t].[DataStatus], [t].[Description], [t].[Gender], [t].[Model], [t].[ModifiedDate], [t].[Price], [t].[Rating], [t].[Size], [t0].[Id], [t0].[CartId], [t0].[CreatedDate], [t0].[DataStatus], [t0].[ItemsCount], [t0].[ModifiedDate], [t0].[Price], [t0].[ShoeId], [t0].[Id0], [t0].[ApplicationUserId], [t0].[CreatedDate0], [t0].[DataStatus0], [t0].[ItemsCount0], [t0].[ModifiedDate0], [t0].[TotalPrice]
+FROM (
+    SELECT TOP(1) [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size]
+    FROM [Shoes] AS [s]
+    WHERE [s].[Id] = @__existingShoe_Id_0
+) AS [t]
+LEFT JOIN (
+    SELECT [c].[Id], [c].[CartId], [c].[CreatedDate], [c].[DataStatus], [c].[ItemsCount], [c].[ModifiedDate], [c].[Price], [c].[ShoeId], [c0].[Id] AS [Id0], [c0].[ApplicationUserId], [c0].[CreatedDate] AS [CreatedDate0], [c0].[DataStatus] AS [DataStatus0], [c0].[ItemsCount] AS [ItemsCount0], [c0].[ModifiedDate] AS [ModifiedDate0], [c0].[TotalPrice]
+    FROM [CartItems] AS [c]
+    INNER JOIN [Carts] AS [c0] ON [c].[CartId] = [c0].[Id]
+) AS [t0] ON [t].[Id] = [t0].[ShoeId]
+ORDER BY [t].[Id], [t0].[Id]
+2023-08-19 20:16:56.744 +04:00 [INF] User profile is available. Using 'C:\Users\Admino\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-08-19 20:16:57.129 +04:00 [INF] Now listening on: https://localhost:7249
+2023-08-19 20:16:57.130 +04:00 [INF] Now listening on: http://localhost:5161
+2023-08-19 20:16:57.132 +04:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-08-19 20:16:57.132 +04:00 [INF] Hosting environment: Development
+2023-08-19 20:16:57.132 +04:00 [INF] Content root path: C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api
+2023-08-19 20:16:58.815 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/swagger/index.html - -
+2023-08-19 20:16:59.213 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/_vs/browserLink - -
+2023-08-19 20:16:59.232 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/swagger/index.html - - - 200 - text/html;charset=utf-8 418.9202ms
+2023-08-19 20:16:59.242 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/_framework/aspnetcore-browser-refresh.js - -
+2023-08-19 20:16:59.254 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 11.3044ms
+2023-08-19 20:16:59.316 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 102.3318ms
+2023-08-19 20:16:59.415 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/swagger/v2/swagger.json - -
+2023-08-19 20:16:59.659 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/swagger/v2/swagger.json - - - 200 - application/json;charset=utf-8 244.1238ms
+2023-08-19 20:17:04.645 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/swagger/v1/swagger.json - -
+2023-08-19 20:17:04.703 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 58.5920ms
+2023-08-19 20:17:15.591 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/api/v1/Shoe/31 - -
+2023-08-19 20:17:15.869 +04:00 [INF] Executing endpoint 'DigitalShoes.Api.Controllers.v1.ShoeController.GetMyProductByIdAsync (DigitalShoes.Api)'
+2023-08-19 20:17:15.896 +04:00 [INF] Route matched with {action = "GetMyProductById", controller = "Shoe"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[DigitalShoes.Domain.DTOs.ApiResponse]] GetMyProductByIdAsync(System.Nullable`1[System.Int32]) on controller DigitalShoes.Api.Controllers.v1.ShoeController (DigitalShoes.Api).
+2023-08-19 20:17:17.541 +04:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2023-08-19 20:17:18.703 +04:00 [INF] Executed DbCommand (50ms) [Parameters=[@__username_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[AccessFailedCount], [t].[Balance], [t].[ConcurrencyStamp], [t].[Email], [t].[EmailConfirmed], [t].[LockoutEnabled], [t].[LockoutEnd], [t].[Name], [t].[NormalizedEmail], [t].[NormalizedUserName], [t].[PasswordHash], [t].[PhoneNumber], [t].[PhoneNumberConfirmed], [t].[ProfileImageLocalPath], [t].[ProfileImageUrl], [t].[SecurityStamp], [t].[TwoFactorEnabled], [t].[UserName], [t0].[Id], [t0].[ApplicationUserId], [t0].[Brand], [t0].[CategoryId], [t0].[Color], [t0].[Count], [t0].[CreatedDate], [t0].[DataStatus], [t0].[Description], [t0].[Gender], [t0].[Model], [t0].[ModifiedDate], [t0].[Price], [t0].[Rating], [t0].[Size], [t0].[Id0], [t0].[CreatedDate0], [t0].[DataStatus0], [t0].[ImageLocalPath], [t0].[ImageUrl], [t0].[ModifiedDate0], [t0].[ShoeId], [t0].[ShoeId0], [t0].[HashtagId], [t0].[CreatedDate1], [t0].[DataStatus1], [t0].[ModifiedDate1], [t0].[Id1], [t0].[CreatedDate00], [t0].[DataStatus00], [t0].[ModifiedDate00], [t0].[Text]
+FROM (
+    SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[Balance], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[Name], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[ProfileImageLocalPath], [a].[ProfileImageUrl], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+    FROM [AspNetUsers] AS [a]
+    WHERE [a].[UserName] = @__username_0
+) AS [t]
+LEFT JOIN (
+    SELECT [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size], [i].[Id] AS [Id0], [i].[CreatedDate] AS [CreatedDate0], [i].[DataStatus] AS [DataStatus0], [i].[ImageLocalPath], [i].[ImageUrl], [i].[ModifiedDate] AS [ModifiedDate0], [i].[ShoeId], [t1].[ShoeId] AS [ShoeId0], [t1].[HashtagId], [t1].[CreatedDate] AS [CreatedDate1], [t1].[DataStatus] AS [DataStatus1], [t1].[ModifiedDate] AS [ModifiedDate1], [t1].[Id] AS [Id1], [t1].[CreatedDate0] AS [CreatedDate00], [t1].[DataStatus0] AS [DataStatus00], [t1].[ModifiedDate0] AS [ModifiedDate00], [t1].[Text]
+    FROM [Shoes] AS [s]
+    LEFT JOIN [Images] AS [i] ON [s].[Id] = [i].[ShoeId]
+    LEFT JOIN (
+        SELECT [s0].[ShoeId], [s0].[HashtagId], [s0].[CreatedDate], [s0].[DataStatus], [s0].[ModifiedDate], [h].[Id], [h].[CreatedDate] AS [CreatedDate0], [h].[DataStatus] AS [DataStatus0], [h].[ModifiedDate] AS [ModifiedDate0], [h].[Text]
+        FROM [ShoeHashtags] AS [s0]
+        INNER JOIN [Hashtags] AS [h] ON [s0].[HashtagId] = [h].[Id]
+    ) AS [t1] ON [s].[Id] = [t1].[ShoeId]
+) AS [t0] ON [t].[Id] = [t0].[ApplicationUserId]
+ORDER BY [t].[Id], [t0].[Id], [t0].[Id0], [t0].[ShoeId0], [t0].[HashtagId]
+2023-08-19 20:17:19.043 +04:00 [INF] Executing ObjectResult, writing value of type 'DigitalShoes.Domain.DTOs.ApiResponse'.
+2023-08-19 20:17:19.090 +04:00 [INF] Executed action DigitalShoes.Api.Controllers.v1.ShoeController.GetMyProductByIdAsync (DigitalShoes.Api) in 3187.4644ms
+2023-08-19 20:17:19.091 +04:00 [INF] Executed endpoint 'DigitalShoes.Api.Controllers.v1.ShoeController.GetMyProductByIdAsync (DigitalShoes.Api)'
+2023-08-19 20:17:19.094 +04:00 [INF] HTTP GET /api/v1/Shoe/31 responded 200 in 3227.7171 ms
+2023-08-19 20:17:19.103 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/api/v1/Shoe/31 - - - 200 - application/json;+charset=utf-8 3512.3636ms
+2023-08-19 20:18:06.477 +04:00 [INF] Request starting HTTP/2 PUT https://localhost:7249/api/v1/Shoe/31 application/json 195
+2023-08-19 20:18:06.488 +04:00 [INF] Executing endpoint 'DigitalShoes.Api.Controllers.v1.ShoeController.UpdateShoeAsync (DigitalShoes.Api)'
+2023-08-19 20:18:06.493 +04:00 [INF] Route matched with {action = "UpdateShoe", controller = "Shoe"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] UpdateShoeAsync(System.Nullable`1[System.Int32], DigitalShoes.Domain.DTOs.ShoeDTOs.ShoeUpdateDTO) on controller DigitalShoes.Api.Controllers.v1.ShoeController (DigitalShoes.Api).
+2023-08-19 20:18:16.267 +04:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2023-08-19 20:18:16.312 +04:00 [INF] Executed DbCommand (36ms) [Parameters=[@__username_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[AccessFailedCount], [t].[Balance], [t].[ConcurrencyStamp], [t].[Email], [t].[EmailConfirmed], [t].[LockoutEnabled], [t].[LockoutEnd], [t].[Name], [t].[NormalizedEmail], [t].[NormalizedUserName], [t].[PasswordHash], [t].[PhoneNumber], [t].[PhoneNumberConfirmed], [t].[ProfileImageLocalPath], [t].[ProfileImageUrl], [t].[SecurityStamp], [t].[TwoFactorEnabled], [t].[UserName], [t0].[Id], [t0].[ApplicationUserId], [t0].[Brand], [t0].[CategoryId], [t0].[Color], [t0].[Count], [t0].[CreatedDate], [t0].[DataStatus], [t0].[Description], [t0].[Gender], [t0].[Model], [t0].[ModifiedDate], [t0].[Price], [t0].[Rating], [t0].[Size], [t0].[ShoeId], [t0].[HashtagId], [t0].[CreatedDate0], [t0].[DataStatus0], [t0].[ModifiedDate0], [t0].[Id0], [t0].[CreatedDate00], [t0].[DataStatus00], [t0].[ModifiedDate00], [t0].[Text]
+FROM (
+    SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[Balance], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[Name], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[ProfileImageLocalPath], [a].[ProfileImageUrl], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+    FROM [AspNetUsers] AS [a]
+    WHERE [a].[UserName] = @__username_0
+) AS [t]
+LEFT JOIN (
+    SELECT [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size], [t1].[ShoeId], [t1].[HashtagId], [t1].[CreatedDate] AS [CreatedDate0], [t1].[DataStatus] AS [DataStatus0], [t1].[ModifiedDate] AS [ModifiedDate0], [t1].[Id] AS [Id0], [t1].[CreatedDate0] AS [CreatedDate00], [t1].[DataStatus0] AS [DataStatus00], [t1].[ModifiedDate0] AS [ModifiedDate00], [t1].[Text]
+    FROM [Shoes] AS [s]
+    LEFT JOIN (
+        SELECT [s0].[ShoeId], [s0].[HashtagId], [s0].[CreatedDate], [s0].[DataStatus], [s0].[ModifiedDate], [h].[Id], [h].[CreatedDate] AS [CreatedDate0], [h].[DataStatus] AS [DataStatus0], [h].[ModifiedDate] AS [ModifiedDate0], [h].[Text]
+        FROM [ShoeHashtags] AS [s0]
+        INNER JOIN [Hashtags] AS [h] ON [s0].[HashtagId] = [h].[Id]
+    ) AS [t1] ON [s].[Id] = [t1].[ShoeId]
+) AS [t0] ON [t].[Id] = [t0].[ApplicationUserId]
+ORDER BY [t].[Id], [t0].[Id], [t0].[ShoeId], [t0].[HashtagId]
+2023-08-19 20:18:24.878 +04:00 [INF] Executed DbCommand (4ms) [Parameters=[@__shoeUpdateDTO_CTName_0='?' (Size = 60)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [c].[Id], [c].[CreatedDate], [c].[DataStatus], [c].[ModifiedDate], [c].[Name]
+FROM [Categories] AS [c]
+WHERE [c].[Name] = @__shoeUpdateDTO_CTName_0
+2023-08-19 20:18:37.002 +04:00 [WRN] Savepoints are disabled because Multiple Active Result Sets (MARS) is enabled. If 'SaveChanges' fails, then the transaction cannot be automatically rolled back to a known clean state. Instead, the transaction should be rolled back by the application before retrying 'SaveChanges'. See https://go.microsoft.com/fwlink/?linkid=2149338 for more information and examples. To identify the code which triggers this warning, call 'ConfigureWarnings(w => w.Throw(SqlServerEventId.SavepointsDisabledBecauseOfMARS))'.
+2023-08-19 20:18:37.020 +04:00 [INF] Executed DbCommand (11ms) [Parameters=[@p14='?' (DbType = Int32), @p0='?' (DbType = Int32), @p1='?' (Size = 40), @p2='?' (DbType = Int32), @p3='?' (DbType = Int32), @p4='?' (DbType = Int32), @p5='?' (DbType = DateTime2), @p6='?' (DbType = Int32), @p7='?' (Size = 200), @p8='?' (DbType = Int32), @p9='?' (Size = 40), @p10='?' (DbType = DateTime2), @p11='?' (Precision = 6) (Scale = 2) (DbType = Decimal), @p12='?' (DbType = Int32), @p13='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+UPDATE [Shoes] SET [ApplicationUserId] = @p0, [Brand] = @p1, [CategoryId] = @p2, [Color] = @p3, [Count] = @p4, [CreatedDate] = @p5, [DataStatus] = @p6, [Description] = @p7, [Gender] = @p8, [Model] = @p9, [ModifiedDate] = @p10, [Price] = @p11, [Rating] = @p12, [Size] = @p13
+OUTPUT 1
+WHERE [Id] = @p14;
+2023-08-19 20:18:44.375 +04:00 [INF] Executed DbCommand (39ms) [Parameters=[@__existingShoe_Id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[ApplicationUserId], [t].[Brand], [t].[CategoryId], [t].[Color], [t].[Count], [t].[CreatedDate], [t].[DataStatus], [t].[Description], [t].[Gender], [t].[Model], [t].[ModifiedDate], [t].[Price], [t].[Rating], [t].[Size], [t0].[Id], [t0].[CartId], [t0].[CreatedDate], [t0].[DataStatus], [t0].[ItemsCount], [t0].[ModifiedDate], [t0].[Price], [t0].[ShoeId], [t0].[Id0], [t0].[ApplicationUserId], [t0].[CreatedDate0], [t0].[DataStatus0], [t0].[ItemsCount0], [t0].[ModifiedDate0], [t0].[TotalPrice]
+FROM (
+    SELECT TOP(1) [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size]
+    FROM [Shoes] AS [s]
+    WHERE [s].[Id] = @__existingShoe_Id_0
+) AS [t]
+LEFT JOIN (
+    SELECT [c].[Id], [c].[CartId], [c].[CreatedDate], [c].[DataStatus], [c].[ItemsCount], [c].[ModifiedDate], [c].[Price], [c].[ShoeId], [c0].[Id] AS [Id0], [c0].[ApplicationUserId], [c0].[CreatedDate] AS [CreatedDate0], [c0].[DataStatus] AS [DataStatus0], [c0].[ItemsCount] AS [ItemsCount0], [c0].[ModifiedDate] AS [ModifiedDate0], [c0].[TotalPrice]
+    FROM [CartItems] AS [c]
+    INNER JOIN [Carts] AS [c0] ON [c].[CartId] = [c0].[Id]
+) AS [t0] ON [t].[Id] = [t0].[ShoeId]
+ORDER BY [t].[Id], [t0].[Id]
+2023-08-19 20:24:35.902 +04:00 [INF] User profile is available. Using 'C:\Users\Admino\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-08-19 20:24:36.173 +04:00 [INF] Now listening on: https://localhost:7249
+2023-08-19 20:24:36.174 +04:00 [INF] Now listening on: http://localhost:5161
+2023-08-19 20:24:36.176 +04:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-08-19 20:24:36.176 +04:00 [INF] Hosting environment: Development
+2023-08-19 20:24:36.176 +04:00 [INF] Content root path: C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api
+2023-08-19 20:24:37.992 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/swagger/index.html - -
+2023-08-19 20:24:38.432 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/swagger/index.html - - - 200 - text/html;charset=utf-8 442.8291ms
+2023-08-19 20:24:38.436 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/_vs/browserLink - -
+2023-08-19 20:24:38.436 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/_framework/aspnetcore-browser-refresh.js - -
+2023-08-19 20:24:38.498 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 61.5248ms
+2023-08-19 20:24:38.590 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 154.0014ms
+2023-08-19 20:24:38.881 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/swagger/v2/swagger.json - -
+2023-08-19 20:24:39.268 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/swagger/v2/swagger.json - - - 200 - application/json;charset=utf-8 387.6935ms
+2023-08-19 20:24:43.825 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/swagger/v1/swagger.json - -
+2023-08-19 20:24:43.892 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 67.2898ms
+2023-08-19 20:25:00.148 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/api/v1/Shoe/31 - -
+2023-08-19 20:25:00.427 +04:00 [INF] Executing endpoint 'DigitalShoes.Api.Controllers.v1.ShoeController.GetMyProductByIdAsync (DigitalShoes.Api)'
+2023-08-19 20:25:00.461 +04:00 [INF] Route matched with {action = "GetMyProductById", controller = "Shoe"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[DigitalShoes.Domain.DTOs.ApiResponse]] GetMyProductByIdAsync(System.Nullable`1[System.Int32]) on controller DigitalShoes.Api.Controllers.v1.ShoeController (DigitalShoes.Api).
+2023-08-19 20:25:02.330 +04:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2023-08-19 20:25:03.501 +04:00 [INF] Executed DbCommand (52ms) [Parameters=[@__username_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[AccessFailedCount], [t].[Balance], [t].[ConcurrencyStamp], [t].[Email], [t].[EmailConfirmed], [t].[LockoutEnabled], [t].[LockoutEnd], [t].[Name], [t].[NormalizedEmail], [t].[NormalizedUserName], [t].[PasswordHash], [t].[PhoneNumber], [t].[PhoneNumberConfirmed], [t].[ProfileImageLocalPath], [t].[ProfileImageUrl], [t].[SecurityStamp], [t].[TwoFactorEnabled], [t].[UserName], [t0].[Id], [t0].[ApplicationUserId], [t0].[Brand], [t0].[CategoryId], [t0].[Color], [t0].[Count], [t0].[CreatedDate], [t0].[DataStatus], [t0].[Description], [t0].[Gender], [t0].[Model], [t0].[ModifiedDate], [t0].[Price], [t0].[Rating], [t0].[Size], [t0].[Id0], [t0].[CreatedDate0], [t0].[DataStatus0], [t0].[ImageLocalPath], [t0].[ImageUrl], [t0].[ModifiedDate0], [t0].[ShoeId], [t0].[ShoeId0], [t0].[HashtagId], [t0].[CreatedDate1], [t0].[DataStatus1], [t0].[ModifiedDate1], [t0].[Id1], [t0].[CreatedDate00], [t0].[DataStatus00], [t0].[ModifiedDate00], [t0].[Text]
+FROM (
+    SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[Balance], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[Name], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[ProfileImageLocalPath], [a].[ProfileImageUrl], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+    FROM [AspNetUsers] AS [a]
+    WHERE [a].[UserName] = @__username_0
+) AS [t]
+LEFT JOIN (
+    SELECT [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size], [i].[Id] AS [Id0], [i].[CreatedDate] AS [CreatedDate0], [i].[DataStatus] AS [DataStatus0], [i].[ImageLocalPath], [i].[ImageUrl], [i].[ModifiedDate] AS [ModifiedDate0], [i].[ShoeId], [t1].[ShoeId] AS [ShoeId0], [t1].[HashtagId], [t1].[CreatedDate] AS [CreatedDate1], [t1].[DataStatus] AS [DataStatus1], [t1].[ModifiedDate] AS [ModifiedDate1], [t1].[Id] AS [Id1], [t1].[CreatedDate0] AS [CreatedDate00], [t1].[DataStatus0] AS [DataStatus00], [t1].[ModifiedDate0] AS [ModifiedDate00], [t1].[Text]
+    FROM [Shoes] AS [s]
+    LEFT JOIN [Images] AS [i] ON [s].[Id] = [i].[ShoeId]
+    LEFT JOIN (
+        SELECT [s0].[ShoeId], [s0].[HashtagId], [s0].[CreatedDate], [s0].[DataStatus], [s0].[ModifiedDate], [h].[Id], [h].[CreatedDate] AS [CreatedDate0], [h].[DataStatus] AS [DataStatus0], [h].[ModifiedDate] AS [ModifiedDate0], [h].[Text]
+        FROM [ShoeHashtags] AS [s0]
+        INNER JOIN [Hashtags] AS [h] ON [s0].[HashtagId] = [h].[Id]
+    ) AS [t1] ON [s].[Id] = [t1].[ShoeId]
+) AS [t0] ON [t].[Id] = [t0].[ApplicationUserId]
+ORDER BY [t].[Id], [t0].[Id], [t0].[Id0], [t0].[ShoeId0], [t0].[HashtagId]
+2023-08-19 20:25:03.797 +04:00 [INF] Executing ObjectResult, writing value of type 'DigitalShoes.Domain.DTOs.ApiResponse'.
+2023-08-19 20:25:03.838 +04:00 [INF] Executed action DigitalShoes.Api.Controllers.v1.ShoeController.GetMyProductByIdAsync (DigitalShoes.Api) in 3371.6689ms
+2023-08-19 20:25:03.839 +04:00 [INF] Executed endpoint 'DigitalShoes.Api.Controllers.v1.ShoeController.GetMyProductByIdAsync (DigitalShoes.Api)'
+2023-08-19 20:25:03.842 +04:00 [INF] HTTP GET /api/v1/Shoe/31 responded 200 in 3417.8685 ms
+2023-08-19 20:25:03.850 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/api/v1/Shoe/31 - - - 200 - application/json;+charset=utf-8 3702.0856ms
+2023-08-19 20:25:48.051 +04:00 [INF] Request starting HTTP/2 PUT https://localhost:7249/api/v1/Shoe/31 application/json 196
+2023-08-19 20:25:48.059 +04:00 [INF] Executing endpoint 'DigitalShoes.Api.Controllers.v1.ShoeController.UpdateShoeAsync (DigitalShoes.Api)'
+2023-08-19 20:25:48.064 +04:00 [INF] Route matched with {action = "UpdateShoe", controller = "Shoe"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] UpdateShoeAsync(System.Nullable`1[System.Int32], DigitalShoes.Domain.DTOs.ShoeDTOs.ShoeUpdateDTO) on controller DigitalShoes.Api.Controllers.v1.ShoeController (DigitalShoes.Api).
+2023-08-19 20:25:53.921 +04:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2023-08-19 20:25:53.968 +04:00 [INF] Executed DbCommand (39ms) [Parameters=[@__username_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[AccessFailedCount], [t].[Balance], [t].[ConcurrencyStamp], [t].[Email], [t].[EmailConfirmed], [t].[LockoutEnabled], [t].[LockoutEnd], [t].[Name], [t].[NormalizedEmail], [t].[NormalizedUserName], [t].[PasswordHash], [t].[PhoneNumber], [t].[PhoneNumberConfirmed], [t].[ProfileImageLocalPath], [t].[ProfileImageUrl], [t].[SecurityStamp], [t].[TwoFactorEnabled], [t].[UserName], [t0].[Id], [t0].[ApplicationUserId], [t0].[Brand], [t0].[CategoryId], [t0].[Color], [t0].[Count], [t0].[CreatedDate], [t0].[DataStatus], [t0].[Description], [t0].[Gender], [t0].[Model], [t0].[ModifiedDate], [t0].[Price], [t0].[Rating], [t0].[Size], [t0].[ShoeId], [t0].[HashtagId], [t0].[CreatedDate0], [t0].[DataStatus0], [t0].[ModifiedDate0], [t0].[Id0], [t0].[CreatedDate00], [t0].[DataStatus00], [t0].[ModifiedDate00], [t0].[Text]
+FROM (
+    SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[Balance], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[Name], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[ProfileImageLocalPath], [a].[ProfileImageUrl], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+    FROM [AspNetUsers] AS [a]
+    WHERE [a].[UserName] = @__username_0
+) AS [t]
+LEFT JOIN (
+    SELECT [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size], [t1].[ShoeId], [t1].[HashtagId], [t1].[CreatedDate] AS [CreatedDate0], [t1].[DataStatus] AS [DataStatus0], [t1].[ModifiedDate] AS [ModifiedDate0], [t1].[Id] AS [Id0], [t1].[CreatedDate0] AS [CreatedDate00], [t1].[DataStatus0] AS [DataStatus00], [t1].[ModifiedDate0] AS [ModifiedDate00], [t1].[Text]
+    FROM [Shoes] AS [s]
+    LEFT JOIN (
+        SELECT [s0].[ShoeId], [s0].[HashtagId], [s0].[CreatedDate], [s0].[DataStatus], [s0].[ModifiedDate], [h].[Id], [h].[CreatedDate] AS [CreatedDate0], [h].[DataStatus] AS [DataStatus0], [h].[ModifiedDate] AS [ModifiedDate0], [h].[Text]
+        FROM [ShoeHashtags] AS [s0]
+        INNER JOIN [Hashtags] AS [h] ON [s0].[HashtagId] = [h].[Id]
+    ) AS [t1] ON [s].[Id] = [t1].[ShoeId]
+) AS [t0] ON [t].[Id] = [t0].[ApplicationUserId]
+ORDER BY [t].[Id], [t0].[Id], [t0].[ShoeId], [t0].[HashtagId]
+2023-08-19 20:26:00.274 +04:00 [INF] Executed DbCommand (2ms) [Parameters=[@__shoeUpdateDTO_CTName_0='?' (Size = 60)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [c].[Id], [c].[CreatedDate], [c].[DataStatus], [c].[ModifiedDate], [c].[Name]
+FROM [Categories] AS [c]
+WHERE [c].[Name] = @__shoeUpdateDTO_CTName_0
+2023-08-19 20:26:05.744 +04:00 [WRN] Savepoints are disabled because Multiple Active Result Sets (MARS) is enabled. If 'SaveChanges' fails, then the transaction cannot be automatically rolled back to a known clean state. Instead, the transaction should be rolled back by the application before retrying 'SaveChanges'. See https://go.microsoft.com/fwlink/?linkid=2149338 for more information and examples. To identify the code which triggers this warning, call 'ConfigureWarnings(w => w.Throw(SqlServerEventId.SavepointsDisabledBecauseOfMARS))'.
+2023-08-19 20:26:05.761 +04:00 [INF] Executed DbCommand (9ms) [Parameters=[@p14='?' (DbType = Int32), @p0='?' (DbType = Int32), @p1='?' (Size = 40), @p2='?' (DbType = Int32), @p3='?' (DbType = Int32), @p4='?' (DbType = Int32), @p5='?' (DbType = DateTime2), @p6='?' (DbType = Int32), @p7='?' (Size = 200), @p8='?' (DbType = Int32), @p9='?' (Size = 40), @p10='?' (DbType = DateTime2), @p11='?' (Precision = 6) (Scale = 2) (DbType = Decimal), @p12='?' (DbType = Int32), @p13='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+UPDATE [Shoes] SET [ApplicationUserId] = @p0, [Brand] = @p1, [CategoryId] = @p2, [Color] = @p3, [Count] = @p4, [CreatedDate] = @p5, [DataStatus] = @p6, [Description] = @p7, [Gender] = @p8, [Model] = @p9, [ModifiedDate] = @p10, [Price] = @p11, [Rating] = @p12, [Size] = @p13
+OUTPUT 1
+WHERE [Id] = @p14;
+2023-08-19 20:26:07.340 +04:00 [INF] Executed DbCommand (38ms) [Parameters=[@__existingShoe_Id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[ApplicationUserId], [t].[Brand], [t].[CategoryId], [t].[Color], [t].[Count], [t].[CreatedDate], [t].[DataStatus], [t].[Description], [t].[Gender], [t].[Model], [t].[ModifiedDate], [t].[Price], [t].[Rating], [t].[Size], [t0].[Id], [t0].[CartId], [t0].[CreatedDate], [t0].[DataStatus], [t0].[ItemsCount], [t0].[ModifiedDate], [t0].[Price], [t0].[ShoeId], [t0].[Id0], [t0].[ApplicationUserId], [t0].[CreatedDate0], [t0].[DataStatus0], [t0].[ItemsCount0], [t0].[ModifiedDate0], [t0].[TotalPrice]
+FROM (
+    SELECT TOP(1) [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size]
+    FROM [Shoes] AS [s]
+    WHERE [s].[Id] = @__existingShoe_Id_0
+) AS [t]
+LEFT JOIN (
+    SELECT [c].[Id], [c].[CartId], [c].[CreatedDate], [c].[DataStatus], [c].[ItemsCount], [c].[ModifiedDate], [c].[Price], [c].[ShoeId], [c0].[Id] AS [Id0], [c0].[ApplicationUserId], [c0].[CreatedDate] AS [CreatedDate0], [c0].[DataStatus] AS [DataStatus0], [c0].[ItemsCount] AS [ItemsCount0], [c0].[ModifiedDate] AS [ModifiedDate0], [c0].[TotalPrice]
+    FROM [CartItems] AS [c]
+    INNER JOIN [Carts] AS [c0] ON [c].[CartId] = [c0].[Id]
+) AS [t0] ON [t].[Id] = [t0].[ShoeId]
+ORDER BY [t].[Id], [t0].[Id]
+2023-08-19 20:26:15.892 +04:00 [INF] Executed DbCommand (3ms) [Parameters=[@__item_Id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [c].[Price]
+FROM [CartItems] AS [c]
+WHERE [c].[Id] = @__item_Id_0
+2023-08-19 20:28:31.461 +04:00 [INF] User profile is available. Using 'C:\Users\Admino\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-08-19 20:28:31.691 +04:00 [INF] Now listening on: https://localhost:7249
+2023-08-19 20:28:31.691 +04:00 [INF] Now listening on: http://localhost:5161
+2023-08-19 20:28:31.693 +04:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-08-19 20:28:31.693 +04:00 [INF] Hosting environment: Development
+2023-08-19 20:28:31.693 +04:00 [INF] Content root path: C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api
+2023-08-19 20:28:33.205 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/swagger/index.html - -
+2023-08-19 20:28:33.558 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/_vs/browserLink - -
+2023-08-19 20:28:33.636 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/swagger/index.html - - - 200 - text/html;charset=utf-8 420.8043ms
+2023-08-19 20:28:33.667 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/_framework/aspnetcore-browser-refresh.js - -
+2023-08-19 20:28:33.694 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 26.5403ms
+2023-08-19 20:28:33.718 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 160.5550ms
+2023-08-19 20:28:33.826 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/swagger/v2/swagger.json - -
+2023-08-19 20:28:34.127 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/swagger/v2/swagger.json - - - 200 - application/json;charset=utf-8 300.1852ms
+2023-08-19 20:28:39.701 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/swagger/v1/swagger.json - -
+2023-08-19 20:28:39.769 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 68.1188ms
+2023-08-19 20:28:57.862 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/api/v1/Shoe/31 - -
+2023-08-19 20:28:58.164 +04:00 [INF] Executing endpoint 'DigitalShoes.Api.Controllers.v1.ShoeController.GetMyProductByIdAsync (DigitalShoes.Api)'
+2023-08-19 20:28:58.197 +04:00 [INF] Route matched with {action = "GetMyProductById", controller = "Shoe"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[DigitalShoes.Domain.DTOs.ApiResponse]] GetMyProductByIdAsync(System.Nullable`1[System.Int32]) on controller DigitalShoes.Api.Controllers.v1.ShoeController (DigitalShoes.Api).
+2023-08-19 20:28:59.876 +04:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2023-08-19 20:29:01.031 +04:00 [INF] Executed DbCommand (40ms) [Parameters=[@__username_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[AccessFailedCount], [t].[Balance], [t].[ConcurrencyStamp], [t].[Email], [t].[EmailConfirmed], [t].[LockoutEnabled], [t].[LockoutEnd], [t].[Name], [t].[NormalizedEmail], [t].[NormalizedUserName], [t].[PasswordHash], [t].[PhoneNumber], [t].[PhoneNumberConfirmed], [t].[ProfileImageLocalPath], [t].[ProfileImageUrl], [t].[SecurityStamp], [t].[TwoFactorEnabled], [t].[UserName], [t0].[Id], [t0].[ApplicationUserId], [t0].[Brand], [t0].[CategoryId], [t0].[Color], [t0].[Count], [t0].[CreatedDate], [t0].[DataStatus], [t0].[Description], [t0].[Gender], [t0].[Model], [t0].[ModifiedDate], [t0].[Price], [t0].[Rating], [t0].[Size], [t0].[Id0], [t0].[CreatedDate0], [t0].[DataStatus0], [t0].[ImageLocalPath], [t0].[ImageUrl], [t0].[ModifiedDate0], [t0].[ShoeId], [t0].[ShoeId0], [t0].[HashtagId], [t0].[CreatedDate1], [t0].[DataStatus1], [t0].[ModifiedDate1], [t0].[Id1], [t0].[CreatedDate00], [t0].[DataStatus00], [t0].[ModifiedDate00], [t0].[Text]
+FROM (
+    SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[Balance], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[Name], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[ProfileImageLocalPath], [a].[ProfileImageUrl], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+    FROM [AspNetUsers] AS [a]
+    WHERE [a].[UserName] = @__username_0
+) AS [t]
+LEFT JOIN (
+    SELECT [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size], [i].[Id] AS [Id0], [i].[CreatedDate] AS [CreatedDate0], [i].[DataStatus] AS [DataStatus0], [i].[ImageLocalPath], [i].[ImageUrl], [i].[ModifiedDate] AS [ModifiedDate0], [i].[ShoeId], [t1].[ShoeId] AS [ShoeId0], [t1].[HashtagId], [t1].[CreatedDate] AS [CreatedDate1], [t1].[DataStatus] AS [DataStatus1], [t1].[ModifiedDate] AS [ModifiedDate1], [t1].[Id] AS [Id1], [t1].[CreatedDate0] AS [CreatedDate00], [t1].[DataStatus0] AS [DataStatus00], [t1].[ModifiedDate0] AS [ModifiedDate00], [t1].[Text]
+    FROM [Shoes] AS [s]
+    LEFT JOIN [Images] AS [i] ON [s].[Id] = [i].[ShoeId]
+    LEFT JOIN (
+        SELECT [s0].[ShoeId], [s0].[HashtagId], [s0].[CreatedDate], [s0].[DataStatus], [s0].[ModifiedDate], [h].[Id], [h].[CreatedDate] AS [CreatedDate0], [h].[DataStatus] AS [DataStatus0], [h].[ModifiedDate] AS [ModifiedDate0], [h].[Text]
+        FROM [ShoeHashtags] AS [s0]
+        INNER JOIN [Hashtags] AS [h] ON [s0].[HashtagId] = [h].[Id]
+    ) AS [t1] ON [s].[Id] = [t1].[ShoeId]
+) AS [t0] ON [t].[Id] = [t0].[ApplicationUserId]
+ORDER BY [t].[Id], [t0].[Id], [t0].[Id0], [t0].[ShoeId0], [t0].[HashtagId]
+2023-08-19 20:29:01.307 +04:00 [INF] Executing ObjectResult, writing value of type 'DigitalShoes.Domain.DTOs.ApiResponse'.
+2023-08-19 20:29:01.342 +04:00 [INF] Executed action DigitalShoes.Api.Controllers.v1.ShoeController.GetMyProductByIdAsync (DigitalShoes.Api) in 3140.1147ms
+2023-08-19 20:29:01.343 +04:00 [INF] Executed endpoint 'DigitalShoes.Api.Controllers.v1.ShoeController.GetMyProductByIdAsync (DigitalShoes.Api)'
+2023-08-19 20:29:01.345 +04:00 [INF] HTTP GET /api/v1/Shoe/31 responded 200 in 3182.6245 ms
+2023-08-19 20:29:01.355 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/api/v1/Shoe/31 - - - 200 - application/json;+charset=utf-8 3492.5797ms
+2023-08-19 20:29:42.763 +04:00 [INF] Request starting HTTP/2 PUT https://localhost:7249/api/v1/Shoe/31 application/json 196
+2023-08-19 20:29:42.771 +04:00 [INF] Executing endpoint 'DigitalShoes.Api.Controllers.v1.ShoeController.UpdateShoeAsync (DigitalShoes.Api)'
+2023-08-19 20:29:42.778 +04:00 [INF] Route matched with {action = "UpdateShoe", controller = "Shoe"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] UpdateShoeAsync(System.Nullable`1[System.Int32], DigitalShoes.Domain.DTOs.ShoeDTOs.ShoeUpdateDTO) on controller DigitalShoes.Api.Controllers.v1.ShoeController (DigitalShoes.Api).
+2023-08-19 20:29:49.591 +04:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2023-08-19 20:29:49.644 +04:00 [INF] Executed DbCommand (45ms) [Parameters=[@__username_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[AccessFailedCount], [t].[Balance], [t].[ConcurrencyStamp], [t].[Email], [t].[EmailConfirmed], [t].[LockoutEnabled], [t].[LockoutEnd], [t].[Name], [t].[NormalizedEmail], [t].[NormalizedUserName], [t].[PasswordHash], [t].[PhoneNumber], [t].[PhoneNumberConfirmed], [t].[ProfileImageLocalPath], [t].[ProfileImageUrl], [t].[SecurityStamp], [t].[TwoFactorEnabled], [t].[UserName], [t0].[Id], [t0].[ApplicationUserId], [t0].[Brand], [t0].[CategoryId], [t0].[Color], [t0].[Count], [t0].[CreatedDate], [t0].[DataStatus], [t0].[Description], [t0].[Gender], [t0].[Model], [t0].[ModifiedDate], [t0].[Price], [t0].[Rating], [t0].[Size], [t0].[ShoeId], [t0].[HashtagId], [t0].[CreatedDate0], [t0].[DataStatus0], [t0].[ModifiedDate0], [t0].[Id0], [t0].[CreatedDate00], [t0].[DataStatus00], [t0].[ModifiedDate00], [t0].[Text]
+FROM (
+    SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[Balance], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[Name], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[ProfileImageLocalPath], [a].[ProfileImageUrl], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+    FROM [AspNetUsers] AS [a]
+    WHERE [a].[UserName] = @__username_0
+) AS [t]
+LEFT JOIN (
+    SELECT [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size], [t1].[ShoeId], [t1].[HashtagId], [t1].[CreatedDate] AS [CreatedDate0], [t1].[DataStatus] AS [DataStatus0], [t1].[ModifiedDate] AS [ModifiedDate0], [t1].[Id] AS [Id0], [t1].[CreatedDate0] AS [CreatedDate00], [t1].[DataStatus0] AS [DataStatus00], [t1].[ModifiedDate0] AS [ModifiedDate00], [t1].[Text]
+    FROM [Shoes] AS [s]
+    LEFT JOIN (
+        SELECT [s0].[ShoeId], [s0].[HashtagId], [s0].[CreatedDate], [s0].[DataStatus], [s0].[ModifiedDate], [h].[Id], [h].[CreatedDate] AS [CreatedDate0], [h].[DataStatus] AS [DataStatus0], [h].[ModifiedDate] AS [ModifiedDate0], [h].[Text]
+        FROM [ShoeHashtags] AS [s0]
+        INNER JOIN [Hashtags] AS [h] ON [s0].[HashtagId] = [h].[Id]
+    ) AS [t1] ON [s].[Id] = [t1].[ShoeId]
+) AS [t0] ON [t].[Id] = [t0].[ApplicationUserId]
+ORDER BY [t].[Id], [t0].[Id], [t0].[ShoeId], [t0].[HashtagId]
+2023-08-19 20:29:55.449 +04:00 [INF] Executed DbCommand (3ms) [Parameters=[@__shoeUpdateDTO_CTName_0='?' (Size = 60)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [c].[Id], [c].[CreatedDate], [c].[DataStatus], [c].[ModifiedDate], [c].[Name]
+FROM [Categories] AS [c]
+WHERE [c].[Name] = @__shoeUpdateDTO_CTName_0
+2023-08-19 20:30:02.460 +04:00 [WRN] Savepoints are disabled because Multiple Active Result Sets (MARS) is enabled. If 'SaveChanges' fails, then the transaction cannot be automatically rolled back to a known clean state. Instead, the transaction should be rolled back by the application before retrying 'SaveChanges'. See https://go.microsoft.com/fwlink/?linkid=2149338 for more information and examples. To identify the code which triggers this warning, call 'ConfigureWarnings(w => w.Throw(SqlServerEventId.SavepointsDisabledBecauseOfMARS))'.
+2023-08-19 20:30:02.478 +04:00 [INF] Executed DbCommand (9ms) [Parameters=[@p14='?' (DbType = Int32), @p0='?' (DbType = Int32), @p1='?' (Size = 40), @p2='?' (DbType = Int32), @p3='?' (DbType = Int32), @p4='?' (DbType = Int32), @p5='?' (DbType = DateTime2), @p6='?' (DbType = Int32), @p7='?' (Size = 200), @p8='?' (DbType = Int32), @p9='?' (Size = 40), @p10='?' (DbType = DateTime2), @p11='?' (Precision = 6) (Scale = 2) (DbType = Decimal), @p12='?' (DbType = Int32), @p13='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+UPDATE [Shoes] SET [ApplicationUserId] = @p0, [Brand] = @p1, [CategoryId] = @p2, [Color] = @p3, [Count] = @p4, [CreatedDate] = @p5, [DataStatus] = @p6, [Description] = @p7, [Gender] = @p8, [Model] = @p9, [ModifiedDate] = @p10, [Price] = @p11, [Rating] = @p12, [Size] = @p13
+OUTPUT 1
+WHERE [Id] = @p14;
+2023-08-19 20:30:03.540 +04:00 [INF] Executed DbCommand (40ms) [Parameters=[@__existingShoe_Id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[ApplicationUserId], [t].[Brand], [t].[CategoryId], [t].[Color], [t].[Count], [t].[CreatedDate], [t].[DataStatus], [t].[Description], [t].[Gender], [t].[Model], [t].[ModifiedDate], [t].[Price], [t].[Rating], [t].[Size], [t0].[Id], [t0].[CartId], [t0].[CreatedDate], [t0].[DataStatus], [t0].[ItemsCount], [t0].[ModifiedDate], [t0].[Price], [t0].[ShoeId], [t0].[Id0], [t0].[ApplicationUserId], [t0].[CreatedDate0], [t0].[DataStatus0], [t0].[ItemsCount0], [t0].[ModifiedDate0], [t0].[TotalPrice]
+FROM (
+    SELECT TOP(1) [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size]
+    FROM [Shoes] AS [s]
+    WHERE [s].[Id] = @__existingShoe_Id_0
+) AS [t]
+LEFT JOIN (
+    SELECT [c].[Id], [c].[CartId], [c].[CreatedDate], [c].[DataStatus], [c].[ItemsCount], [c].[ModifiedDate], [c].[Price], [c].[ShoeId], [c0].[Id] AS [Id0], [c0].[ApplicationUserId], [c0].[CreatedDate] AS [CreatedDate0], [c0].[DataStatus] AS [DataStatus0], [c0].[ItemsCount] AS [ItemsCount0], [c0].[ModifiedDate] AS [ModifiedDate0], [c0].[TotalPrice]
+    FROM [CartItems] AS [c]
+    INNER JOIN [Carts] AS [c0] ON [c].[CartId] = [c0].[Id]
+) AS [t0] ON [t].[Id] = [t0].[ShoeId]
+ORDER BY [t].[Id], [t0].[Id]
+2023-08-19 20:30:13.318 +04:00 [INF] Executed DbCommand (2ms) [Parameters=[@__item_Id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [c].[Price]
+FROM [CartItems] AS [c]
+WHERE [c].[Id] = @__item_Id_0
+2023-08-19 20:34:46.958 +04:00 [INF] User profile is available. Using 'C:\Users\Admino\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-08-19 20:34:47.196 +04:00 [INF] Now listening on: https://localhost:7249
+2023-08-19 20:34:47.197 +04:00 [INF] Now listening on: http://localhost:5161
+2023-08-19 20:34:47.214 +04:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-08-19 20:34:47.215 +04:00 [INF] Hosting environment: Development
+2023-08-19 20:34:47.215 +04:00 [INF] Content root path: C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api
+2023-08-19 20:34:48.370 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/swagger/index.html - -
+2023-08-19 20:34:48.638 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/_framework/aspnetcore-browser-refresh.js - -
+2023-08-19 20:34:48.638 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/_vs/browserLink - -
+2023-08-19 20:34:48.644 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/swagger/index.html - - - 200 - text/html;charset=utf-8 273.8602ms
+2023-08-19 20:34:48.682 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/_framework/aspnetcore-browser-refresh.js - - - 200 12002 application/javascript;+charset=utf-8 43.9484ms
+2023-08-19 20:34:48.732 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 93.8806ms
+2023-08-19 20:34:48.830 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/swagger/v2/swagger.json - -
+2023-08-19 20:34:49.065 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/swagger/v2/swagger.json - - - 200 - application/json;charset=utf-8 235.3693ms
+2023-08-19 20:34:52.734 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/swagger/v1/swagger.json - -
+2023-08-19 20:34:52.800 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 66.4412ms
+2023-08-19 20:35:02.534 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/api/v1/Shoe/31 - -
+2023-08-19 20:35:02.830 +04:00 [INF] Executing endpoint 'DigitalShoes.Api.Controllers.v1.ShoeController.GetMyProductByIdAsync (DigitalShoes.Api)'
+2023-08-19 20:35:02.863 +04:00 [INF] Route matched with {action = "GetMyProductById", controller = "Shoe"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[DigitalShoes.Domain.DTOs.ApiResponse]] GetMyProductByIdAsync(System.Nullable`1[System.Int32]) on controller DigitalShoes.Api.Controllers.v1.ShoeController (DigitalShoes.Api).
+2023-08-19 20:35:04.487 +04:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2023-08-19 20:35:05.649 +04:00 [INF] Executed DbCommand (41ms) [Parameters=[@__username_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[AccessFailedCount], [t].[Balance], [t].[ConcurrencyStamp], [t].[Email], [t].[EmailConfirmed], [t].[LockoutEnabled], [t].[LockoutEnd], [t].[Name], [t].[NormalizedEmail], [t].[NormalizedUserName], [t].[PasswordHash], [t].[PhoneNumber], [t].[PhoneNumberConfirmed], [t].[ProfileImageLocalPath], [t].[ProfileImageUrl], [t].[SecurityStamp], [t].[TwoFactorEnabled], [t].[UserName], [t0].[Id], [t0].[ApplicationUserId], [t0].[Brand], [t0].[CategoryId], [t0].[Color], [t0].[Count], [t0].[CreatedDate], [t0].[DataStatus], [t0].[Description], [t0].[Gender], [t0].[Model], [t0].[ModifiedDate], [t0].[Price], [t0].[Rating], [t0].[Size], [t0].[Id0], [t0].[CreatedDate0], [t0].[DataStatus0], [t0].[ImageLocalPath], [t0].[ImageUrl], [t0].[ModifiedDate0], [t0].[ShoeId], [t0].[ShoeId0], [t0].[HashtagId], [t0].[CreatedDate1], [t0].[DataStatus1], [t0].[ModifiedDate1], [t0].[Id1], [t0].[CreatedDate00], [t0].[DataStatus00], [t0].[ModifiedDate00], [t0].[Text]
+FROM (
+    SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[Balance], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[Name], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[ProfileImageLocalPath], [a].[ProfileImageUrl], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+    FROM [AspNetUsers] AS [a]
+    WHERE [a].[UserName] = @__username_0
+) AS [t]
+LEFT JOIN (
+    SELECT [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size], [i].[Id] AS [Id0], [i].[CreatedDate] AS [CreatedDate0], [i].[DataStatus] AS [DataStatus0], [i].[ImageLocalPath], [i].[ImageUrl], [i].[ModifiedDate] AS [ModifiedDate0], [i].[ShoeId], [t1].[ShoeId] AS [ShoeId0], [t1].[HashtagId], [t1].[CreatedDate] AS [CreatedDate1], [t1].[DataStatus] AS [DataStatus1], [t1].[ModifiedDate] AS [ModifiedDate1], [t1].[Id] AS [Id1], [t1].[CreatedDate0] AS [CreatedDate00], [t1].[DataStatus0] AS [DataStatus00], [t1].[ModifiedDate0] AS [ModifiedDate00], [t1].[Text]
+    FROM [Shoes] AS [s]
+    LEFT JOIN [Images] AS [i] ON [s].[Id] = [i].[ShoeId]
+    LEFT JOIN (
+        SELECT [s0].[ShoeId], [s0].[HashtagId], [s0].[CreatedDate], [s0].[DataStatus], [s0].[ModifiedDate], [h].[Id], [h].[CreatedDate] AS [CreatedDate0], [h].[DataStatus] AS [DataStatus0], [h].[ModifiedDate] AS [ModifiedDate0], [h].[Text]
+        FROM [ShoeHashtags] AS [s0]
+        INNER JOIN [Hashtags] AS [h] ON [s0].[HashtagId] = [h].[Id]
+    ) AS [t1] ON [s].[Id] = [t1].[ShoeId]
+) AS [t0] ON [t].[Id] = [t0].[ApplicationUserId]
+ORDER BY [t].[Id], [t0].[Id], [t0].[Id0], [t0].[ShoeId0], [t0].[HashtagId]
+2023-08-19 20:35:05.911 +04:00 [INF] Executing ObjectResult, writing value of type 'DigitalShoes.Domain.DTOs.ApiResponse'.
+2023-08-19 20:35:05.944 +04:00 [INF] Executed action DigitalShoes.Api.Controllers.v1.ShoeController.GetMyProductByIdAsync (DigitalShoes.Api) in 3076.647ms
+2023-08-19 20:35:05.945 +04:00 [INF] Executed endpoint 'DigitalShoes.Api.Controllers.v1.ShoeController.GetMyProductByIdAsync (DigitalShoes.Api)'
+2023-08-19 20:35:05.947 +04:00 [INF] HTTP GET /api/v1/Shoe/31 responded 200 in 3118.5981 ms
+2023-08-19 20:35:05.957 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/api/v1/Shoe/31 - - - 200 - application/json;+charset=utf-8 3423.1194ms
+2023-08-19 20:35:50.099 +04:00 [INF] Request starting HTTP/2 GET https://localhost:7249/api/v1/SearchShoe/GetAllWithPagination - -
+2023-08-19 20:35:50.116 +04:00 [INF] Executing endpoint 'DigitalShoes.Api.Controllers.v1.SearchShoeController.GetAllWithPaginationAsync (DigitalShoes.Api)'
+2023-08-19 20:35:50.125 +04:00 [INF] Route matched with {action = "GetAllWithPagination", controller = "SearchShoe"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[DigitalShoes.Domain.DTOs.ApiResponse]] GetAllWithPaginationAsync(DigitalShoes.Domain.DTOs.SearchDTOs.GetAllWithPaginationRequestDTO) on controller DigitalShoes.Api.Controllers.v1.SearchShoeController (DigitalShoes.Api).
+2023-08-19 20:35:50.232 +04:00 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size], [t].[ShoeId], [t].[HashtagId], [t].[CreatedDate], [t].[DataStatus], [t].[ModifiedDate], [t].[Id], [t].[CreatedDate0], [t].[DataStatus0], [t].[ModifiedDate0], [t].[Text]
+FROM [Shoes] AS [s]
+LEFT JOIN (
+    SELECT [s0].[ShoeId], [s0].[HashtagId], [s0].[CreatedDate], [s0].[DataStatus], [s0].[ModifiedDate], [h].[Id], [h].[CreatedDate] AS [CreatedDate0], [h].[DataStatus] AS [DataStatus0], [h].[ModifiedDate] AS [ModifiedDate0], [h].[Text]
+    FROM [ShoeHashtags] AS [s0]
+    INNER JOIN [Hashtags] AS [h] ON [s0].[HashtagId] = [h].[Id]
+) AS [t] ON [s].[Id] = [t].[ShoeId]
+ORDER BY [s].[Id], [t].[ShoeId], [t].[HashtagId]
+2023-08-19 20:35:50.306 +04:00 [INF] Executing ObjectResult, writing value of type 'DigitalShoes.Domain.DTOs.ApiResponse'.
+2023-08-19 20:35:50.306 +04:00 [INF] Executed action DigitalShoes.Api.Controllers.v1.SearchShoeController.GetAllWithPaginationAsync (DigitalShoes.Api) in 181.0883ms
+2023-08-19 20:35:50.306 +04:00 [INF] Executed endpoint 'DigitalShoes.Api.Controllers.v1.SearchShoeController.GetAllWithPaginationAsync (DigitalShoes.Api)'
+2023-08-19 20:35:50.307 +04:00 [INF] HTTP GET /api/v1/SearchShoe/GetAllWithPagination responded 200 in 190.5976 ms
+2023-08-19 20:35:50.307 +04:00 [INF] Request finished HTTP/2 GET https://localhost:7249/api/v1/SearchShoe/GetAllWithPagination - - - 200 - application/json;+charset=utf-8 207.9180ms
+2023-08-19 20:36:49.018 +04:00 [INF] Request starting HTTP/2 PUT https://localhost:7249/api/v1/Shoe/31 application/json 197
+2023-08-19 20:36:49.034 +04:00 [INF] Executing endpoint 'DigitalShoes.Api.Controllers.v1.ShoeController.UpdateShoeAsync (DigitalShoes.Api)'
+2023-08-19 20:36:49.039 +04:00 [INF] Route matched with {action = "UpdateShoe", controller = "Shoe"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] UpdateShoeAsync(System.Nullable`1[System.Int32], DigitalShoes.Domain.DTOs.ShoeDTOs.ShoeUpdateDTO) on controller DigitalShoes.Api.Controllers.v1.ShoeController (DigitalShoes.Api).
+2023-08-19 20:37:00.830 +04:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2023-08-19 20:37:00.874 +04:00 [INF] Executed DbCommand (38ms) [Parameters=[@__username_0='?' (Size = 256)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[AccessFailedCount], [t].[Balance], [t].[ConcurrencyStamp], [t].[Email], [t].[EmailConfirmed], [t].[LockoutEnabled], [t].[LockoutEnd], [t].[Name], [t].[NormalizedEmail], [t].[NormalizedUserName], [t].[PasswordHash], [t].[PhoneNumber], [t].[PhoneNumberConfirmed], [t].[ProfileImageLocalPath], [t].[ProfileImageUrl], [t].[SecurityStamp], [t].[TwoFactorEnabled], [t].[UserName], [t0].[Id], [t0].[ApplicationUserId], [t0].[Brand], [t0].[CategoryId], [t0].[Color], [t0].[Count], [t0].[CreatedDate], [t0].[DataStatus], [t0].[Description], [t0].[Gender], [t0].[Model], [t0].[ModifiedDate], [t0].[Price], [t0].[Rating], [t0].[Size], [t0].[ShoeId], [t0].[HashtagId], [t0].[CreatedDate0], [t0].[DataStatus0], [t0].[ModifiedDate0], [t0].[Id0], [t0].[CreatedDate00], [t0].[DataStatus00], [t0].[ModifiedDate00], [t0].[Text]
+FROM (
+    SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[Balance], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[Name], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[ProfileImageLocalPath], [a].[ProfileImageUrl], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+    FROM [AspNetUsers] AS [a]
+    WHERE [a].[UserName] = @__username_0
+) AS [t]
+LEFT JOIN (
+    SELECT [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size], [t1].[ShoeId], [t1].[HashtagId], [t1].[CreatedDate] AS [CreatedDate0], [t1].[DataStatus] AS [DataStatus0], [t1].[ModifiedDate] AS [ModifiedDate0], [t1].[Id] AS [Id0], [t1].[CreatedDate0] AS [CreatedDate00], [t1].[DataStatus0] AS [DataStatus00], [t1].[ModifiedDate0] AS [ModifiedDate00], [t1].[Text]
+    FROM [Shoes] AS [s]
+    LEFT JOIN (
+        SELECT [s0].[ShoeId], [s0].[HashtagId], [s0].[CreatedDate], [s0].[DataStatus], [s0].[ModifiedDate], [h].[Id], [h].[CreatedDate] AS [CreatedDate0], [h].[DataStatus] AS [DataStatus0], [h].[ModifiedDate] AS [ModifiedDate0], [h].[Text]
+        FROM [ShoeHashtags] AS [s0]
+        INNER JOIN [Hashtags] AS [h] ON [s0].[HashtagId] = [h].[Id]
+    ) AS [t1] ON [s].[Id] = [t1].[ShoeId]
+) AS [t0] ON [t].[Id] = [t0].[ApplicationUserId]
+ORDER BY [t].[Id], [t0].[Id], [t0].[ShoeId], [t0].[HashtagId]
+2023-08-19 20:37:08.067 +04:00 [INF] Executed DbCommand (3ms) [Parameters=[@__shoeUpdateDTO_CTName_0='?' (Size = 60)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [c].[Id], [c].[CreatedDate], [c].[DataStatus], [c].[ModifiedDate], [c].[Name]
+FROM [Categories] AS [c]
+WHERE [c].[Name] = @__shoeUpdateDTO_CTName_0
+2023-08-19 20:37:12.055 +04:00 [WRN] Savepoints are disabled because Multiple Active Result Sets (MARS) is enabled. If 'SaveChanges' fails, then the transaction cannot be automatically rolled back to a known clean state. Instead, the transaction should be rolled back by the application before retrying 'SaveChanges'. See https://go.microsoft.com/fwlink/?linkid=2149338 for more information and examples. To identify the code which triggers this warning, call 'ConfigureWarnings(w => w.Throw(SqlServerEventId.SavepointsDisabledBecauseOfMARS))'.
+2023-08-19 20:37:12.073 +04:00 [INF] Executed DbCommand (10ms) [Parameters=[@p14='?' (DbType = Int32), @p0='?' (DbType = Int32), @p1='?' (Size = 40), @p2='?' (DbType = Int32), @p3='?' (DbType = Int32), @p4='?' (DbType = Int32), @p5='?' (DbType = DateTime2), @p6='?' (DbType = Int32), @p7='?' (Size = 200), @p8='?' (DbType = Int32), @p9='?' (Size = 40), @p10='?' (DbType = DateTime2), @p11='?' (Precision = 6) (Scale = 2) (DbType = Decimal), @p12='?' (DbType = Int32), @p13='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+UPDATE [Shoes] SET [ApplicationUserId] = @p0, [Brand] = @p1, [CategoryId] = @p2, [Color] = @p3, [Count] = @p4, [CreatedDate] = @p5, [DataStatus] = @p6, [Description] = @p7, [Gender] = @p8, [Model] = @p9, [ModifiedDate] = @p10, [Price] = @p11, [Rating] = @p12, [Size] = @p13
+OUTPUT 1
+WHERE [Id] = @p14;
+2023-08-19 20:37:13.394 +04:00 [INF] Executed DbCommand (40ms) [Parameters=[@__existingShoe_Id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[ApplicationUserId], [t].[Brand], [t].[CategoryId], [t].[Color], [t].[Count], [t].[CreatedDate], [t].[DataStatus], [t].[Description], [t].[Gender], [t].[Model], [t].[ModifiedDate], [t].[Price], [t].[Rating], [t].[Size], [t0].[Id], [t0].[CartId], [t0].[CreatedDate], [t0].[DataStatus], [t0].[ItemsCount], [t0].[ModifiedDate], [t0].[Price], [t0].[ShoeId], [t0].[Id0], [t0].[ApplicationUserId], [t0].[CreatedDate0], [t0].[DataStatus0], [t0].[ItemsCount0], [t0].[ModifiedDate0], [t0].[TotalPrice]
+FROM (
+    SELECT TOP(1) [s].[Id], [s].[ApplicationUserId], [s].[Brand], [s].[CategoryId], [s].[Color], [s].[Count], [s].[CreatedDate], [s].[DataStatus], [s].[Description], [s].[Gender], [s].[Model], [s].[ModifiedDate], [s].[Price], [s].[Rating], [s].[Size]
+    FROM [Shoes] AS [s]
+    WHERE [s].[Id] = @__existingShoe_Id_0
+) AS [t]
+LEFT JOIN (
+    SELECT [c].[Id], [c].[CartId], [c].[CreatedDate], [c].[DataStatus], [c].[ItemsCount], [c].[ModifiedDate], [c].[Price], [c].[ShoeId], [c0].[Id] AS [Id0], [c0].[ApplicationUserId], [c0].[CreatedDate] AS [CreatedDate0], [c0].[DataStatus] AS [DataStatus0], [c0].[ItemsCount] AS [ItemsCount0], [c0].[ModifiedDate] AS [ModifiedDate0], [c0].[TotalPrice]
+    FROM [CartItems] AS [c]
+    INNER JOIN [Carts] AS [c0] ON [c].[CartId] = [c0].[Id]
+) AS [t0] ON [t].[Id] = [t0].[ShoeId]
+ORDER BY [t].[Id], [t0].[Id]
+2023-08-19 20:37:21.910 +04:00 [WRN] Savepoints are disabled because Multiple Active Result Sets (MARS) is enabled. If 'SaveChanges' fails, then the transaction cannot be automatically rolled back to a known clean state. Instead, the transaction should be rolled back by the application before retrying 'SaveChanges'. See https://go.microsoft.com/fwlink/?linkid=2149338 for more information and examples. To identify the code which triggers this warning, call 'ConfigureWarnings(w => w.Throw(SqlServerEventId.SavepointsDisabledBecauseOfMARS))'.
+2023-08-19 20:37:21.914 +04:00 [INF] Executed DbCommand (4ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (Precision = 6) (Scale = 2) (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+UPDATE [CartItems] SET [Price] = @p0
+OUTPUT 1
+WHERE [Id] = @p1;
+2023-08-19 20:37:23.671 +04:00 [INF] Executed DbCommand (2ms) [Parameters=[@__item_Id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [c].[Price]
+FROM [CartItems] AS [c]
+WHERE [c].[Id] = @__item_Id_0
+2023-08-19 20:37:27.154 +04:00 [INF] Executed DbCommand (3ms) [Parameters=[@__item_CartId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [c].[Id], [c].[ApplicationUserId], [c].[CreatedDate], [c].[DataStatus], [c].[ItemsCount], [c].[ModifiedDate], [c].[TotalPrice]
+FROM [Carts] AS [c]
+WHERE [c].[Id] = @__item_CartId_0
+2023-08-19 20:37:28.424 +04:00 [INF] Executed DbCommand (4ms) [Parameters=[@__cart_Id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT COALESCE(SUM([c].[Price]), 0.0)
+FROM [CartItems] AS [c]
+WHERE [c].[CartId] = @__cart_Id_0
+2023-08-19 20:37:29.066 +04:00 [WRN] Savepoints are disabled because Multiple Active Result Sets (MARS) is enabled. If 'SaveChanges' fails, then the transaction cannot be automatically rolled back to a known clean state. Instead, the transaction should be rolled back by the application before retrying 'SaveChanges'. See https://go.microsoft.com/fwlink/?linkid=2149338 for more information and examples. To identify the code which triggers this warning, call 'ConfigureWarnings(w => w.Throw(SqlServerEventId.SavepointsDisabledBecauseOfMARS))'.
+2023-08-19 20:37:29.072 +04:00 [INF] Executed DbCommand (5ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (Precision = 6) (Scale = 2) (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+UPDATE [Carts] SET [TotalPrice] = @p0
+OUTPUT 1
+WHERE [Id] = @p1;
+2023-08-19 20:37:29.831 +04:00 [INF] Executed DbCommand (2ms) [Parameters=[@__item_CartId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [c].[TotalPrice]
+FROM [Carts] AS [c]
+WHERE [c].[Id] = @__item_CartId_0
+2023-08-19 20:37:39.632 +04:00 [INF] Executing StatusCodeResult, setting HTTP status code 204
+2023-08-19 20:37:39.632 +04:00 [INF] Executed action DigitalShoes.Api.Controllers.v1.ShoeController.UpdateShoeAsync (DigitalShoes.Api) in 50592.4572ms
+2023-08-19 20:37:39.632 +04:00 [INF] Executed endpoint 'DigitalShoes.Api.Controllers.v1.ShoeController.UpdateShoeAsync (DigitalShoes.Api)'
+2023-08-19 20:37:39.632 +04:00 [INF] HTTP PUT /api/v1/Shoe/31 responded 204 in 50598.0236 ms
+2023-08-19 20:37:39.633 +04:00 [INF] Request finished HTTP/2 PUT https://localhost:7249/api/v1/Shoe/31 application/json 197 - 204 - - 50614.2073ms

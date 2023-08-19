@@ -11,7 +11,6 @@ namespace DigitalShoes.Service.Abstractions
         Task<ApiResponse> UpdateAsync(int? id, ShoeUpdateDTO shoeUpdateDTO, HttpContext httpContext);
         Task<ApiResponse> GetAllAsync(HttpContext httpContext);
         Task<ApiResponse> GetByIdAsync(int? id, HttpContext httpContext);
-        Task<ApiResponse> DeleteProductByIdAsync(int? id, HttpContext httpContext); 
-        Task<ApiResponse> SearchByHashtagAsync(string? hashtag);
+        Task<ApiResponse> DeleteProductByIdAsync(int? id, HttpContext httpContext);         
     }
 }

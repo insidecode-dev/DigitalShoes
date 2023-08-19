@@ -13,15 +13,16 @@ using DigitalShoes.Domain.FluentValidators;
 using DigitalShoes.Domain.Entities;
 using DigitalShoes.Dal.Context;
 using DigitalShoes.Domain.DTOs.HashtagDtos;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace DigitalShoes.Service
 {
     public class ShoeService : IShoeService
     {
-        private readonly ApplicationDbContext _dbContext;        
+        private readonly ApplicationDbContext _dbContext;
         //
         private readonly IMapper _mapper;
-        protected ApiResponse _apiResponse;        
+        protected ApiResponse _apiResponse;
         //
         private readonly UserManager<ApplicationUser> _userManager;
 
@@ -35,6 +36,7 @@ namespace DigitalShoes.Service
 
         public async Task<ApiResponse> CreateAsync(ShoeCreateDTO shoeCreateDTO, HttpContext httpContext)
         {
+            IDbContextTransaction _dbContextTransaction = await _dbContext.Database.BeginTransactionAsync();
             try
             {
                 ValidationResult shoeCreateDTOValidationResult = new ShoeCreateDTOValidator().Validate(shoeCreateDTO);
@@ -102,20 +104,21 @@ namespace DigitalShoes.Service
                     return _apiResponse;
                 }
 
-                // shoe                
+                // adding shoe                
                 var shoe = _mapper.Map<Shoe>(shoeCreateDTO);
                 shoe.Gender = gender;
                 shoe.Color = color;
                 shoe.ApplicationUserId = user.Id;
                 shoe.CategoryId = category.Id;
 
-                
                 await _dbContext.Shoes.AddAsync(shoe);
                 await _dbContext.SaveChangesAsync();
 
-                var shoeInDb = user.Shoes.Where(sh => sh.Brand == shoeCreateDTO.Brand && sh.Model == shoeCreateDTO.Model).FirstOrDefault(); // check
+                // checking if shoe added to database
+                var shoeInDb = user.Shoes.Where(sh => sh.Brand == shoeCreateDTO.Brand && sh.Model == shoeCreateDTO.Model).FirstOrDefault(); 
                 if (shoeInDb == null)
                 {
+                    await _dbContextTransaction.RollbackAsync();
                     _apiResponse.IsSuccess = false;
                     _apiResponse.ErrorMessages.Add($"{shoeCreateDTO.Model} shoe was not created");
                     _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
@@ -134,6 +137,7 @@ namespace DigitalShoes.Service
                             ValidationResult hashtagResult = new HashtagValidator().Validate(hashTagCreated);
                             if (!hashtagResult.IsValid)
                             {
+                                await _dbContextTransaction.RollbackAsync();
                                 _apiResponse.IsSuccess = false;
                                 _apiResponse.StatusCode = HttpStatusCode.BadRequest;
                                 foreach (var error in hashtagResult.Errors)
@@ -143,29 +147,34 @@ namespace DigitalShoes.Service
                                 return _apiResponse;
                             }
 
-                            
+                            // adding hashtag
                             await _dbContext.Hashtags.AddAsync(hashTagCreated);
-                            await _dbContext.SaveChangesAsync();    
+                            await _dbContext.SaveChangesAsync();
 
+                            // checking if hashtag added
                             var hashtagInDb = await _dbContext.Hashtags.Where(x => x.Text == item.Text).FirstOrDefaultAsync();
                             if (hashtagInDb is null)
                             {
+                                await _dbContextTransaction.RollbackAsync();
                                 _apiResponse.IsSuccess = false;
                                 _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
                                 _apiResponse.ErrorMessages.Add($"{item.Text} hashtag could not be created");
                                 return _apiResponse;
                             }
 
-                            // shoeHashtag
+                            // adding shoehashtag
                             await _dbContext.ShoeHashtags.AddAsync(new ShoeHashtag
                             {
                                 HashtagId = hashTagCreated.Id,
                                 ShoeId = shoe.Id
                             });
                             await _dbContext.SaveChangesAsync();
+
+                            // checking if shoehashtag added
                             var shoeHashtagInDb = await _dbContext.ShoeHashtags.Where(x => x.HashtagId == hashTagCreated.Id && x.ShoeId == shoe.Id).FirstOrDefaultAsync();
                             if (shoeHashtagInDb is null)
                             {
+                                await _dbContextTransaction.RollbackAsync();
                                 _apiResponse.IsSuccess = false;
                                 _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
                                 _apiResponse.ErrorMessages.Add($"{item.Text} hashtag for {shoe.Model} shoe could not be created in shoeHashtag");
@@ -174,7 +183,7 @@ namespace DigitalShoes.Service
                         }
                         else
                         {
-                            // shoehashtag
+                            // adding shoehashtag
                             await _dbContext.ShoeHashtags.AddAsync(new ShoeHashtag
                             {
                                 HashtagId = hashTag.Id,
@@ -182,9 +191,11 @@ namespace DigitalShoes.Service
                             });
                             await _dbContext.SaveChangesAsync();
 
+                            // checking if shoehashtag added
                             var shoeHashtagInDb = await _dbContext.ShoeHashtags.Where(x => x.HashtagId == hashTag.Id && x.ShoeId == shoe.Id).FirstOrDefaultAsync();
                             if (shoeHashtagInDb is null)
                             {
+                                await _dbContextTransaction.RollbackAsync();
                                 _apiResponse.IsSuccess = false;
                                 _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
                                 _apiResponse.ErrorMessages.Add($"{item.Text} hashtag for {shoe.Model} shoe could not be created in shoeHashtag");
@@ -202,6 +213,7 @@ namespace DigitalShoes.Service
             }
             catch (Exception ex)
             {
+                await _dbContextTransaction.RollbackAsync();
                 _apiResponse.IsSuccess = false;
                 _apiResponse.ErrorMessages.Add(ex.Message);
                 _apiResponse.StatusCode = HttpStatusCode.BadRequest;
@@ -212,6 +224,7 @@ namespace DigitalShoes.Service
 
         public async Task<ApiResponse> UpdateAsync(int? id, ShoeUpdateDTO shoeUpdateDTO, HttpContext httpContext)
         {
+            IDbContextTransaction _dbContextTransaction = await _dbContext.Database.BeginTransactionAsync();
             try
             {
                 if (id == null)
@@ -233,8 +246,8 @@ namespace DigitalShoes.Service
                 var user = await _userManager
                     .Users
                     .Include(u => u.Shoes)
-                    .ThenInclude(sh=>sh.ShoeHashtags)
-                    .ThenInclude(h=>h.Hashtag)
+                    .ThenInclude(sh => sh.ShoeHashtags)
+                    .ThenInclude(h => h.Hashtag)
                     .FirstOrDefaultAsync(u => u.UserName == username);
 
                 var existingShoe = user.Shoes.Where(sh => sh.Id == id).FirstOrDefault();
@@ -242,7 +255,7 @@ namespace DigitalShoes.Service
                 {
                     _apiResponse.IsSuccess = false;
                     _apiResponse.ErrorMessages.Add($"You don't have any product with {id} id");
-                    _apiResponse.StatusCode = HttpStatusCode.NotFound;                    
+                    _apiResponse.StatusCode = HttpStatusCode.NotFound;
                     return _apiResponse;
                 }
 
@@ -254,11 +267,11 @@ namespace DigitalShoes.Service
                     foreach (var error in shoeUpdateDTOValidationResult.Errors)
                     {
                         _apiResponse.ErrorMessages.Add(error.ErrorMessage);
-                    }                    
+                    }
                     return _apiResponse;
                 }
 
-                var ifSameExists = user.Shoes.Where(sh => sh.Brand == shoeUpdateDTO.Brand && sh.Model == shoeUpdateDTO.Model && sh.Id!=id).FirstOrDefault();
+                var ifSameExists = user.Shoes.Where(sh => sh.Brand == shoeUpdateDTO.Brand && sh.Model == shoeUpdateDTO.Model && sh.Id != id).FirstOrDefault();
                 if (ifSameExists != null)
                 {
                     _apiResponse.IsSuccess = false;
@@ -272,7 +285,7 @@ namespace DigitalShoes.Service
                 {
                     _apiResponse.IsSuccess = false;
                     _apiResponse.ErrorMessages.Add($"gender is not valid");
-                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;                    
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
                     return _apiResponse;
                 }
 
@@ -281,7 +294,7 @@ namespace DigitalShoes.Service
                 {
                     _apiResponse.IsSuccess = false;
                     _apiResponse.ErrorMessages.Add($"color is not valid");
-                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;                    
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
                     return _apiResponse;
                 }
 
@@ -295,6 +308,9 @@ namespace DigitalShoes.Service
                     return _apiResponse;
                 }
 
+                // getting shoe price before update
+                var price = existingShoe.Price;
+
                 // shoe                
                 _mapper.Map(shoeUpdateDTO, existingShoe);
                 existingShoe.Gender = gender;
@@ -303,34 +319,73 @@ namespace DigitalShoes.Service
                 existingShoe.CategoryId = category.Id;
 
                 _dbContext.Shoes.Update(existingShoe);
-                await _dbContext.SaveChangesAsync();
-                
+                var affectedRows = await _dbContext.SaveChangesAsync();
+                if (affectedRows == 0)
+                {
+                    await _dbContextTransaction.RollbackAsync();
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.ErrorMessages.Add($"operation is not successful");
+                    _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                    return _apiResponse;
+                }
 
+                // getting updated shoe
+                var updatedShoe = await _dbContext.Shoes.Where(x => x.Id == existingShoe.Id).Include(x=>x.CartItems).ThenInclude(x=>x.Cart).FirstOrDefaultAsync();
+                // checking if shoe price updated
+                if (price != updatedShoe.Price)
+                {
+                    foreach (var item in updatedShoe.CartItems)
+                    {
+                        // getting cartItem price before update
+                        var cartItemPrice = item.Price;
+                        // updating cartItem price
+                        item.Price = item.ItemsCount * updatedShoe.Price;
+                        //_dbContext.CartItems.Update(item); 
+                        await _dbContext.SaveChangesAsync();
+                        // getting updated cartItem price
+                        var updatedCartItemPrice = await _dbContext.CartItems.Where(x => x.Id == item.Id).Select(x=>x.Price).FirstOrDefaultAsync();
+                        // checking if cartItem price updated
+                        if (cartItemPrice == updatedCartItemPrice)
+                        {
+                            await _dbContextTransaction.RollbackAsync();
+                            _apiResponse.IsSuccess = false;
+                            _apiResponse.ErrorMessages.Add($"operation is not successful");
+                            _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                            return _apiResponse;
+                        }
 
-                var shoeDTO = _mapper.Map<ShoeGetDTO>(existingShoe);
+                        // getting cart of cartItem before update
+                        var cart = await _dbContext.Carts.Where(x => x.Id == item.CartId).FirstOrDefaultAsync();
+                        // getting cart TotalPrice of cartItem before update
+                        var cartTotalPrice = cart.TotalPrice;
+                        // updating cart TotalPrice of cartItem
+                        cart.TotalPrice = await _dbContext.CartItems.Where(x=>x.CartId==cart.Id).Select(x=>x.Price).SumAsync();
+                        //_dbContext.Carts.Update(cart);
+                        await _dbContext.SaveChangesAsync();
+                        // getting updated cart total price of cartItem
+                        var updatedCartTotalPrice = await _dbContext.Carts.Where(x => x.Id == item.CartId).Select(x=>x.TotalPrice).FirstOrDefaultAsync();
+                        // checking if cart total price of cartItem updated
+                        if (cartTotalPrice== updatedCartTotalPrice)
+                        {
+                            await _dbContextTransaction.RollbackAsync();
+                            _apiResponse.IsSuccess = false;
+                            _apiResponse.ErrorMessages.Add($"operation is not successful");
+                            _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                            return _apiResponse;
+                        }
+                    }
 
-                //var txt = new List<string>();
-                //foreach (var _id in existingShoe.ShoeHashtags.Select(x => x.HashtagId).ToList())
-                //{
-                //    txt.Add(_hashtagRepository.GetAsync(x => x.Id == _id).Result.Text.ToString());
-                //}
-
+                }
+                // transaction finished
+                _dbContextTransaction.Commit();
 
                 _apiResponse.IsSuccess = true;
-                _apiResponse.StatusCode = HttpStatusCode.OK;
-                _apiResponse.Result = shoeDTO;
+                _apiResponse.StatusCode = HttpStatusCode.NoContent;
                 return _apiResponse;
-
-
-
-                //var shoeGetDTO = _mapper.Map<ShoeGetDTO>(shoe);
-                //_apiResponse.IsSuccess = true;
-                //_apiResponse.StatusCode = HttpStatusCode.Created;
-                //_apiResponse.Result = shoeGetDTO;
-                //return _apiResponse;
             }
             catch (Exception ex)
             {
+                await _dbContextTransaction.RollbackAsync();
                 _apiResponse.IsSuccess = false;
                 _apiResponse.ErrorMessages.Add(ex.Message);
                 _apiResponse.StatusCode = HttpStatusCode.BadRequest;
@@ -474,16 +529,16 @@ namespace DigitalShoes.Service
                     return _apiResponse;
                 }
 
-                
+
                 _dbContext.Shoes.Remove(existingShoe);
                 await _dbContext.SaveChangesAsync();
-                
+
 
                 var ifDeleted = user.Shoes.Where(x => x.Id == id).FirstOrDefault();
                 if (ifDeleted == null)
                 {
                     _apiResponse.IsSuccess = true;
-                    _apiResponse.StatusCode = HttpStatusCode.NoContent;                    
+                    _apiResponse.StatusCode = HttpStatusCode.NoContent;
                     return _apiResponse;
                 }
 
@@ -502,47 +557,6 @@ namespace DigitalShoes.Service
             }
         }
 
-        public async Task<ApiResponse> SearchByHashtagAsync(string? hashtag)
-        {
-            try
-            {
-                if (hashtag is null)
-                {
-                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
-                    _apiResponse.ErrorMessages.Add("hashtag is null");
-                    _apiResponse.IsSuccess = false;
-                    return _apiResponse;
-                }
 
-                var existingHashtag = await _dbContext.Hashtags
-                    .Where(x=>x.Text==hashtag)
-                    .Include(x=>x.ShoeHashtags)
-                    .ThenInclude(x=>x.Shoe)
-                    .FirstOrDefaultAsync();
-
-                if (existingHashtag is null)
-                {
-                    _apiResponse.ErrorMessages.Add($"{hashtag} hashtag does not exist");
-                    _apiResponse.StatusCode= HttpStatusCode.NotFound;
-                    _apiResponse.IsSuccess= false;
-                    return _apiResponse;
-                }
-
-                var hashTag = _mapper.Map<HashtagGetDTO>(existingHashtag);
-                hashTag.ShoeGetDTO = _mapper.Map<List<ShoeGetDTO>>(existingHashtag.ShoeHashtags.Select(x => x.Shoe));
-
-                _apiResponse.IsSuccess = true;
-                _apiResponse.StatusCode = HttpStatusCode.OK;
-                _apiResponse.Result = hashTag;
-                return _apiResponse;
-            }
-            catch (Exception ex)
-            {
-                _apiResponse.ErrorMessages.Add(ex.Message.ToString());
-                _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
-                _apiResponse.IsSuccess = false;
-                return _apiResponse;
-            }
-        }
     }
 }

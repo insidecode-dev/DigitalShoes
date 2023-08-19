@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "x82szbzUB8f6fttbs4NTyTpIhbv6wE0Up32JQhYhlRQ=",
+  "Hash": "NFHIH+FmG03SbdhukoW1hHXpUeh1wceFjIRNFLexl+s=",
   "Source": "DigitalShoes.Api",
   "BasePath": "_content/DigitalShoes.Api",
   "Mode": "Default",
@@ -83,6 +83,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\ProductImage\\insidecode_buyProducts\\9797733a-f6a6-4489-9f64-0671ac398599.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\Admino\\source\\repos\\DigitalShoes\\DigitalShoes.Api\\wwwroot\\ProductImage\\insidecode_buyProducts\\bbf92700-7a58-477b-bd53-10208cdfbb67.jpg",
+      "SourceId": "DigitalShoes.Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Admino\\source\\repos\\DigitalShoes\\DigitalShoes.Api\\wwwroot\\",
+      "BasePath": "_content/DigitalShoes.Api",
+      "RelativePath": "ProductImage/insidecode_buyProducts/bbf92700-7a58-477b-bd53-10208cdfbb67.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\ProductImage\\insidecode_buyProducts\\bbf92700-7a58-477b-bd53-10208cdfbb67.jpg"
     },
     {
       "Identity": "C:\\Users\\Admino\\source\\repos\\DigitalShoes\\DigitalShoes.Api\\wwwroot\\ProductImage\\insidecode_buyProducts\\caeaafa1-1d2e-4903-a8e9-7d3a34d4b798.jpg",

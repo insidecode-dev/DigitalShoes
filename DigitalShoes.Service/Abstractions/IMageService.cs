@@ -14,6 +14,8 @@ namespace DigitalShoes.Service.Abstractions
     public interface IMageService
     {        
         Task<ApiResponse> CreateAsync(ImageCreateDTO imageCreateDTO, HttpContext httpContext);
-        Task<ApiResponse> DeleteAsync(ImageDeleteDTO imageDeleteDTO, HttpContext httpContext);
+        Task<ApiResponse> DeleteAsync(ImageDeleteDTO imageDeleteDTO, HttpContext httpContext); 
+        Task<ApiResponse> GetAllShoeImagesAsync(HttpContext httpContext);  
+        Task<ApiResponse> GetImageByShoeIdAsync(int? id, HttpContext httpContext);  
     }
 }

@@ -11,5 +11,7 @@ namespace DigitalShoes.Service.Abstractions
         Task<ApiResponse> AddToCartAsync(List<CartItemCreateDTO> cartItemCreateDTO, HttpContext httpContext); 
         Task<ApiResponse> MyCartItemsAsync(HttpContext httpContext); 
         Task<ApiResponse> UpdateCartItemCountAsync(int? id, CartItemUpdateDTO cartItemUpdateDTO, HttpContext httpContext); 
+        Task<ApiResponse> MyCartItemAsync(int? id, HttpContext httpContext); 
+        Task<ApiResponse> RemoveCartItemAsync(int? id, HttpContext httpContext); //
     }
 }

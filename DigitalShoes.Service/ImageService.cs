@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Security.Claims;
 
+
 namespace DigitalShoes.Service
 {
     public class ImageService : IMageService
@@ -215,6 +216,85 @@ namespace DigitalShoes.Service
                 _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
                 _apiResponse.ErrorMessages.Add($"your image that id was {imageDeleteDTO.ImageId} of shoe that id is {imageDeleteDTO.ShoeId} was not deleted");
                 return _apiResponse;
+            }
+            catch (Exception ex)
+            {
+                _apiResponse.IsSuccess = false;
+                _apiResponse.ErrorMessages.Add(ex.Message);
+                _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                _apiResponse.Result = ex;
+                return _apiResponse;
+            }
+        }
+
+        public async Task<ApiResponse> GetAllShoeImagesAsync(HttpContext httpContext)
+        {
+            try
+            {
+                var username = httpContext
+               .User
+               .Identities
+               .FirstOrDefault(identity => identity.Claims.Any(claim => claim.Type == ClaimTypes.Name))?
+               .Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?
+               .Value;
+
+                var user = await _userManager
+                .Users
+                .Include(x => x.Shoes)
+                .ThenInclude(x=>x.Images)                
+                .FirstOrDefaultAsync(u => u.UserName == username);
+
+                var images = user.Shoes.SelectMany(x=>x.Images).ToList();
+                var imagesDTO = _mapper.Map<List<ImageDTO>>(images);
+
+                _apiResponse.IsSuccess = true;
+                _apiResponse.StatusCode=HttpStatusCode.OK;
+                _apiResponse.Result=imagesDTO;
+                return _apiResponse;
+            }
+            catch (Exception ex)
+            {
+                _apiResponse.IsSuccess = false;
+                _apiResponse.ErrorMessages.Add(ex.Message);
+                _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                _apiResponse.Result = ex;
+                return _apiResponse;
+            }
+        }
+
+        public async Task<ApiResponse> GetImageByShoeIdAsync(int? id, HttpContext httpContext)
+        {
+            try
+            {
+                if (id == null)
+                {
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.ErrorMessages.Add($"id is null");
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    return _apiResponse;
+                }
+
+                string username = httpContext
+                .User
+                .Identities
+                .FirstOrDefault(identity => identity.Claims.Any(claim => claim.Type == ClaimTypes.Name))?
+                .Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?
+                .Value;
+
+                var user = await _userManager
+                    .Users
+                    .Include(u => u.Shoes)
+                    .ThenInclude(ci => ci.Images)
+                    .FirstOrDefaultAsync(u => u.UserName == username);
+
+                var image = user.Shoes.Where(x => x.Id == id).SelectMany(x => x.Images).ToList();
+                var imageDTO = _mapper.Map<List<ImageDTO>>(image);
+
+                _apiResponse.IsSuccess = true;
+                _apiResponse.StatusCode = HttpStatusCode.OK;
+                _apiResponse.Result = imageDTO;
+                return _apiResponse;
+
             }
             catch (Exception ex)
             {
