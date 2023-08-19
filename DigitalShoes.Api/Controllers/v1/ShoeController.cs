@@ -56,7 +56,11 @@ namespace DigitalShoes.Api.Controllers.v1
         [HttpPut("{id:int}", Name ="UpdateShoe")]
         public async Task<IActionResult> UpdateShoeAsync([FromRoute] int? id, [FromBody] ShoeUpdateDTO shoeUpdateDTO)
         {   
-            var shoe = await _shoeService.UpdateAsync(id, shoeUpdateDTO, _httpContextAccessor.HttpContext);         
+            var shoe = await _shoeService.UpdateAsync(id, shoeUpdateDTO, _httpContextAccessor.HttpContext);
+            if (shoe.IsSuccess)
+            {
+                return StatusCode((int)shoe.StatusCode);
+            }
             return StatusCode((int)shoe.StatusCode, shoe);
         }
 

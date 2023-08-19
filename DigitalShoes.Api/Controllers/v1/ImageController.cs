@@ -24,6 +24,22 @@ namespace DigitalShoes.Api.Controllers.v1
         }
 
         [Authorize]
+        [HttpGet("{id:int}/GetImageByShoeId")]
+        public async Task<IActionResult> GetImageByShoeIdAsync([FromRoute] int? id)
+        {
+            var image = await _imageService.GetImageByShoeIdAsync(id, _httpContextAccessor.HttpContext);
+            return StatusCode((int)image.StatusCode, image);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetAllShoeImagesAsync()
+        {
+            var image = await _imageService.GetAllShoeImagesAsync(_httpContextAccessor.HttpContext);
+            return StatusCode((int)image.StatusCode, image);
+        }
+
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddShoeImageAsync([FromForm] ImageCreateDTO imageCreateDTO)
         {

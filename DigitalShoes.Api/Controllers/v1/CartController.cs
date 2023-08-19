@@ -13,11 +13,7 @@ namespace DigitalShoes.Api.Controllers.v1
     [ApiVersion("1.0")]
     [ApiController]
     public class CartController : ControllerBase
-    {
-        //         get cart items
-        //         create my cart (done)
-        //         add to cart
-        //         delete from cart
+    {   
 
         private readonly ICartService _cartService;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -53,13 +49,37 @@ namespace DigitalShoes.Api.Controllers.v1
         }
 
         [Authorize(Roles = "buyer")]
+        [HttpGet("{id:int}/MyCartItem")]
+        public async Task<IActionResult> MyCartItemAsync([FromRoute] int? id)
+        {
+            var cart = await _cartService.MyCartItemAsync(id, _httpContextAccessor.HttpContext);
+            return StatusCode((int)cart.StatusCode, cart);
+        }
+
+        [Authorize(Roles = "buyer")]
         [HttpPut("{id:int}/UpdateCartItemCount", Name ="UpdateCartItemCount")]
-        public async Task<IActionResult> UpdateCartItemCountAsync(int? id, CartItemUpdateDTO cartItemUpdateDTO)
+        public async Task<IActionResult> UpdateCartItemCountAsync([FromRoute] int? id, CartItemUpdateDTO cartItemUpdateDTO)
         {
             var cart = await _cartService.UpdateCartItemCountAsync(id, cartItemUpdateDTO, _httpContextAccessor.HttpContext);
+            if (!cart.IsSuccess)
+            {
+                return StatusCode((int)cart.StatusCode, cart);
+            }
             return StatusCode((int)cart.StatusCode);
         }
-        
+
+        [Authorize(Roles = "buyer")]
+        [HttpDelete("{id:int}/RemoveCartItem", Name = "RemoveCartItem")]
+        public async Task<IActionResult> RemoveCartItemAsync([FromRoute] int? id)
+        {
+            var cart = await _cartService.RemoveCartItemAsync(id, _httpContextAccessor.HttpContext);
+            if (!cart.IsSuccess)
+            {
+                return StatusCode((int)cart.StatusCode, cart);
+            }
+            return StatusCode((int)cart.StatusCode);
+        }
+
         // Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InVzZXJfYnV5ZXIiLCJlbWFpbCI6InVzZXJidXllckBnbWFpbC5jb20iLCJyb2xlIjoiYnV5ZXIiLCJuYmYiOjE2OTIyNzg5NzEsImV4cCI6MTY5Mjg4Mzc3MSwiaWF0IjoxNjkyMjc4OTcxfQ.5KN5NTLIomOqPA5882N_ewyNKnyM2h9AqB-SBHmSI5g
     }
 }

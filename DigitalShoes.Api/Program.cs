@@ -65,6 +65,9 @@ builder.Services.AddScoped<IShoeService, ShoeService>();
 builder.Services.AddScoped<IMageService, ImageService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<ISearchService, SearchService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+
 
 // how to ignore navigation property  
 // global exception handling
