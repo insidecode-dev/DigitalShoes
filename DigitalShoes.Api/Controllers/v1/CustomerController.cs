@@ -46,9 +46,6 @@ namespace DigitalShoes.Api.Controllers.v1
                 return StatusCode((int)category.StatusCode, category);
             }
             return StatusCode((int)category.StatusCode);
-        }
-
-        // aprrove cart  (also completes payment and payment objects)
-        // add review
+        }        
     }
 }

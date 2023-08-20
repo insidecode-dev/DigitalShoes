@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System.Net;
 using System.Security.Claims;
 
@@ -39,6 +40,7 @@ namespace DigitalShoes.Service
 
         public async Task<ApiResponse> CreateAsync(ImageCreateDTO imageCreateDTO, HttpContext httpContext)
         {
+            IDbContextTransaction _dbContextTransaction = await _dbContext.Database.BeginTransactionAsync();
             try
             {
                 ValidationResult imageValidationResult = new ImageCreateDTOValidator().Validate(imageCreateDTO);
@@ -118,6 +120,7 @@ namespace DigitalShoes.Service
                     var ifCreated = await _dbContext.Images.Where(img => img.ImageLocalPath.Contains(fileName)).FirstOrDefaultAsync();
                     if (ifCreated == null)
                     {
+                        await _dbContextTransaction.RollbackAsync();
                         _apiResponse.IsSuccess = false;
                         _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
                         _apiResponse.ErrorMessages.Add($"error when adding {fileName} image");
@@ -125,6 +128,10 @@ namespace DigitalShoes.Service
                     }
                 }
 
+                // transaction finished
+                _dbContextTransaction.Commit();
+
+                // response
                 _apiResponse.IsSuccess = true;
                 _apiResponse.StatusCode = HttpStatusCode.Created;
                 _apiResponse.Result = _mapper.Map<List<ImageDTO>>(await _dbContext.Images.Where(img => img.ShoeId == existingShoe.Id).ToListAsync());
@@ -132,6 +139,7 @@ namespace DigitalShoes.Service
             }
             catch (Exception ex)
             {
+                await _dbContextTransaction.RollbackAsync();
                 _apiResponse.IsSuccess = false;
                 _apiResponse.ErrorMessages.Add(ex.Message);
                 _apiResponse.StatusCode = HttpStatusCode.BadRequest;
@@ -142,6 +150,7 @@ namespace DigitalShoes.Service
 
         public async Task<ApiResponse> DeleteAsync(ImageDeleteDTO imageDeleteDTO, HttpContext httpContext)
         {
+            IDbContextTransaction _dbContextTransaction = await _dbContext.Database.BeginTransactionAsync();
             try
             {
                 ValidationResult imageDeleteDTOValidationResult = new ImageDeleteDTOValidator().Validate(imageDeleteDTO);
@@ -205,20 +214,26 @@ namespace DigitalShoes.Service
                 await _dbContext.SaveChangesAsync();
 
                 var ifDeleted = user.Shoes.Where(x => x.Id == imageDeleteDTO.ShoeId).FirstOrDefault().Images.Where(x => x.Id == imageDeleteDTO.ImageId).FirstOrDefault();
-                if (ifDeleted == null)
+                if (ifDeleted != null)
                 {
-                    _apiResponse.IsSuccess = true;
-                    _apiResponse.StatusCode = HttpStatusCode.NoContent;                  
-                    return _apiResponse;
+                    await _dbContextTransaction.RollbackAsync();
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                    _apiResponse.ErrorMessages.Add($"your image that id was {imageDeleteDTO.ImageId} of shoe that id is {imageDeleteDTO.ShoeId} was not deleted");
+                    return _apiResponse;                   
                 }
 
-                _apiResponse.IsSuccess = false;
-                _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
-                _apiResponse.ErrorMessages.Add($"your image that id was {imageDeleteDTO.ImageId} of shoe that id is {imageDeleteDTO.ShoeId} was not deleted");
+                // transaction finished
+                _dbContextTransaction.Commit();
+
+                // response
+                _apiResponse.IsSuccess = true;
+                _apiResponse.StatusCode = HttpStatusCode.NoContent;
                 return _apiResponse;
             }
             catch (Exception ex)
             {
+                await _dbContextTransaction.RollbackAsync();
                 _apiResponse.IsSuccess = false;
                 _apiResponse.ErrorMessages.Add(ex.Message);
                 _apiResponse.StatusCode = HttpStatusCode.InternalServerError;

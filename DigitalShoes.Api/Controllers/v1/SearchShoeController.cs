@@ -1,7 +1,10 @@
 ﻿using DigitalShoes.Domain.DTOs;
 using DigitalShoes.Domain.DTOs.SearchDTOs;
+using DigitalShoes.Service;
 using DigitalShoes.Service.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace DigitalShoes.Api.Controllers.v1
 {
@@ -10,12 +13,12 @@ namespace DigitalShoes.Api.Controllers.v1
     [ApiController]
     public class SearchShoeController : ControllerBase
     {        
-        private readonly ISearchService _searchService;
+        private readonly ISearchService _searchService;        
         private readonly IHttpContextAccessor _httpContextAccessor;
         public SearchShoeController(IHttpContextAccessor httpContextAccessor, ISearchService searchService)
-        {            
+        {
             _httpContextAccessor = httpContextAccessor;
-            _searchService = searchService;
+            _searchService = searchService;            
         }
 
 
@@ -41,6 +44,13 @@ namespace DigitalShoes.Api.Controllers.v1
             return StatusCode((int)shoes.StatusCode, shoes);
         }
 
+        
+        [HttpGet("{ShoeId:int}/GetReviewsByShoeId")]
+        public async Task<IActionResult> GetReviewsByShoeIdAsync([FromRoute] int? ShoeId)
+        {
+            var review = await _searchService.GetReviewsByShoeIdAsync(ShoeId, _httpContextAccessor.HttpContext);
+            return StatusCode((int)review.StatusCode, review);
+        }
 
 
         // all products with pagination

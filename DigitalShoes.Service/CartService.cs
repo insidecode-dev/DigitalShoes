@@ -198,8 +198,8 @@ namespace DigitalShoes.Service
                 }
 
                 //updating count and totalprice of cart 
-                var prc = _dbContext.CartItems.Where(x => x.CartId == cart.Id).Select(x => x.Price).Sum();
-                var cnt = _dbContext.CartItems.Where(x => x.CartId == cart.Id).ToList().Count;
+                var prc = await _dbContext.CartItems.Where(x => x.CartId == cart.Id).Select(x => x.Price).SumAsync();
+                var cnt = await _dbContext.CartItems.Where(x => x.CartId == cart.Id).Select(x=>x.ItemsCount).SumAsync();
                 cart.ItemsCount = cnt;
                 cart.TotalPrice = prc;
                 
@@ -363,15 +363,18 @@ namespace DigitalShoes.Service
                     return _apiResponse;
                 }
 
-
+                //
                 var cart = await _dbContext.CartItems.Include(x=>x.Cart).Where(x=>x.Id==id).Select(x=>x.Cart).FirstOrDefaultAsync();
-                var prc = _dbContext.CartItems.Where(x => x.CartId == cart.Id).Select(x=>x.Price).Sum();
+                var prc = cart.CartItems.Select(x => x.Price).Sum(); //_dbContext.CartItems.Where(x => x.CartId == cart.Id).Select(x=>x.Price).Sum();
+                var cnt = cart.CartItems.Select(x => x.ItemsCount).Sum();
                 cart.TotalPrice = prc;
+                cart.ItemsCount = cnt;
                 _dbContext.Carts.Update(cart);
                 await _dbContext.SaveChangesAsync();
 
-                // checking if totalprice updated                
-                if (await _dbContext.Carts.Where(x=>x.Id==cart.Id).Select(x=>x.TotalPrice).FirstOrDefaultAsync() != prc)
+                // checking if totalprice and count of cart updated                
+                if (await _dbContext.Carts.Where(x=>x.Id==cart.Id).Select(x=>x.TotalPrice).FirstOrDefaultAsync() != prc ||
+                    await _dbContext.Carts.Where(x => x.Id == cart.Id).Select(x => x.ItemsCount).FirstOrDefaultAsync() != cnt)
                 {
                     await _dbContextTransaction.RollbackAsync();
                     _apiResponse.IsSuccess = false;
@@ -529,11 +532,11 @@ namespace DigitalShoes.Service
                 //    .FirstOrDefaultAsync();
 
                 // updating price
-                var prc = _dbContext.CartItems.Where(x => x.CartId == cart.Id).Select(x => x.Price).ToList().Sum();
+                var prc = await _dbContext.CartItems.Where(x => x.CartId == cart.Id).Select(x => x.Price).SumAsync();
                 cart.TotalPrice = prc;
 
                 // updating count 
-                var cnt = _dbContext.CartItems.Where(x => x.CartId == cart.Id).Count();
+                var cnt = await _dbContext.CartItems.Where(x => x.CartId == cart.Id).Select(x => x.ItemsCount).SumAsync();
                 cart.ItemsCount = cnt;
 
                 // updating complete

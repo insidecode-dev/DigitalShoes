@@ -14,6 +14,7 @@ using DigitalShoes.Domain.Entities;
 using DigitalShoes.Dal.Context;
 using DigitalShoes.Domain.DTOs.HashtagDtos;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.IdentityModel.Tokens;
 
 namespace DigitalShoes.Service
 {
@@ -25,13 +26,15 @@ namespace DigitalShoes.Service
         protected ApiResponse _apiResponse;
         //
         private readonly UserManager<ApplicationUser> _userManager;
+        //
+        
 
         public ShoeService(IMapper mapper, ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager)
         {
             _mapper = mapper;
             _dbContext = dbContext;
             _userManager = userManager;
-            _apiResponse = new();
+            _apiResponse = new();        
         }
 
         public async Task<ApiResponse> CreateAsync(ShoeCreateDTO shoeCreateDTO, HttpContext httpContext)
@@ -115,7 +118,7 @@ namespace DigitalShoes.Service
                 await _dbContext.SaveChangesAsync();
 
                 // checking if shoe added to database
-                var shoeInDb = user.Shoes.Where(sh => sh.Brand == shoeCreateDTO.Brand && sh.Model == shoeCreateDTO.Model).FirstOrDefault(); 
+                var shoeInDb = user.Shoes.Where(sh => sh.Brand == shoeCreateDTO.Brand && sh.Model == shoeCreateDTO.Model).FirstOrDefault();
                 if (shoeInDb == null)
                 {
                     await _dbContextTransaction.RollbackAsync();
@@ -205,6 +208,10 @@ namespace DigitalShoes.Service
                     }
                 }
 
+                // transaction finished
+                _dbContextTransaction.Commit();
+
+                // response
                 var shoeGetDTO = _mapper.Map<ShoeGetDTO>(shoe);
                 _apiResponse.IsSuccess = true;
                 _apiResponse.StatusCode = HttpStatusCode.Created;
@@ -330,7 +337,7 @@ namespace DigitalShoes.Service
                 }
 
                 // getting updated shoe
-                var updatedShoe = await _dbContext.Shoes.Where(x => x.Id == existingShoe.Id).Include(x=>x.CartItems).ThenInclude(x=>x.Cart).FirstOrDefaultAsync();
+                var updatedShoe = await _dbContext.Shoes.Where(x => x.Id == existingShoe.Id).Include(x => x.CartItems).ThenInclude(x => x.Cart).FirstOrDefaultAsync();
                 // checking if shoe price updated
                 if (price != updatedShoe.Price)
                 {
@@ -343,7 +350,7 @@ namespace DigitalShoes.Service
                         //_dbContext.CartItems.Update(item); 
                         await _dbContext.SaveChangesAsync();
                         // getting updated cartItem price
-                        var updatedCartItemPrice = await _dbContext.CartItems.Where(x => x.Id == item.Id).Select(x=>x.Price).FirstOrDefaultAsync();
+                        var updatedCartItemPrice = await _dbContext.CartItems.Where(x => x.Id == item.Id).Select(x => x.Price).FirstOrDefaultAsync();
                         // checking if cartItem price updated
                         if (cartItemPrice == updatedCartItemPrice)
                         {
@@ -359,13 +366,13 @@ namespace DigitalShoes.Service
                         // getting cart TotalPrice of cartItem before update
                         var cartTotalPrice = cart.TotalPrice;
                         // updating cart TotalPrice of cartItem
-                        cart.TotalPrice = await _dbContext.CartItems.Where(x=>x.CartId==cart.Id).Select(x=>x.Price).SumAsync();
+                        cart.TotalPrice = await _dbContext.CartItems.Where(x => x.CartId == cart.Id).Select(x => x.Price).SumAsync();
                         //_dbContext.Carts.Update(cart);
                         await _dbContext.SaveChangesAsync();
                         // getting updated cart total price of cartItem
-                        var updatedCartTotalPrice = await _dbContext.Carts.Where(x => x.Id == item.CartId).Select(x=>x.TotalPrice).FirstOrDefaultAsync();
+                        var updatedCartTotalPrice = await _dbContext.Carts.Where(x => x.Id == item.CartId).Select(x => x.TotalPrice).FirstOrDefaultAsync();
                         // checking if cart total price of cartItem updated
-                        if (cartTotalPrice== updatedCartTotalPrice)
+                        if (cartTotalPrice == updatedCartTotalPrice)
                         {
                             await _dbContextTransaction.RollbackAsync();
                             _apiResponse.IsSuccess = false;
@@ -497,6 +504,7 @@ namespace DigitalShoes.Service
 
         public async Task<ApiResponse> DeleteProductByIdAsync(int? id, HttpContext httpContext)
         {
+            IDbContextTransaction _dbContextTransaction = await _dbContext.Database.BeginTransactionAsync();
             try
             {
                 if (id == null)
@@ -529,26 +537,67 @@ namespace DigitalShoes.Service
                     return _apiResponse;
                 }
 
-
+                var cartId = await _dbContext.CartItems.Where(x => x.ShoeId == id).Select(x=>x.CartId).ToListAsync();
+                var imageLocalPath = await _dbContext.Images.Where(x => x.ShoeId == id).Select(x => x.ImageLocalPath).ToListAsync();
                 _dbContext.Shoes.Remove(existingShoe);
                 await _dbContext.SaveChangesAsync();
 
 
                 var ifDeleted = user.Shoes.Where(x => x.Id == id).FirstOrDefault();
-                if (ifDeleted == null)
+                if (ifDeleted != null)
                 {
-                    _apiResponse.IsSuccess = true;
-                    _apiResponse.StatusCode = HttpStatusCode.NoContent;
+                    await _dbContextTransaction.RollbackAsync();
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.ErrorMessages.Add($"shoe with {id} id was not deleted");
+                    _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
                     return _apiResponse;
                 }
 
-                _apiResponse.IsSuccess = false;
-                _apiResponse.ErrorMessages.Add($"{ifDeleted.Model} shoe was not deleted");
-                _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                foreach (var _id in cartId)
+                {
+                    // getting cart of cartItem
+                    var cart = await _dbContext.Carts.Where(x => x.Id == _id).Include(x => x.CartItems).FirstOrDefaultAsync();
+                    // updating cart                     
+                    var totalPriceBeforeUpdate = cart.TotalPrice; 
+                    var countBeforeUpdate = cart.ItemsCount;                    
+                    cart.TotalPrice = cart.CartItems.Select(x=>x.Price).Sum();
+                    cart.ItemsCount = cart.CartItems.Select(x=>x.ItemsCount).Sum();
+                    await _dbContext.SaveChangesAsync();
+                    // checking if totalprice of cart updated
+                    if (totalPriceBeforeUpdate==cart.TotalPrice || countBeforeUpdate==cart.ItemsCount)        
+                    {
+                        await _dbContextTransaction.RollbackAsync();
+                        _apiResponse.IsSuccess = false;
+                        _apiResponse.ErrorMessages.Add($"operation is not successful");
+                        _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                        return _apiResponse;
+                    }
+                }
+
+                // removing also images of shoe
+                foreach (var item in imageLocalPath)
+                {
+                    if (!string.IsNullOrEmpty(item))
+                    {
+                        FileInfo file = new FileInfo(item);
+                        if (file.Exists)
+                        {
+                            file.Delete();
+                        }
+                    }
+                }                
+
+                // transaction finished
+                _dbContextTransaction.Commit();
+
+                // response
+                _apiResponse.IsSuccess = true;
+                _apiResponse.StatusCode = HttpStatusCode.NoContent;
                 return _apiResponse;
             }
             catch (Exception ex)
             {
+                await _dbContextTransaction.RollbackAsync();
                 _apiResponse.IsSuccess = false;
                 _apiResponse.ErrorMessages.Add(ex.Message.ToString());
                 _apiResponse.StatusCode = HttpStatusCode.InternalServerError;

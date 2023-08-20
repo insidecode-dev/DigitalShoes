@@ -2,6 +2,7 @@
 using DigitalShoes.Dal.Context;
 using DigitalShoes.Domain.DTOs;
 using DigitalShoes.Domain.DTOs.HashtagDtos;
+using DigitalShoes.Domain.DTOs.ReviewDTOs;
 using DigitalShoes.Domain.DTOs.SearchDTOs;
 using DigitalShoes.Domain.DTOs.ShoeDTOs;
 using DigitalShoes.Domain.Entities;
@@ -14,6 +15,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Net;
+using System.Security.Claims;
 using static DigitalShoes.Domain.StaticDetails;
 
 namespace DigitalShoes.Service
@@ -215,6 +217,63 @@ namespace DigitalShoes.Service
                 _apiResponse.ErrorMessages.Add(ex.Message);
                 _apiResponse.StatusCode = HttpStatusCode.BadRequest;
                 _apiResponse.Result = ex;
+                return _apiResponse;
+            }
+        }
+
+        public async Task<ApiResponse> GetReviewsByShoeIdAsync(int? ShoeId, HttpContext httpContext)
+        {
+            try
+            {
+                if (ShoeId == null)
+                {
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.ErrorMessages.Add($"ShoeId is null");
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    return _apiResponse;
+                }
+
+                // checking if shoe with provided id exist
+                var existingShoe = await _dbContext.Shoes.Where(x => x.Id == ShoeId).FirstOrDefaultAsync();
+                if (existingShoe == null)
+                {
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.StatusCode = HttpStatusCode.NotFound;
+                    _apiResponse.ErrorMessages.Add($"shoe with {ShoeId} id does not exist");
+                    return _apiResponse;
+                }
+                string username = httpContext
+                .User
+                .Identities
+                .FirstOrDefault(identity => identity.Claims.Any(claim => claim.Type == ClaimTypes.Name))?
+                .Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?
+                .Value;
+
+                var user = await _userManager
+                    .Users
+                    .Include(u => u.Reviews)
+                    .FirstOrDefaultAsync(u => u.UserName == username);
+
+                var reviews = user.Reviews.Where(x => x.ShoeId == ShoeId).ToList();
+                if (reviews.Count == 0)
+                {
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.StatusCode = HttpStatusCode.NotFound;
+                    _apiResponse.ErrorMessages.Add($"you don't have any reviews for shoe with {ShoeId} id");
+                    return _apiResponse;
+                }
+
+                // response
+                _apiResponse.IsSuccess = true;
+                _apiResponse.StatusCode = HttpStatusCode.OK;
+                _apiResponse.Result = _mapper.Map<List<ReviewGetDTO>>(reviews);
+                return _apiResponse;
+            }
+            catch (Exception ex)
+            {
+                _apiResponse.ErrorMessages.Add(ex.Message.ToString());
+                _apiResponse.IsSuccess = false;
+                _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
                 return _apiResponse;
             }
         }

@@ -62,8 +62,11 @@ namespace DigitalShoes.Api.Controllers.v1
             }
         }
 
-
+        // admin
         // Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Imluc2lkZWNvZGVfYnV5IiwiZW1haWwiOiJpbnNpZGVjb2RlQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsIm5iZiI6MTY5MjExOTUwNywiZXhwIjoxNjkyNzI0MzA3LCJpYXQiOjE2OTIxMTk1MDd9.-hJ7aRiDf3DsDENnqd6OSgLgHqaUBfg-4OE3KoktRf0
 
+
+        // buyer
+        // Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InVzZXJfYnV5ZXIiLCJlbWFpbCI6InVzZXJidXllckBnbWFpbC5jb20iLCJyb2xlIjoiYnV5ZXIiLCJuYmYiOjE2OTI1MTE2NjksImV4cCI6MTY5MzExNjQ2OSwiaWF0IjoxNjkyNTExNjY5fQ.EQReuCRIRZIiFONsH9ZNMzFHlsgplZZfpmuubl5v7Rs
     }
 }

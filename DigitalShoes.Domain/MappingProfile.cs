@@ -4,6 +4,7 @@ using DigitalShoes.Domain.DTOs.CartItemDTOs;
 using DigitalShoes.Domain.DTOs.CategoryDTOs;
 using DigitalShoes.Domain.DTOs.HashtagDtos;
 using DigitalShoes.Domain.DTOs.ImageDTOs;
+using DigitalShoes.Domain.DTOs.ReviewDTOs;
 using DigitalShoes.Domain.DTOs.ShoeDTOs;
 using DigitalShoes.Domain.Entities;
 
@@ -51,8 +52,12 @@ namespace DigitalShoes.Domain
             // cart
             CreateMap<CartItem, CartItemCreateDTO>().ReverseMap(); 
             CreateMap<CartItem, CartItemGetDTO>().ReverseMap();  
-            CreateMap<CartItem, CartItemUpdateDTO>().ReverseMap();  
+            CreateMap<CartItem, CartItemUpdateDTO>().ReverseMap();
 
+            // review 
+            CreateMap<Review, ReviewCreateDTO>().ReverseMap();
+            CreateMap<Review, ReviewGetDTO>().ReverseMap(); 
+            CreateMap<Review, ReviewUpdateDTO>().ReverseMap();
         }
     }
 }
