@@ -1,7 +1,8 @@
 #nullable disable
+using DigitalShoes.Api;
 using DigitalShoes.Api.AuthOperations.Repositories;
 using DigitalShoes.Api.AuthOperations.Services;
-using DigitalShoes.Api.logs;
+
 using DigitalShoes.Dal.Context;
 using DigitalShoes.Domain;
 using DigitalShoes.Domain.Entities;
@@ -11,6 +12,7 @@ using DigitalShoes.Service.Abstractions;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,12 +20,10 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Context;
-using Serilog.Core;
 using Serilog.Sinks.MSSqlServer;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Text;
-using static System.Net.Mime.MediaTypeNames;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,16 +69,14 @@ builder.Services.AddScoped<ISearchService, SearchService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IWishListService, WishListService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
-
-
-// how to ignore navigation property  
-// global exception handling
+builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddScoped<IUserProfileService, UserProfileService>();
 
 
 // fluent validation
 builder.Services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<HashtagValidator>()).AddXmlDataContractSerializerFormatters();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 
 var key = builder.Configuration.GetValue<string>("ApiSettings:Secret");
@@ -95,15 +93,18 @@ builder.Services.AddAuthentication(options =>
     {
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
-        ValidateIssuer = false,
-        ValidateAudience = false
+        
+        ValidIssuer = "https://localhost:7249/",
+        ValidateIssuer = true,
+        
+        ValidateAudience = true,
+        ValidAudience = "https://localhost:7249/"
     };
 });
 builder.Services.AddAuthorization();
 
 // logging
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddSingleton<ILogEventEnricher, UserNameEnricher>();
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.File("logs/log.txt")
@@ -123,17 +124,37 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog(Log.Logger);
 
+// httplogging
+builder.Services.AddHttpLogging(logging =>
+{
+    logging.LoggingFields = HttpLoggingFields.All;
+    logging.RequestHeaders.Add("sec-ch-ua");
+    logging.ResponseHeaders.Add("MyResponseHeader");
+    logging.MediaTypeOptions.AddText("application/javascript");
+    logging.RequestBodyLogLimit = 4096;
+    logging.ResponseBodyLogLimit = 4096;
+});
+
+// cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {        
+        policy.WithOrigins("https://localhost:7249")
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
+});
+
 // documenting swagger
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Scheme = "Bearer",
-        //BearerFormat = "JWT",
+        Scheme = "Bearer",        
         In = ParameterLocation.Header,
         Name = "Authorization",
-        Description = "Bearer Authentication with JWT Token",
-        //Type = SecuritySchemeType.Http
+        Description = "Bearer Authentication with JWT Token",        
     });
 
     options.AddSecurityRequirement(new OpenApiSecurityRequirement()
@@ -171,23 +192,7 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 
-    options.SwaggerDoc("v2", new OpenApiInfo
-    {
-        Version = "v2.0",
-        Title = "DigitalShoes V2",
-        Description = "API to manage DigitalShoes",
-        TermsOfService = new Uri("https://www.postman.com/"),
-        Contact = new OpenApiContact
-        {
-            Name = "insidecode",
-            Url = new Uri("https://github.com/insidecode-dev")
-        },
-        License = new OpenApiLicense
-        {
-            Name = "Example License",
-            Url = new Uri("https://www.google.com/search?q=license&oq=license&aqs=chrome..69i57.3695j0j7&sourceid=chrome&ie=UTF-8")
-        }
-    });
+    
 });
 
 var app = builder.Build();
@@ -197,26 +202,26 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/swagger/v2/swagger.json", "Digital_ShoesV2");        
+    {        
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "Digital_ShoesV1");
     });
 }
 
 app.UseStaticFiles();
-
-
+app.UseHttpLogging();
+app.UseCors("AllowAll");
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSerilogRequestLogging();
-//app.Use(async (context, next) =>
-//{   
-//    var username = context.User?.Identity?.IsAuthenticated != null || true ? context.User.Identity.Name : null; 
-//    LogContext.PushProperty("user_name", username);
-//    await next.Invoke();
-//});
+app.Use(async (context, next) =>
+{
+    var username = context.User?.Identity?.IsAuthenticated != null || true ? context.User.Identity.Name : null;
+    LogContext.PushProperty("user_name", username);
+    await next.Invoke();
+});
 
 app.UseStatusCodePages();
 

@@ -10,17 +10,11 @@ namespace DigitalShoes.Dal.Configurations
         {
             //relation
             builder
-                .HasOne(u => u.Shoe)
-                .WithMany(c => c.PaymentObjects)
-                .HasForeignKey(c => c.ShoeId);
-
-            builder
                 .HasOne(u => u.Payment)
                 .WithMany(c => c.PaymentObjects)
                 .HasForeignKey(c => c.PaymentId);
 
             //
-
             builder
                 .Property(a => a.ItemsCount)
                 .IsRequired()

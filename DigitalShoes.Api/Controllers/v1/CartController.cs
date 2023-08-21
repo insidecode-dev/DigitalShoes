@@ -25,6 +25,11 @@ namespace DigitalShoes.Api.Controllers.v1
 
         [Authorize(Roles = "buyer")]
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]        
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]        
         public async Task<IActionResult> CreateCartAsync()
         {
             var cart = await _cartService.CreateCartAsync(_httpContextAccessor.HttpContext);
@@ -33,7 +38,13 @@ namespace DigitalShoes.Api.Controllers.v1
 
 
         [Authorize(Roles = "buyer")]
-        [HttpPost("AddToCart")]
+        [HttpPost("AddToCart")]        
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]        
+        [ProducesResponseType(StatusCodes.Status404NotFound)]        
         public async Task<IActionResult> AddToCartAsync([FromBody] List<CartItemCreateDTO> cartItemCreateDTO)
         {
             var cart = await _cartService.AddToCartAsync(cartItemCreateDTO, _httpContextAccessor.HttpContext);
@@ -42,6 +53,11 @@ namespace DigitalShoes.Api.Controllers.v1
 
         [Authorize(Roles = "buyer")]
         [HttpGet("MyCartItems")]
+        [ProducesResponseType(StatusCodes.Status200OK)]        
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]        
         public async Task<IActionResult> MyCartItemsAsync()
         {
             var cart = await _cartService.MyCartItemsAsync(_httpContextAccessor.HttpContext);
@@ -50,6 +66,12 @@ namespace DigitalShoes.Api.Controllers.v1
 
         [Authorize(Roles = "buyer")]
         [HttpGet("{id:int}/MyCartItem")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]        
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> MyCartItemAsync([FromRoute] int? id)
         {
             var cart = await _cartService.MyCartItemAsync(id, _httpContextAccessor.HttpContext);
@@ -58,6 +80,12 @@ namespace DigitalShoes.Api.Controllers.v1
 
         [Authorize(Roles = "buyer")]
         [HttpPut("{id:int}/UpdateCartItemCount", Name ="UpdateCartItemCount")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]        
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateCartItemCountAsync([FromRoute] int? id, CartItemUpdateDTO cartItemUpdateDTO)
         {
             var cart = await _cartService.UpdateCartItemCountAsync(id, cartItemUpdateDTO, _httpContextAccessor.HttpContext);
@@ -70,6 +98,12 @@ namespace DigitalShoes.Api.Controllers.v1
 
         [Authorize(Roles = "buyer")]
         [HttpDelete("{id:int}/RemoveCartItem", Name = "RemoveCartItem")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]        
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> RemoveCartItemAsync([FromRoute] int? id)
         {
             var cart = await _cartService.RemoveCartItemAsync(id, _httpContextAccessor.HttpContext);
@@ -79,7 +113,5 @@ namespace DigitalShoes.Api.Controllers.v1
             }
             return StatusCode((int)cart.StatusCode);
         }
-
-        // Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InVzZXJfYnV5ZXIiLCJlbWFpbCI6InVzZXJidXllckBnbWFpbC5jb20iLCJyb2xlIjoiYnV5ZXIiLCJuYmYiOjE2OTIyNzg5NzEsImV4cCI6MTY5Mjg4Mzc3MSwiaWF0IjoxNjkyMjc4OTcxfQ.5KN5NTLIomOqPA5882N_ewyNKnyM2h9AqB-SBHmSI5g
     }
 }

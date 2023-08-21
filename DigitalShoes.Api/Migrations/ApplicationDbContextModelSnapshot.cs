@@ -331,8 +331,6 @@ namespace DigitalShoes.Api.Migrations
 
                     b.HasIndex("PaymentId");
 
-                    b.HasIndex("ShoeId");
-
                     b.ToTable("PaymentObjects");
                 });
 
@@ -706,15 +704,7 @@ namespace DigitalShoes.Api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DigitalShoes.Domain.Entities.Shoe", "Shoe")
-                        .WithMany("PaymentObjects")
-                        .HasForeignKey("ShoeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Payment");
-
-                    b.Navigation("Shoe");
                 });
 
             modelBuilder.Entity("DigitalShoes.Domain.Entities.Review", b =>
@@ -892,8 +882,6 @@ namespace DigitalShoes.Api.Migrations
                     b.Navigation("CartItems");
 
                     b.Navigation("Images");
-
-                    b.Navigation("PaymentObjects");
 
                     b.Navigation("Reviews");
 

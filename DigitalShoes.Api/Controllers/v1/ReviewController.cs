@@ -10,12 +10,7 @@ namespace DigitalShoes.Api.Controllers.v1
     [ApiVersion("1.0")]
     [ApiController]
     public class ReviewController : ControllerBase
-    {
-        //  get review for id item (done)
-        //  get my reviews for ShoeId item (not authorized)
-        //  get reviews items
-        //  create review (done)        
-        //  delete review (done)
+    {        
 
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IReviewService _reviewService;
@@ -26,7 +21,7 @@ namespace DigitalShoes.Api.Controllers.v1
             _reviewService = reviewService;
         }
 
-        [Authorize(Roles = "buyer")]
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddReviewAsync([FromQuery] ReviewCreateDTO reviewCreateDTO)
         {
@@ -38,7 +33,7 @@ namespace DigitalShoes.Api.Controllers.v1
             return StatusCode((int)review.StatusCode, review);
         }
 
-        [Authorize(Roles = "buyer")]
+        [Authorize]
         [HttpGet("{ReviewId:int}", Name = "GetReviewById")]
         public async Task<IActionResult> GetReviewByIdAsync([FromRoute] int? ReviewId)
         {
@@ -46,10 +41,15 @@ namespace DigitalShoes.Api.Controllers.v1
             return StatusCode((int)review.StatusCode, review);
         }
 
+        [Authorize]
+        [HttpGet("{ShoeId:int}/GetMyReviewsByShoeIdAsync")]
+        public async Task<IActionResult> GetMyReviewsByShoeIdAsync([FromRoute] int? ShoeId)
+        {
+            var review = await _reviewService.GetMyReviewsByShoeIdAsync(ShoeId, _httpContextAccessor.HttpContext);
+            return StatusCode((int)review.StatusCode, review);
+        }
 
-        
-
-        [Authorize(Roles = "buyer")]
+        [Authorize]
         [HttpPut("UpdateReview")]
         public async Task<IActionResult> UpdateReviewAsync([FromQuery] ReviewUpdateDTO reviewUpdateDTO)
         {
@@ -61,7 +61,7 @@ namespace DigitalShoes.Api.Controllers.v1
             return StatusCode((int)review.StatusCode);
         }
 
-        [Authorize(Roles = "buyer")]
+        [Authorize]
         [HttpDelete("{ReviewId:int}/RemoveReview")]
         public async Task<IActionResult> RemoveReviewAsync([FromRoute] int? ReviewId)
         {

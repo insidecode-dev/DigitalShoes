@@ -15,25 +15,27 @@ namespace DigitalShoes.Api.Controllers.v1
     {        
         private readonly ISearchService _searchService;        
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public SearchShoeController(IHttpContextAccessor httpContextAccessor, ISearchService searchService)
+        private readonly ILogger<SearchShoeController> _logger;
+        public SearchShoeController(IHttpContextAccessor httpContextAccessor, ISearchService searchService, ILogger<SearchShoeController> logger)
         {
             _httpContextAccessor = httpContextAccessor;
-            _searchService = searchService;            
+            _searchService = searchService;
+            _logger = logger;
         }
-
 
 
         [HttpGet("GetAllWithPagination")]
         public async Task<ActionResult<ApiResponse>> GetAllWithPaginationAsync([FromQuery] GetAllWithPaginationRequestDTO getAllWithPaginationRequestDTO)
         {
             var shoes = await _searchService.GetAllWithPaginationAsync(getAllWithPaginationRequestDTO, _httpContextAccessor.HttpContext);
+            _logger.LogInformation("searcher products.......");
             return StatusCode((int)shoes.StatusCode, shoes);
         }
 
         [HttpGet("SearchShoeByFilter")]
         public async Task<ActionResult<ApiResponse>> SearchShoeByFilterAsync([FromQuery] GetShoeByFilterDTO getShoeByFilterDTO)
         {
-            var shoes = await _searchService.SearchShoeByFilterAsync(getShoeByFilterDTO, _httpContextAccessor.HttpContext);
+            var shoes = await _searchService.SearchShoeByFilterAsync(getShoeByFilterDTO);
             return StatusCode((int)shoes.StatusCode, shoes);
         }
 
@@ -48,14 +50,8 @@ namespace DigitalShoes.Api.Controllers.v1
         [HttpGet("{ShoeId:int}/GetReviewsByShoeId")]
         public async Task<IActionResult> GetReviewsByShoeIdAsync([FromRoute] int? ShoeId)
         {
-            var review = await _searchService.GetReviewsByShoeIdAsync(ShoeId, _httpContextAccessor.HttpContext);
+            var review = await _searchService.GetReviewsByShoeIdAsync(ShoeId);
             return StatusCode((int)review.StatusCode, review);
         }
-
-
-        // all products with pagination
-        // by rating with pagination
-        // by price with pagination
-
     }
 }

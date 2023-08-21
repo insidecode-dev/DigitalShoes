@@ -49,11 +49,7 @@ namespace DigitalShoes.Dal.Configurations
                 .WithOne(c => c.Shoe)
                 .HasForeignKey(c => c.ShoeId);
 
-            builder
-                .HasMany(u => u.PaymentObjects)
-                .WithOne(c => c.Shoe)
-                .HasForeignKey(c => c.ShoeId);
-
+            
             //
 
             builder

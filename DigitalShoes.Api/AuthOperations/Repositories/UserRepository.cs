@@ -21,7 +21,7 @@ namespace DigitalShoes.Api.AuthOperations.Repositories
 
         private string? secretKey;
 
-        // after identity 
+        
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
         private readonly RoleManager<IdentityRole<int>> _roleManager;
@@ -91,8 +91,12 @@ namespace DigitalShoes.Api.AuthOperations.Repositories
                         new Claim(ClaimTypes.Role, logInRole)
                     }),
 
-                Expires = DateTime.UtcNow.AddDays(7),
+                Audience = "https://localhost:7249/",
 
+                Issuer = "https://localhost:7249/",
+
+                Expires = DateTime.UtcNow.AddMinutes(10),
+                
                 SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
@@ -107,115 +111,86 @@ namespace DigitalShoes.Api.AuthOperations.Repositories
 
         public async Task<RegistrationResponseDTO> Register(RegistrationRequestDTO registrationRequestDTO)
         {
-            try
+            var isUserNameUnique = IsUniqueUser(registrationRequestDTO.UserName);
+            if (!isUserNameUnique)
             {
-                var isUserNameUnique = IsUniqueUser(registrationRequestDTO.UserName);
-                if (!isUserNameUnique)
+                return new RegistrationResponseDTO
                 {
-                    return new RegistrationResponseDTO
-                    {
-                        RegisteredUser = null,
-                        ErrorMessage = "username already exists"
-                    };
-                }
-
-                ApplicationUser localUser = new()
-                {
-                    UserName = registrationRequestDTO.UserName,
-                    Email = registrationRequestDTO.Email,
-                    NormalizedEmail = registrationRequestDTO.Email.ToUpper(),
-                    Name = registrationRequestDTO.Name
+                    RegisteredUser = null,
+                    ErrorMessage = "username already exists"
                 };
-
-                // validating role 
-                string? validateRole = registrationRequestDTO.Role.FirstOrDefault(x => !_roleManager.RoleExistsAsync(x).GetAwaiter().GetResult() || x.ToLower() == "admin")?.ToLower();
-                if (validateRole == "admin")
-                {
-                    return new RegistrationResponseDTO { RegisteredUser = null, ErrorMessage = $"{validateRole} role is not allowed" };
-                }
-                else if (validateRole != null)
-                {
-                    return new RegistrationResponseDTO { RegisteredUser = null, ErrorMessage = $"{validateRole} role does not exist" };
-                }
-
-                var result = await _userManager.CreateAsync(user: localUser, password: registrationRequestDTO.Password);
-
-                if (result.Succeeded)
-                {                       
-                    foreach (var role in registrationRequestDTO.Role)
-                    {
-                        await _userManager.AddToRoleAsync(user: localUser, role: role);
-                    }                    
-                    var createdUser = await _dbContext.ApplicationUsers.FirstOrDefaultAsync(x => x.UserName == registrationRequestDTO.UserName);
-                    return new RegistrationResponseDTO { RegisteredUser = _mapper.Map<UserDTO>(createdUser) };
-                }
-                else
-                {
-                    return new RegistrationResponseDTO { RegisteredUser = null, ErrorMessage = result.Errors.FirstOrDefault().ToString() };
-                }
             }
-            catch (Exception ex)
+
+            ApplicationUser localUser = new()
             {
-                return new RegistrationResponseDTO { RegisteredUser = null, ErrorMessage = ex.Message.ToString() };
+                UserName = registrationRequestDTO.UserName,
+                Email = registrationRequestDTO.Email,
+                NormalizedEmail = registrationRequestDTO.Email.ToUpper(),
+                Name = registrationRequestDTO.Name
+            };
+
+            // validating role 
+            string? validateRole = registrationRequestDTO.Role.FirstOrDefault(x => !_roleManager.RoleExistsAsync(x).GetAwaiter().GetResult() || x.ToLower() == "admin")?.ToLower();
+            if (validateRole == "admin")
+            {
+                return new RegistrationResponseDTO { RegisteredUser = null, ErrorMessage = $"{validateRole} role is not allowed" };
+            }
+            else if (validateRole != null)
+            {
+                return new RegistrationResponseDTO { RegisteredUser = null, ErrorMessage = $"{validateRole} role does not exist" };
             }
 
-         }
+            var result = await _userManager.CreateAsync(user: localUser, password: registrationRequestDTO.Password);
+
+            if (result.Succeeded)
+            {
+                foreach (var role in registrationRequestDTO.Role)
+                {
+                    await _userManager.AddToRoleAsync(user: localUser, role: role);
+                }
+                var createdUser = await _dbContext.ApplicationUsers.FirstOrDefaultAsync(x => x.UserName == registrationRequestDTO.UserName);
+                return new RegistrationResponseDTO { RegisteredUser = _mapper.Map<UserDTO>(createdUser) };
+            }
+            else
+            {
+                return new RegistrationResponseDTO { RegisteredUser = null, ErrorMessage = result.Errors.FirstOrDefault().ToString() };
+            }
+        }
 
         public async Task<MyNewRoleResponseDTO> AddMyNewRole(MyNewRoleRequestDTO myNewRoleDTO)
         {
-            try
+            ApplicationUser? user = await _dbContext
+                         .ApplicationUsers
+                         .FirstOrDefaultAsync(x => x.UserName.ToLower() == myNewRoleDTO.UserName.ToLower());
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var newRole = roles.FirstOrDefault(r => r == myNewRoleDTO.RoleName);
+
+            if (newRole != null)
             {
-                ApplicationUser? user = await _dbContext
-                             .ApplicationUsers
-                             .FirstOrDefaultAsync(x => x.UserName.ToLower() == myNewRoleDTO.UserName.ToLower());
-
-                var roles = await _userManager.GetRolesAsync(user);
-                var newRole = roles.FirstOrDefault(r => r == myNewRoleDTO.RoleName);
-
-                if (newRole != null)
-                {
-                    return new MyNewRoleResponseDTO() { Message = $"you have {newRole} account", Succeeded = false };
-                }
-
-                await _userManager.AddToRoleAsync(user: user, role: myNewRoleDTO.RoleName);
-                return new MyNewRoleResponseDTO() { Message = $"Your {myNewRoleDTO.RoleName} account created successfully !!", Succeeded = true };
-
-            }
-            catch (Exception ex)
-            {
-                return new MyNewRoleResponseDTO() { Message = ex.Message.ToString(), Succeeded = false };
+                return new MyNewRoleResponseDTO() { Message = $"you have {newRole} account", Succeeded = false };
             }
 
+            await _userManager.AddToRoleAsync(user: user, role: myNewRoleDTO.RoleName);
+            return new MyNewRoleResponseDTO() { Message = $"Your {myNewRoleDTO.RoleName} account created successfully !!", Succeeded = true };
         }
 
         public async Task<NewRoleResponseDTO> CreateNewRole(NewRoleRequestDTO newRoleRequestDTO)
         {
-            try
+            if (!_roleManager.RoleExistsAsync(newRoleRequestDTO.RoleName).GetAwaiter().GetResult())
             {
-                if (!_roleManager.RoleExistsAsync(newRoleRequestDTO.RoleName).GetAwaiter().GetResult())
-                {
-                    await _roleManager.CreateAsync(new IdentityRole<int>(newRoleRequestDTO.RoleName));
-                    return new NewRoleResponseDTO
-                    {
-                        Message = $"{newRoleRequestDTO.RoleName} role created successfully",
-                        Succeeded = true
-                    };
-                }
-                else return new NewRoleResponseDTO
-                {
-                    Message = $"{newRoleRequestDTO.RoleName} role role already exists",
-                    Succeeded = false
-                };
-            }
-            catch (Exception ex)
-            {
+                await _roleManager.CreateAsync(new IdentityRole<int>(newRoleRequestDTO.RoleName));
                 return new NewRoleResponseDTO
                 {
-                    Message = $"{ex.Message.ToString()} error while creating {newRoleRequestDTO.RoleName} role",
-                    Succeeded = false
+                    Message = $"{newRoleRequestDTO.RoleName} role created successfully",
+                    Succeeded = true
                 };
             }
-
+            else return new NewRoleResponseDTO
+            {
+                Message = $"{newRoleRequestDTO.RoleName} role role already exists",
+                Succeeded = false
+            };
         }
     }
 }

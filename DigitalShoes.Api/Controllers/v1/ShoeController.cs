@@ -23,7 +23,7 @@ namespace DigitalShoes.Api.Controllers.v1
             _httpContextAccessor = httpContextAccessor;
         }
 
-        [Authorize]
+        [Authorize(Roles = "seller")]
         [HttpGet]
         public async Task<IActionResult> GetMyProductsAsync()
         {   
@@ -39,7 +39,7 @@ namespace DigitalShoes.Api.Controllers.v1
             return StatusCode((int)shoes.StatusCode, shoes);
         }
 
-        [Authorize]
+        [Authorize(Roles = "seller")]
         [HttpPost]
         public async Task<ActionResult<ApiResponse>> AddShoeAsync([FromBody] ShoeCreateDTO shoeCreateDTO)
         {
@@ -52,7 +52,7 @@ namespace DigitalShoes.Api.Controllers.v1
             return StatusCode((int)shoe.StatusCode, shoe);
         }
 
-        [Authorize]
+        [Authorize(Roles = "seller")]
         [HttpPut("{id:int}", Name ="UpdateShoe")]
         public async Task<IActionResult> UpdateShoeAsync([FromRoute] int? id, [FromBody] ShoeUpdateDTO shoeUpdateDTO)
         {   
@@ -64,7 +64,7 @@ namespace DigitalShoes.Api.Controllers.v1
             return StatusCode((int)shoe.StatusCode, shoe);
         }
 
-        [Authorize]
+        [Authorize(Roles = "seller")]
         [HttpDelete("{id:int}", Name = "DeleteShoeById")]
         public async Task<IActionResult> DeleteShoeByIdAsync([FromRoute] int? id)
         {
@@ -76,16 +76,3 @@ namespace DigitalShoes.Api.Controllers.v1
         
     }
 }
-
-
-//{
-//    "brand": "string_test2",
-//      "model": "string_test3",
-//  "count": 2,
-//  "size": 43,
-//  "description": "string",
-//  "gender": "man",
-//  "color": "yellow",
-//  "ctName": "string"
-
-//}

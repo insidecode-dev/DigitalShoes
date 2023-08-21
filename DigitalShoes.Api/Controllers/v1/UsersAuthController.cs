@@ -1,6 +1,7 @@
 ﻿using DigitalShoes.Api.AuthOperations.Repositories;
 using DigitalShoes.Api.AuthOperations.Services;
 using DigitalShoes.Domain.DTOs.AuthDTOs;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -11,38 +12,27 @@ namespace DigitalShoes.Api.Controllers.v1
     [ApiController]
     public class UsersAuthController : ControllerBase
     {
-        
+        private readonly IHttpContextAccessor _contextAccessor;
         private readonly IUserService _userService;
-        
-        public UsersAuthController(IUserService userService)
-        {   
+
+        public UsersAuthController(IUserService userService, IHttpContextAccessor contextAccessor)
+        {
             _userService = userService;
+            _contextAccessor = contextAccessor;
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LogInRequestDto logInRequestDto)
         {            
             var apiResponse = await _userService.LogIn(logInRequestDto);
-
-            if (!apiResponse.IsSuccess || apiResponse.ErrorMessages.Count>0)
-            {                
-                return BadRequest(apiResponse);
-            }
-
-            return Ok(apiResponse);
+            return StatusCode((int)apiResponse.StatusCode, apiResponse);            
         }
-
+        
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegistrationRequestDTO registrationRequestDTO)
         {
-
             var apiResponse = await _userService.Register(registrationRequestDTO);
-            if (!apiResponse.IsSuccess || apiResponse.ErrorMessages.Count>0)
-            {                
-                return BadRequest(apiResponse);
-            }
-
-            return Ok(apiResponse);
+            return StatusCode((int)apiResponse.StatusCode, apiResponse);
         }
 
         [Authorize]
@@ -50,12 +40,7 @@ namespace DigitalShoes.Api.Controllers.v1
         public async Task<IActionResult> AddMyNewRole([FromBody] MyNewRoleRequestDTO myNewRoleRequestDTO)
         {
             var apiResponse = await _userService.AddMyNewRole(myNewRoleRequestDTO);
-            if (!apiResponse.IsSuccess || apiResponse.ErrorMessages.Count > 0)
-            {
-                return BadRequest(apiResponse);
-            }
-
-            return Ok(apiResponse);
+            return StatusCode((int)apiResponse.StatusCode, apiResponse);
         }
 
         [Authorize(Roles = "admin")]
@@ -63,24 +48,16 @@ namespace DigitalShoes.Api.Controllers.v1
         public async Task<IActionResult> CreateNewRole([FromBody] NewRoleRequestDTO newRoleRequestDTO)
         {
             var apiResponse = await _userService.CreateNewRole(newRoleRequestDTO);
-            if (!apiResponse.IsSuccess || apiResponse.ErrorMessages.Count > 0)
-            {
-                return BadRequest(apiResponse);
-            }
-
-            return Ok(apiResponse);
+            return StatusCode((int)apiResponse.StatusCode, apiResponse);
         }
 
-        [HttpPut]
-        public IActionResult UpdateProfile()
-        {
-            return Ok();
-        }
+        [HttpPost("logout")]
+        [Authorize] 
+        public async Task<IActionResult> Logout()
+        {            
+            await _contextAccessor.HttpContext.SignOutAsync();
 
-        [HttpGet]
-        public IActionResult AccountDetails()
-        {
-            return Ok();
+            return Ok(new { message = "Logout successful" });
         }
     }
 }

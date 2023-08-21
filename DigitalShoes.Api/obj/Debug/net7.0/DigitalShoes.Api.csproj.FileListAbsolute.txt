@@ -105,7 +105,6 @@ C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api\bin\Debug\net7.0\runt
 C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
-C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api\obj\Debug\net7.0\DigitalShoes.Api.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api\bin\Debug\net7.0\Microsoft.AspNetCore.JsonPatch.dll
 C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api\bin\Debug\net7.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api\bin\Debug\net7.0\Newtonsoft.Json.dll

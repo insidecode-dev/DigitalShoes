@@ -19,6 +19,7 @@ namespace DigitalShoes.Domain.DTOs.ShoeDTOs
         public string Model { get; set; }
         public int Count { get; set; }
         public int Size { get; set; }
+        public int Price { get; set; }
         public string Description { get; set; }
         public Gender Gender { get; set; }
         public Color Color { get; set; }

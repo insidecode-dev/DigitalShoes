@@ -1,9 +1,5 @@
-﻿using DigitalShoes.Domain.DTOs.CartItemDTOs;
-using DigitalShoes.Domain.Entities;
-using DigitalShoes.Service;
-using DigitalShoes.Service.Abstractions;
+﻿using DigitalShoes.Service.Abstractions;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 
@@ -44,8 +40,5 @@ namespace DigitalShoes.Api.Controllers.v1
             return StatusCode((int)wishlist.StatusCode);           
             
         }
-        
-
-
     }
 }

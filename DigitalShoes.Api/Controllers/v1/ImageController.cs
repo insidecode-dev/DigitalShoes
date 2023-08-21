@@ -23,50 +23,63 @@ namespace DigitalShoes.Api.Controllers.v1
             _httpContextAccessor = httpContextAccessor;
         }
 
-        [Authorize]
+        [Authorize(Roles = "seller")]
         [HttpGet("{id:int}/GetImagesByShoeId")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetImagesByShoeIdAsync([FromRoute] int? id)
         {
             var image = await _imageService.GetImageByShoeIdAsync(id, _httpContextAccessor.HttpContext);
             return StatusCode((int)image.StatusCode, image);
         }
 
-        [Authorize]
+        [Authorize(Roles = "seller")]
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]        
         public async Task<IActionResult> GetAllShoeImagesAsync()
         {
             var image = await _imageService.GetAllShoeImagesAsync(_httpContextAccessor.HttpContext);
             return StatusCode((int)image.StatusCode, image);
         }
 
-        [Authorize]
+        [Authorize(Roles = "seller")]
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> AddShoeImageAsync([FromForm] ImageCreateDTO imageCreateDTO)
         {
             var image = await _imageService.CreateAsync(imageCreateDTO, _httpContextAccessor.HttpContext);
             return StatusCode((int)image.StatusCode, image);
         }
 
-        [Authorize]
+        [Authorize(Roles = "seller")]
         [HttpDelete(Name = "DeleteShoeImage")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ApiResponse>> DeleteShoeImageAsync([FromBody] ImageDeleteDTO imageDeleteDTO)
         {
-            try
+
+            var image = await _imageService.DeleteAsync(imageDeleteDTO, _httpContextAccessor.HttpContext);
+            if (!image.IsSuccess)
             {
-                var image = await _imageService.DeleteAsync(imageDeleteDTO, _httpContextAccessor.HttpContext);
-                return StatusCode((int)image.StatusCode);
+                return StatusCode((int)image.StatusCode, image);
             }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex);
-            }
-        }
-
-        // admin
-        // Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Imluc2lkZWNvZGVfYnV5IiwiZW1haWwiOiJpbnNpZGVjb2RlQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsIm5iZiI6MTY5MjExOTUwNywiZXhwIjoxNjkyNzI0MzA3LCJpYXQiOjE2OTIxMTk1MDd9.-hJ7aRiDf3DsDENnqd6OSgLgHqaUBfg-4OE3KoktRf0
-
-
-        // buyer
-        // Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InVzZXJfYnV5ZXIiLCJlbWFpbCI6InVzZXJidXllckBnbWFpbC5jb20iLCJyb2xlIjoiYnV5ZXIiLCJuYmYiOjE2OTI1MTE2NjksImV4cCI6MTY5MzExNjQ2OSwiaWF0IjoxNjkyNTExNjY5fQ.EQReuCRIRZIiFONsH9ZNMzFHlsgplZZfpmuubl5v7Rs
+            return StatusCode((int)image.StatusCode);
+        }        
     }
 }

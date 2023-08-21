@@ -63,7 +63,7 @@ namespace DigitalShoes.Api.AuthOperations.Services
             _apiResponse.StatusCode = HttpStatusCode.OK;
             _apiResponse.Result = myNewRoleResponseDTO;
             return _apiResponse;
-        }//CreateNewRole
+        }
 
         public async Task<ApiResponse> CreateNewRole(NewRoleRequestDTO newRoleRequestDTO)
         {
@@ -79,6 +79,6 @@ namespace DigitalShoes.Api.AuthOperations.Services
             _apiResponse.StatusCode = HttpStatusCode.OK;
             _apiResponse.Result = newRoleResponseDTO;
             return _apiResponse;
-        }//CreateNewRole
+        }
     }
 }

@@ -9,7 +9,7 @@ namespace DigitalShoes.Service.Abstractions
     {
         Task<ApiResponse> SearchByHashtagAsync(SearchByHashtagRequestDTO searchByHashtagRequestDTO, HttpContext httpContext);
         Task<ApiResponse> GetAllWithPaginationAsync(GetAllWithPaginationRequestDTO getAllWithPaginationRequestDTO, HttpContext httpContext);
-        Task<ApiResponse> SearchShoeByFilterAsync(GetShoeByFilterDTO getShoeByFilterDTO, HttpContext httpContext);
-        Task<ApiResponse> GetReviewsByShoeIdAsync(int? ShoeId, HttpContext httpContext);
+        Task<ApiResponse> SearchShoeByFilterAsync(GetShoeByFilterDTO getShoeByFilterDTO);
+        Task<ApiResponse> GetReviewsByShoeIdAsync(int? ShoeId);
     }
 }

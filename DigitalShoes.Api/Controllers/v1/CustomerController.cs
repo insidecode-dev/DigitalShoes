@@ -19,13 +19,17 @@ namespace DigitalShoes.Api.Controllers.v1
         {
             _customerService = customerService;
             _httpContextAccessor = httpContextAccessor;
-        }
-
-        // buy shoe  (also completes payment and payment objects) (done)
+        }       
 
 
         [Authorize(Roles = "buyer")]
         [HttpPost("BuyProductById")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ApiResponse>> BuyProductByIdAsync([FromBody] TransactionDTO transactionDTO)
         {
             var category = await _customerService.BuyProductByIdAsync(transactionDTO, _httpContextAccessor.HttpContext);
@@ -38,6 +42,11 @@ namespace DigitalShoes.Api.Controllers.v1
 
         [Authorize(Roles = "buyer")]
         [HttpPost("ApproveCart")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]        
         public async Task<ActionResult<ApiResponse>> ApproveCartAsync()
         {
             var category = await _customerService.ApproveCartAsync(_httpContextAccessor.HttpContext);

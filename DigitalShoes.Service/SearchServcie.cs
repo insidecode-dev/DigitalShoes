@@ -39,243 +39,194 @@ namespace DigitalShoes.Service
 
         public async Task<ApiResponse> SearchByHashtagAsync(SearchByHashtagRequestDTO searchByHashtagRequestDTO, HttpContext httpContext)
         {
-            try
+            if (searchByHashtagRequestDTO.Text is null)
             {
-                if (searchByHashtagRequestDTO.Text is null)
-                {
-                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
-                    _apiResponse.ErrorMessages.Add("hashtag is null");
-                    _apiResponse.IsSuccess = false;
-                    return _apiResponse;
-                }
-
-                var pageSize = searchByHashtagRequestDTO.PageSize;
-                var pageNumber = searchByHashtagRequestDTO.PageNumber;
-
-                var existingHashtag = await _dbContext.Hashtags
-                    .Where(x => x.Text == searchByHashtagRequestDTO.Text)
-                    .Include(x => x.ShoeHashtags)
-                    .ThenInclude(x => x.Shoe)
-                    .FirstOrDefaultAsync();
-
-                if (existingHashtag is null)
-                {
-                    _apiResponse.ErrorMessages.Add($"{searchByHashtagRequestDTO.Text} hashtag does not exist");
-                    _apiResponse.StatusCode = HttpStatusCode.NotFound;
-                    _apiResponse.IsSuccess = false;
-                    return _apiResponse;
-                }
-
-                var hashTag = _mapper.Map<HashtagGetDTO>(existingHashtag);
-                var shoeGetDTO = _mapper.Map<List<ShoeGetDTO>>(existingHashtag.ShoeHashtags.Select(x => x.Shoe));
-
-
-                //pagination                
-                if (pageSize > 0)
-                {
-                    if (pageSize > 100)
-                    {
-                        pageSize = 100;
-                    }
-
-                    hashTag.ShoeGetDTO = shoeGetDTO.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList();
-                }
-
-                //adding pahgination information to header
-                PaginationForResponseHeader pgResponseHeader = new() { PageNumber = pageNumber, PageSize = pageSize };
-                //Response is property of ControllerBase class, its type is HttpResponse, that manipulates HttpResponse for executing action
-                httpContext.Response.Headers.Add("Pagination", JsonConvert.SerializeObject(pgResponseHeader));
-
-                _apiResponse.IsSuccess = true;
-                _apiResponse.StatusCode = HttpStatusCode.OK;
-                _apiResponse.Result = hashTag;
-                return _apiResponse;
-            }
-            catch (Exception ex)
-            {
-                _apiResponse.ErrorMessages.Add(ex.Message.ToString());
-                _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                _apiResponse.ErrorMessages.Add("hashtag is null");
                 _apiResponse.IsSuccess = false;
                 return _apiResponse;
             }
+
+            var pageSize = searchByHashtagRequestDTO.PageSize;
+            var pageNumber = searchByHashtagRequestDTO.PageNumber;
+
+            var existingHashtag = await _dbContext.Hashtags
+                .Where(x => x.Text == searchByHashtagRequestDTO.Text)
+                .Include(x => x.ShoeHashtags)
+                .ThenInclude(x => x.Shoe)
+                .ThenInclude(x => x.Images)
+                .FirstOrDefaultAsync();
+
+            if (existingHashtag is null)
+            {
+                _apiResponse.ErrorMessages.Add($"{searchByHashtagRequestDTO.Text} hashtag does not exist");
+                _apiResponse.StatusCode = HttpStatusCode.NotFound;
+                _apiResponse.IsSuccess = false;
+                return _apiResponse;
+            }
+
+            var hashTag = _mapper.Map<HashtagGetDTO>(existingHashtag);
+            var shoeGetDTO = _mapper.Map<List<ShoeGetDTO>>(existingHashtag.ShoeHashtags.Select(x => x.Shoe));
+
+
+            //pagination                
+            if (pageSize > 0)
+            {
+                if (pageSize > 100)
+                {
+                    pageSize = 100;
+                }
+
+                hashTag.ShoeGetDTO = shoeGetDTO.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList();
+            }
+
+            //adding pahgination information to header
+            PaginationForResponseHeader pgResponseHeader = new() { PageNumber = pageNumber, PageSize = pageSize };
+            //Response is property of ControllerBase class, its type is HttpResponse, that manipulates HttpResponse for executing action
+            httpContext.Response.Headers.Add("Pagination", JsonConvert.SerializeObject(pgResponseHeader));
+
+            _apiResponse.IsSuccess = true;
+            _apiResponse.StatusCode = HttpStatusCode.OK;
+            _apiResponse.Result = hashTag;
+            return _apiResponse;
         }
 
         public async Task<ApiResponse> GetAllWithPaginationAsync(GetAllWithPaginationRequestDTO getAllWithPaginationRequestDTO, HttpContext httpContext)
         {
-            try
+            var pageSize = getAllWithPaginationRequestDTO.PageSize;
+            var pageNumber = getAllWithPaginationRequestDTO.PageNumber;
+
+            var shoes = await _dbContext.Shoes.Include(x => x.Images).Include(x => x.ShoeHashtags).ThenInclude(x => x.Hashtag).ToListAsync();
+
+            //pagination                
+            if (pageSize > 0)
             {
-                var pageSize = getAllWithPaginationRequestDTO.PageSize;
-                var pageNumber = getAllWithPaginationRequestDTO.PageNumber;
-
-                var shoes = await _dbContext.Shoes.Include(x => x.ShoeHashtags).ThenInclude(x => x.Hashtag).ToListAsync();
-
-                //pagination                
-                if (pageSize > 0)
+                if (pageSize > 100)
                 {
-                    if (pageSize > 100)
-                    {
-                        pageSize = 100;
-                    }
-
-                    shoes = shoes.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList();
+                    pageSize = 100;
                 }
-                var shoeGetDTO = _mapper.Map<List<ShoeGetDTO>>(shoes);
 
-                //adding pahgination information to header
-                PaginationForResponseHeader pgResponseHeader = new() { PageNumber = pageNumber, PageSize = pageSize };
-                httpContext.Response.Headers.Add("Pagination", JsonConvert.SerializeObject(pgResponseHeader));
+                shoes = shoes.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList();
+            }
+            var shoeGetDTO = _mapper.Map<List<ShoeGetDTO>>(shoes);
 
-                _apiResponse.IsSuccess = true;
-                _apiResponse.StatusCode = HttpStatusCode.OK;
-                _apiResponse.Result = shoeGetDTO;
-                return _apiResponse;
-            }
-            catch (Exception ex)
-            {
-                _apiResponse.ErrorMessages.Add(ex.Message.ToString());
-                _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
-                _apiResponse.IsSuccess = false;
-                return _apiResponse;
-            }
+            //adding pahgination information to header
+            PaginationForResponseHeader pgResponseHeader = new() { PageNumber = pageNumber, PageSize = pageSize };
+            httpContext.Response.Headers.Add("Pagination", JsonConvert.SerializeObject(pgResponseHeader));
+
+            _apiResponse.IsSuccess = true;
+            _apiResponse.StatusCode = HttpStatusCode.OK;
+            _apiResponse.Result = shoeGetDTO;
+            return _apiResponse;
         }
 
-        public async Task<ApiResponse> SearchShoeByFilterAsync(GetShoeByFilterDTO getShoeByFilterDTO, HttpContext httpContext)
+        public async Task<ApiResponse> SearchShoeByFilterAsync(GetShoeByFilterDTO getShoeByFilterDTO)
         {
-            try
+            ValidationResult getShoeByFilterDTOValidationResult = new GetShoeByFilterDTOValidator().Validate(getShoeByFilterDTO);
+            if (!getShoeByFilterDTOValidationResult.IsValid)
             {
-                ValidationResult getShoeByFilterDTOValidationResult = new GetShoeByFilterDTOValidator().Validate(getShoeByFilterDTO);
-                if (!getShoeByFilterDTOValidationResult.IsValid)
-                {
-                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
-                    _apiResponse.IsSuccess = false;
-                    foreach (var error in getShoeByFilterDTOValidationResult.Errors)
-                    {
-                        _apiResponse.ErrorMessages.Add(error.ErrorMessage);
-                    }
-                    _apiResponse.Result = getShoeByFilterDTOValidationResult;
-                    return _apiResponse;
-                }
-
-
-                // gender 
-                if (!Enum.TryParse<Gender>(getShoeByFilterDTO.Gender, ignoreCase: true, out var gender))
-                {
-                    _apiResponse.IsSuccess = false;
-                    _apiResponse.ErrorMessages.Add($"gender is not valid");
-                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
-                    return _apiResponse;
-                }
-
-                // color 
-                if (!Enum.TryParse<Color>(getShoeByFilterDTO.Color, ignoreCase: true, out var color))
-                {
-                    _apiResponse.IsSuccess = false;
-                    _apiResponse.ErrorMessages.Add($"color is not valid");
-                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
-                    return _apiResponse;
-                }
-
-                // rating                 
-                if (!Enum.TryParse<Rating>(getShoeByFilterDTO.Rating, ignoreCase: true, out var rating))
-                {
-                    _apiResponse.IsSuccess = false;
-                    _apiResponse.ErrorMessages.Add($"color is not valid");
-                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
-                    return _apiResponse;
-                }
-
-                // category                
-                var ctgry = await _dbContext.Categories.Where(ct => ct.Name == getShoeByFilterDTO.CTName).AsNoTracking().FirstOrDefaultAsync();
-
-
-                var shoes = await _dbContext
-                    .Shoes
-                    .Where(s =>
-                    s.Brand.Contains(getShoeByFilterDTO.Brand) ||
-                    s.Model.Contains(getShoeByFilterDTO.Model) ||
-                    s.Size == getShoeByFilterDTO.Size ||
-                    s.Rating == rating ||
-                    s.Price == getShoeByFilterDTO.Price ||
-                    s.Gender == gender ||
-                    s.Color == color ||
-                    (ctgry != null && s.CategoryId == ctgry.Id))
-                    .Include(x => x.ShoeHashtags)
-                    .ThenInclude(x => x.Hashtag)
-                    .ToListAsync();
-
-                // shoe                
-                shoes = shoes.Take(getShoeByFilterDTO.Count).ToList();
-                var shoeGetDTO = _mapper.Map<List<ShoeGetDTO>>(shoes);
-                _apiResponse.IsSuccess = true;
-                _apiResponse.StatusCode = HttpStatusCode.OK;
-                _apiResponse.Result = shoeGetDTO;
-                return _apiResponse;
-            }
-            catch (Exception ex)
-            {
-                _apiResponse.IsSuccess = false;
-                _apiResponse.ErrorMessages.Add(ex.Message);
                 _apiResponse.StatusCode = HttpStatusCode.BadRequest;
-                _apiResponse.Result = ex;
+                _apiResponse.IsSuccess = false;
+                foreach (var error in getShoeByFilterDTOValidationResult.Errors)
+                {
+                    _apiResponse.ErrorMessages.Add(error.ErrorMessage);
+                }
+                _apiResponse.Result = getShoeByFilterDTOValidationResult;
                 return _apiResponse;
             }
+
+
+            // gender 
+            if (!Enum.TryParse<Gender>(getShoeByFilterDTO.Gender, ignoreCase: true, out var gender))
+            {
+                _apiResponse.IsSuccess = false;
+                _apiResponse.ErrorMessages.Add($"gender is not valid");
+                _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                return _apiResponse;
+            }
+
+            // color 
+            if (!Enum.TryParse<Color>(getShoeByFilterDTO.Color, ignoreCase: true, out var color))
+            {
+                _apiResponse.IsSuccess = false;
+                _apiResponse.ErrorMessages.Add($"color is not valid");
+                _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                return _apiResponse;
+            }
+
+            // rating                 
+            if (!Enum.TryParse<Rating>(getShoeByFilterDTO.Rating, ignoreCase: true, out var rating))
+            {
+                _apiResponse.IsSuccess = false;
+                _apiResponse.ErrorMessages.Add($"color is not valid");
+                _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                return _apiResponse;
+            }
+
+            // category                
+            var ctgry = await _dbContext.Categories.Where(ct => ct.Name == getShoeByFilterDTO.CTName).AsNoTracking().FirstOrDefaultAsync();
+
+
+            var shoes = await _dbContext
+                .Shoes
+                .Where(s =>
+                s.Brand.Contains(getShoeByFilterDTO.Brand) ||
+                s.Model.Contains(getShoeByFilterDTO.Model) ||
+                s.Size == getShoeByFilterDTO.Size ||
+                s.Rating == rating ||
+                s.Price == getShoeByFilterDTO.Price ||
+                s.Gender == gender ||
+                s.Color == color ||
+                (ctgry != null && s.CategoryId == ctgry.Id))
+                .Include(x => x.Images)
+                .Include(x => x.ShoeHashtags)
+                .ThenInclude(x => x.Hashtag)
+                .ToListAsync();
+
+            // shoe                
+            shoes = shoes.Take(getShoeByFilterDTO.Count).ToList();
+            var shoeGetDTO = _mapper.Map<List<ShoeGetDTO>>(shoes);
+            _apiResponse.IsSuccess = true;
+            _apiResponse.StatusCode = HttpStatusCode.OK;
+            _apiResponse.Result = shoeGetDTO;
+            return _apiResponse;
         }
 
-        public async Task<ApiResponse> GetReviewsByShoeIdAsync(int? ShoeId, HttpContext httpContext)
+        public async Task<ApiResponse> GetReviewsByShoeIdAsync(int? ShoeId)
         {
-            try
+            if (ShoeId == null)
             {
-                if (ShoeId == null)
-                {
-                    _apiResponse.IsSuccess = false;
-                    _apiResponse.ErrorMessages.Add($"ShoeId is null");
-                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
-                    return _apiResponse;
-                }
-
-                // checking if shoe with provided id exist
-                var existingShoe = await _dbContext.Shoes.Where(x => x.Id == ShoeId).FirstOrDefaultAsync();
-                if (existingShoe == null)
-                {
-                    _apiResponse.IsSuccess = false;
-                    _apiResponse.StatusCode = HttpStatusCode.NotFound;
-                    _apiResponse.ErrorMessages.Add($"shoe with {ShoeId} id does not exist");
-                    return _apiResponse;
-                }
-                string username = httpContext
-                .User
-                .Identities
-                .FirstOrDefault(identity => identity.Claims.Any(claim => claim.Type == ClaimTypes.Name))?
-                .Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?
-                .Value;
-
-                var user = await _userManager
-                    .Users
-                    .Include(u => u.Reviews)
-                    .FirstOrDefaultAsync(u => u.UserName == username);
-
-                var reviews = user.Reviews.Where(x => x.ShoeId == ShoeId).ToList();
-                if (reviews.Count == 0)
-                {
-                    _apiResponse.IsSuccess = false;
-                    _apiResponse.StatusCode = HttpStatusCode.NotFound;
-                    _apiResponse.ErrorMessages.Add($"you don't have any reviews for shoe with {ShoeId} id");
-                    return _apiResponse;
-                }
-
-                // response
-                _apiResponse.IsSuccess = true;
-                _apiResponse.StatusCode = HttpStatusCode.OK;
-                _apiResponse.Result = _mapper.Map<List<ReviewGetDTO>>(reviews);
-                return _apiResponse;
-            }
-            catch (Exception ex)
-            {
-                _apiResponse.ErrorMessages.Add(ex.Message.ToString());
                 _apiResponse.IsSuccess = false;
-                _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                _apiResponse.ErrorMessages.Add($"ShoeId is null");
+                _apiResponse.StatusCode = HttpStatusCode.BadRequest;
                 return _apiResponse;
             }
+
+            // checking if shoe with provided id exist
+            var existingShoe = await _dbContext.Shoes.Where(x => x.Id == ShoeId).FirstOrDefaultAsync();
+            if (existingShoe == null)
+            {
+                _apiResponse.IsSuccess = false;
+                _apiResponse.StatusCode = HttpStatusCode.NotFound;
+                _apiResponse.ErrorMessages.Add($"shoe with {ShoeId} id does not exist");
+                return _apiResponse;
+            }
+
+            // getting reveiws
+            var reviews = await _dbContext.Reviews.Where(x => x.ShoeId == ShoeId).ToListAsync();
+            if (reviews.Count == 0)
+            {
+                _apiResponse.IsSuccess = false;
+                _apiResponse.StatusCode = HttpStatusCode.NotFound;
+                _apiResponse.ErrorMessages.Add($"there is not any reviews for shoe with {ShoeId} id");
+                return _apiResponse;
+            }
+
+            // response
+            _apiResponse.IsSuccess = true;
+            _apiResponse.StatusCode = HttpStatusCode.OK;
+            _apiResponse.Result = _mapper.Map<List<ReviewGetDTO>>(reviews);
+            return _apiResponse;
         }
     }
 }
