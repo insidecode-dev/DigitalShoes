@@ -7,6 +7,7 @@ using DigitalShoes.Domain.DTOs.ImageDTOs;
 using DigitalShoes.Domain.DTOs.PaymentDTOs;
 using DigitalShoes.Domain.DTOs.ReviewDTOs;
 using DigitalShoes.Domain.DTOs.ShoeDTOs;
+using DigitalShoes.Domain.DTOs.WishlistDTOs;
 using DigitalShoes.Domain.Entities;
 
 namespace DigitalShoes.Domain
@@ -77,6 +78,8 @@ namespace DigitalShoes.Domain
             .ReverseMap();
             CreateMap<PaymentObject, PaymentObjectGetDTO>().ReverseMap();
 
+            // wishlist 
+            CreateMap<ShoeWishlist, ShoeWishlistResponseDTO>().ReverseMap();
         }
     }
 }

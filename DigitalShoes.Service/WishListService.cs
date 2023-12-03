@@ -192,5 +192,39 @@ namespace DigitalShoes.Service
             _apiResponse.StatusCode = HttpStatusCode.NoContent;
             return _apiResponse;
         }
+
+        public async Task<ApiResponse> MyWishlistAsync(HttpContext httpContext)
+        {
+         
+            string username = httpContext
+            .User
+            .Identities
+            .FirstOrDefault(identity => identity.Claims.Any(claim => claim.Type == ClaimTypes.Name))?
+            .Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?
+            .Value;
+
+            var user = await _userManager
+                .Users
+                .Include(w => w.Wishlist)
+                .ThenInclude(ws => ws.DesiredShoes)
+                .FirstOrDefaultAsync(u => u.UserName == username);
+
+            // checking if user has wishlist
+            if (user.Wishlist == null)
+            {                
+                _apiResponse.IsSuccess = false;
+                _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                _apiResponse.ErrorMessages.Add("you don't have any shoe in your wishlist");
+                return _apiResponse;
+            }
+
+            var shoeWishlist = user.Wishlist.DesiredShoes;
+
+            //response
+            _apiResponse.IsSuccess = true;
+            _apiResponse.StatusCode = HttpStatusCode.OK;
+            _apiResponse.Result = _mapper.Map<List<ShoeWishlistResponseDTO>>(shoeWishlist);
+            return _apiResponse;           
+        }
     }
 }

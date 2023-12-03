@@ -10,6 +10,7 @@ namespace DigitalShoes.Domain.DTOs.PaymentDTOs
     {
         public int PaymentId { get; set; }
         public decimal TotalPrice { get; set; }
+        public string OrderAdress { get; set; }
         public List<PaymentObjectGetDTO> PaymentObjectsGetDTO { get; set; }
     }
 }

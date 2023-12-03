@@ -25,13 +25,13 @@ namespace DigitalShoes.Dal.Configurations
                 .Property(a => a.ItemsCount)
                 .IsRequired()
                 .HasColumnType("int")
-                .HasDefaultValue(0); 
+                .HasDefaultValue(0);
 
             builder
                 .Property(a => a.TotalPrice)
                 .IsRequired()
                 .HasColumnType("decimal(6, 2)")
-                .HasDefaultValue(0.00M); 
+                .HasDefaultValue(0.00M);
         }
     }
 }

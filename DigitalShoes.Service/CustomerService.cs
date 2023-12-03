@@ -28,7 +28,7 @@ namespace DigitalShoes.Service
             _userManager = userManager;
         }
 
-        public async Task<ApiResponse> ApproveCartAsync(HttpContext httpContext)
+        public async Task<ApiResponse> ApproveCartAsync(HttpContext httpContext, string? orderAdress = null)
         {
             // beginning transaction
             IDbContextTransaction _dbContextTransaction = await _dbContext.Database.BeginTransactionAsync();
@@ -46,6 +46,13 @@ namespace DigitalShoes.Service
                 .ThenInclude(x => x.CartItems)
                 .FirstOrDefaultAsync(u => u.UserName == username);
 
+            if (user.Cart == null || user.Cart.CartItems == null)
+            {
+                _apiResponse.ErrorMessages.Add($"you don't have cart or cart items");
+                _apiResponse.IsSuccess = false;
+                _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                return _apiResponse;
+            }
             var cartItems = user.Cart.CartItems;
 
             foreach (var item in cartItems)
@@ -74,8 +81,40 @@ namespace DigitalShoes.Service
 
             // main operations
 
+            // updating adress if not null
+            // updating adress if not null
+            if (orderAdress != null)
+            {
+                user.OrderAdress = orderAdress;
+                await _userManager.UpdateAsync(user);
+
+                if (await _userManager
+                .Users
+                .Where(u => u.UserName == username)
+                .Select(x => x.OrderAdress)
+                .FirstOrDefaultAsync() != orderAdress)
+                {
+                    await _dbContextTransaction.RollbackAsync();
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                    _apiResponse.ErrorMessages.Add("transaction is not successful");
+                    return _apiResponse;
+                }
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(user.OrderAdress) || string.IsNullOrWhiteSpace(user.OrderAdress))
+                {
+                    await _dbContextTransaction.RollbackAsync();
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    _apiResponse.ErrorMessages.Add("Order adress must be added");
+                    return _apiResponse;
+                }
+            }
+
             // creating payment session
-            var payment = new Payment { ApplicationUserId = user.Id };
+            var payment = new Payment { ApplicationUserId = user.Id, OrderAdress = user.OrderAdress };
             await _dbContext.Payments.AddAsync(payment);
             await _dbContext.SaveChangesAsync();
 
@@ -249,7 +288,7 @@ namespace DigitalShoes.Service
          saticinin balansina musteriden cixilan qeder elave olunur (done)
          balans artimi yoxlanilir (done)
         */
-        public async Task<ApiResponse> BuyProductByIdAsync(TransactionDTO transactionDTO, HttpContext httpContext)
+        public async Task<ApiResponse> BuyProductByIdAsync(TransactionDTO transactionDTO, HttpContext httpContext, string? orderAdress = null)
         {
             // beginning transaction
             IDbContextTransaction _dbContextTransaction = await _dbContext.Database.BeginTransactionAsync();
@@ -301,6 +340,7 @@ namespace DigitalShoes.Service
                 .Users
                 .FirstOrDefaultAsync(u => u.UserName == username);
 
+            
             // checking if user have enough balance for requested shoe 
             if (user.Balance < (int)(transactionDTO.ItemsCount * existingShoe.Price))
             {
@@ -312,8 +352,39 @@ namespace DigitalShoes.Service
 
             // main operations
 
+            // updating adress if not null
+            if (orderAdress != null)
+            {
+                user.OrderAdress = orderAdress;
+                await _userManager.UpdateAsync(user);
+
+                if (await _userManager
+                .Users
+                .Where(u => u.UserName == username)
+                .Select(x => x.OrderAdress)
+                .FirstOrDefaultAsync() != orderAdress)
+                {
+                    await _dbContextTransaction.RollbackAsync();
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                    _apiResponse.ErrorMessages.Add("transaction is not successful");
+                    return _apiResponse;
+                }
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(user.OrderAdress) || string.IsNullOrWhiteSpace(user.OrderAdress))
+                {
+                    await _dbContextTransaction.RollbackAsync();
+                    _apiResponse.IsSuccess = false;
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    _apiResponse.ErrorMessages.Add("Order adress must be added");
+                    return _apiResponse;
+                }
+            }
+
             // creating payment session
-            var payment = new Payment { ApplicationUserId = user.Id };
+            var payment = new Payment { ApplicationUserId = user.Id, OrderAdress = user.OrderAdress };
             await _dbContext.Payments.AddAsync(payment);
             await _dbContext.SaveChangesAsync();
 

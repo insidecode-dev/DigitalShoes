@@ -109,3 +109,4 @@ C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api\bin\Debug\net7.0\Micr
 C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api\bin\Debug\net7.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api\bin\Debug\net7.0\Newtonsoft.Json.dll
 C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api\bin\Debug\net7.0\Newtonsoft.Json.Bson.dll
+C:\Users\Admino\source\repos\DigitalShoes\DigitalShoes.Api\obj\Debug\net7.0\DigitalShoes.Api.MvcApplicationPartsAssemblyInfo.cs

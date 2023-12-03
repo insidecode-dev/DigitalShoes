@@ -4,11 +4,8 @@ using DigitalShoes.Domain.DTOs.AuthDTOs;
 using DigitalShoes.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System.Data;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net;
 using System.Security.Claims;
 using System.Text;
 
@@ -126,7 +123,8 @@ namespace DigitalShoes.Api.AuthOperations.Repositories
                 UserName = registrationRequestDTO.UserName,
                 Email = registrationRequestDTO.Email,
                 NormalizedEmail = registrationRequestDTO.Email.ToUpper(),
-                Name = registrationRequestDTO.Name
+                Name = registrationRequestDTO.Name,
+                OrderAdress = registrationRequestDTO.OrderAdress,
             };
 
             // validating role 

@@ -12,6 +12,7 @@ namespace DigitalShoes.Service.Abstractions
     public interface IWishListService
     {        
         Task<ApiResponse> AddToWishlistAsync(int? ShoeId, HttpContext httpContext); 
-        Task<ApiResponse> RemoveFromWishlistAsync(int? ShoeId, HttpContext httpContext); 
+        Task<ApiResponse> RemoveFromWishlistAsync(int? ShoeId, HttpContext httpContext);
+        Task<ApiResponse> MyWishlistAsync(HttpContext httpContext);
     }
 }

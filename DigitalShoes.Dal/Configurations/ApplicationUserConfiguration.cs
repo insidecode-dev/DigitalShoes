@@ -13,7 +13,7 @@ namespace DigitalShoes.Dal.Configurations
             builder
                 .HasOne(c => c.Cart)
                 .WithOne(u => u.ApplicationUser)
-                .HasForeignKey<Cart>(x=>x.ApplicationUserId);
+                .HasForeignKey<Cart>(x => x.ApplicationUserId);
 
             builder
                 .HasOne(c => c.Wishlist)
@@ -34,8 +34,8 @@ namespace DigitalShoes.Dal.Configurations
                 .HasMany(c => c.Shoes)
                 .WithOne(u => u.ApplicationUser)
                 .HasForeignKey(x => x.ApplicationUserId)
-                .OnDelete(DeleteBehavior.Cascade);
-            //
+                .OnDelete(DeleteBehavior.NoAction);
+
             builder
                 .Property(a => a.Name)
                 .IsRequired()
@@ -56,6 +56,11 @@ namespace DigitalShoes.Dal.Configurations
                 .Property(a => a.ProfileImageLocalPath)
                 .IsRequired(false)
                 .HasColumnType("nvarchar(200)");
+
+            builder
+                .Property(a => a.OrderAdress)
+                .IsRequired()
+                .HasColumnType("nvarchar(500)");            
         }
     }
 }

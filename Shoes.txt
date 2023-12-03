@@ -1,0 +1,194 @@
+{
+  "brand": "Nike",
+  "model": "Air Max 90",
+  "count": 50,
+  "size": 9,
+  "price": 120,
+  "description": "Iconic design with visible air cushioning.",
+  "gender": "Unisex",
+  "color": "White",
+  "ctName": "Sneakers",
+  "hashtags": [
+    { "text": "AirMax" },
+    { "text": "ClassicStyle" },
+    { "text": "Athleisure" },
+    { "text": "Streetwear" }
+  ]
+}
+
+/////////////////////////////
+{
+  "brand": "Adidas",
+  "model": "Ultraboost 21",
+  "count": 30,
+  "size": 8,
+  "price": 180,
+  "description": "Responsive running shoes with Boost cushioning.",
+  "gender": "man",
+  "color": "Black",
+  "ctName": "Running Shoes",
+  "hashtags": [
+    { "text": "Ultraboost" },
+    { "text": "Performance" },
+    { "text": "RunningCommunity" },
+    { "text": "AthleticGear" }
+  ]
+}
+
+
+/////////////////////////////
+{
+  "brand": "Converse",
+  "model": "Chuck Taylor All Star",
+  "count": 20,
+  "size": 7,
+  "price": 55,
+  "description": "Timeless canvas sneakers for everyday wear.",
+  "gender": "Woman",
+  "color": "Red",
+  "ctName": "Casual Shoes",
+  "hashtags": [
+    { "text": "ChuckTaylor" },
+    { "text": "CanvasStyle" },
+    { "text": "EverydayComfort" },
+    { "text": "VintageVibes" }
+  ]
+}
+
+/////////////////////////////
+{
+  "brand": "Puma",
+  "model": "RS-X³ Puzzle",
+  "count": 15,
+  "size": 10,
+  "price": 100,
+  "description": "Chunky sneakers with retro-inspired design.",
+  "gender": "Unisex",
+  "color": "Orange",
+  "ctName": "Chunky Sneakers",
+  "hashtags": [
+    { "text": "RSX" },
+    { "text": "ChunkyStyle" },
+    { "text": "RetroVibes" },
+    { "text": "StreetFashion" }
+  ]
+}
+
+
+/////////////////////////////
+{
+  "brand": "Reebok",
+  "model": "Classic Leather",
+  "count": 25,
+  "size": 9,
+  "price": 75,
+  "description": "Timeless leather sneakers with a clean look.",
+  "gender": "man",
+  "color": "White",
+  "ctName": "Leather Sneakers",
+  "hashtags": [
+    { "text": "ClassicLeather" },
+    { "text": "CleanLook" },
+    { "text": "MinimalStyle" },
+    { "text": "CasualChic" }
+  ]
+}
+
+
+/////////////////////////////
+{
+  "brand": "Vans",
+  "model": "Old Skool",
+  "count": 40,
+  "size": 8.5,
+  "price": 65,
+  "description": "Iconic skate shoes with the signature side stripe.",
+  "gender": "Unisex",
+  "color": "yellow",
+  "ctName": "Skate Shoes",
+  "hashtags": [
+    { "text": "OldSkool" },
+    { "text": "Skateboarding" },
+    { "text": "ClassicDesign" },
+    { "text": "StreetCulture" }
+  ]
+}
+
+
+/////////////////////////////
+{
+  "brand": "New Balance",
+  "model": "Fresh Foam 1080",
+  "count": 10,
+  "size": 10.5,
+  "price": 140,
+  "description": "High-cushioning running shoes for maximum comfort.",
+  "gender": "woman",
+  "color": "Pink",
+  "ctName": "Running Shoes",
+  "hashtags": [
+    { "text": "FreshFoam" },
+    { "text": "ComfortRunning" },
+    { "text": "LongDistance" },
+    { "text": "PerformanceGear" }
+  ]
+}
+
+/////////////////////////////
+{
+  "brand": "Timberland",
+  "model": "6-Inch Premium Boots",
+  "count": 5,
+  "size": 11,
+  "price": 180,
+  "description": "Durable and waterproof boots for outdoor adventures.",
+  "gender": "man",
+  "color": "Brown",
+  "ctName": "Outdoor Boots",
+  "hashtags": [
+    { "text": "Timberland" },
+    { "text": "OutdoorLife" },
+    { "text": "AdventureGear" },
+    { "text": "SturdyBoots" }
+  ]
+}
+
+
+/////////////////////////////
+{
+  "brand": "Gucci",
+  "model": "Ace Sneakers",
+  "count": 3,
+  "size": 7.5,
+  "price": 590,
+  "description": "Luxurious leather sneakers with iconic web stripes.",
+  "gender": "woman",
+  "color": "White",
+  "ctName": "Luxury Sneakers",
+  "hashtags": [
+    { "text": "Gucci" },
+    { "text": "LuxuryStyle" },
+    { "text": "DesignerSneakers" },
+    { "text": "FashionStatement" }
+  ]
+}
+
+
+/////////////////////////////
+{
+  "brand": "ASICS",
+  "model": "Gel-Kayano 28",
+  "count": 12,
+  "size": 9.5,
+  "price": 160,
+  "description": "Stability running shoes with enhanced cushioning.",
+  "gender": "man",
+  "color": "Black",
+  "ctName": "Running Shoes",
+  "hashtags": [
+    { "text": "GelKayano" },
+    { "text": "StabilityRunning" },
+    { "text": "SupportiveFit" },
+    { "text": "PerformanceRunning" }
+  ]
+}

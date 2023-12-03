@@ -29,6 +29,11 @@ namespace DigitalShoes.Dal.Configurations
                 .Property(a => a.TotalPrice)
                 .IsRequired()
                 .HasColumnType("decimal(6, 2)");
+
+            builder
+                .Property(a => a.OrderAdress)
+                .IsRequired()
+                .HasColumnType("nvarchar(500)");
         }
     }
 }

@@ -67,6 +67,10 @@ namespace DigitalShoes.Api.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<string>("OrderAdress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
@@ -140,7 +144,7 @@ namespace DigitalShoes.Api.Migrations
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
 
-                    b.ToTable("Carts");
+                    b.ToTable("Carts", (string)null);
                 });
 
             modelBuilder.Entity("DigitalShoes.Domain.Entities.CartItem", b =>
@@ -178,7 +182,7 @@ namespace DigitalShoes.Api.Migrations
 
                     b.HasIndex("ShoeId");
 
-                    b.ToTable("CartItems");
+                    b.ToTable("CartItems", (string)null);
                 });
 
             modelBuilder.Entity("DigitalShoes.Domain.Entities.Category", b =>
@@ -204,7 +208,7 @@ namespace DigitalShoes.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("DigitalShoes.Domain.Entities.Hashtag", b =>
@@ -230,7 +234,7 @@ namespace DigitalShoes.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Hashtags");
+                    b.ToTable("Hashtags", (string)null);
                 });
 
             modelBuilder.Entity("DigitalShoes.Domain.Entities.Image", b =>
@@ -265,7 +269,7 @@ namespace DigitalShoes.Api.Migrations
 
                     b.HasIndex("ShoeId");
 
-                    b.ToTable("Images");
+                    b.ToTable("Images", (string)null);
                 });
 
             modelBuilder.Entity("DigitalShoes.Domain.Entities.Payment", b =>
@@ -288,6 +292,10 @@ namespace DigitalShoes.Api.Migrations
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("OrderAdress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(6, 2)");
 
@@ -295,7 +303,7 @@ namespace DigitalShoes.Api.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("Payments");
+                    b.ToTable("Payments", (string)null);
                 });
 
             modelBuilder.Entity("DigitalShoes.Domain.Entities.PaymentObject", b =>
@@ -331,7 +339,7 @@ namespace DigitalShoes.Api.Migrations
 
                     b.HasIndex("PaymentId");
 
-                    b.ToTable("PaymentObjects");
+                    b.ToTable("PaymentObjects", (string)null);
                 });
 
             modelBuilder.Entity("DigitalShoes.Domain.Entities.Review", b =>
@@ -370,7 +378,7 @@ namespace DigitalShoes.Api.Migrations
 
                     b.HasIndex("ShoeId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("DigitalShoes.Domain.Entities.Shoe", b =>
@@ -432,7 +440,7 @@ namespace DigitalShoes.Api.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Shoes");
+                    b.ToTable("Shoes", (string)null);
                 });
 
             modelBuilder.Entity("DigitalShoes.Domain.Entities.ShoeHashtag", b =>
@@ -456,7 +464,7 @@ namespace DigitalShoes.Api.Migrations
 
                     b.HasIndex("HashtagId");
 
-                    b.ToTable("ShoeHashtags");
+                    b.ToTable("ShoeHashtags", (string)null);
                 });
 
             modelBuilder.Entity("DigitalShoes.Domain.Entities.ShoeWishlist", b =>
@@ -480,7 +488,7 @@ namespace DigitalShoes.Api.Migrations
 
                     b.HasIndex("WishlistId");
 
-                    b.ToTable("ShoeWishlists");
+                    b.ToTable("ShoeWishlists", (string)null);
                 });
 
             modelBuilder.Entity("DigitalShoes.Domain.Entities.Wishlist", b =>
@@ -508,7 +516,7 @@ namespace DigitalShoes.Api.Migrations
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
 
-                    b.ToTable("Wishlists");
+                    b.ToTable("Wishlists", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>

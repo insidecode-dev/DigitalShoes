@@ -11,7 +11,7 @@ namespace DigitalShoes.Service.Abstractions
 {
     public interface ICustomerService
     {
-        Task<ApiResponse>  BuyProductByIdAsync(TransactionDTO transactionDTO, HttpContext httpContext); 
-        Task<ApiResponse> ApproveCartAsync(HttpContext httpContext); //
+        Task<ApiResponse> BuyProductByIdAsync(TransactionDTO transactionDTO, HttpContext httpContext, string? orderAdress = null);
+        Task<ApiResponse> ApproveCartAsync(HttpContext httpContext, string? orderAdress = null); //
     }
 }

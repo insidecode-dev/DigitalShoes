@@ -26,7 +26,7 @@ namespace DigitalShoes.Dal.Configurations
                 .HasOne(u => u.ApplicationUser)
                 .WithMany(c => c.Shoes)
                 .HasForeignKey(c => c.ApplicationUserId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.ClientCascade);
 
             builder
                 .HasMany(u => u.Images)
@@ -49,7 +49,7 @@ namespace DigitalShoes.Dal.Configurations
                 .WithOne(c => c.Shoe)
                 .HasForeignKey(c => c.ShoeId);
 
-            
+
             //
 
             builder
@@ -86,6 +86,8 @@ namespace DigitalShoes.Dal.Configurations
                 .Property(a => a.CategoryId)
                 .IsRequired(false)
                 .HasColumnType("int");
+
+            
         }
     }
 }

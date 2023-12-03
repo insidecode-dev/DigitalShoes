@@ -12,5 +12,6 @@ namespace DigitalShoes.Domain.Entities
         public ApplicationUser ApplicationUser { get; set; }        
         public List<PaymentObject> PaymentObjects { get; set; }        
         public decimal TotalPrice { get; set; }
+        public string OrderAdress { get; set; }
     }
 }

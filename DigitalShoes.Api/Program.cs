@@ -99,7 +99,9 @@ builder.Services.AddAuthentication(options =>
         
         ValidateAudience = true,
         ValidAudience = "https://localhost:7249/"
+        
     };
+    // events
 });
 builder.Services.AddAuthorization();
 

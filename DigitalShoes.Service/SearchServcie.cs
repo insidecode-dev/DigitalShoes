@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using static DigitalShoes.Domain.StaticDetails;
@@ -137,46 +138,31 @@ namespace DigitalShoes.Service
 
 
             // gender 
-            if (!Enum.TryParse<Gender>(getShoeByFilterDTO.Gender, ignoreCase: true, out var gender))
-            {
-                _apiResponse.IsSuccess = false;
-                _apiResponse.ErrorMessages.Add($"gender is not valid");
-                _apiResponse.StatusCode = HttpStatusCode.BadRequest;
-                return _apiResponse;
-            }
+            
 
             // color 
-            if (!Enum.TryParse<Color>(getShoeByFilterDTO.Color, ignoreCase: true, out var color))
-            {
-                _apiResponse.IsSuccess = false;
-                _apiResponse.ErrorMessages.Add($"color is not valid");
-                _apiResponse.StatusCode = HttpStatusCode.BadRequest;
-                return _apiResponse;
-            }
+            
 
             // rating                 
-            if (!Enum.TryParse<Rating>(getShoeByFilterDTO.Rating, ignoreCase: true, out var rating))
-            {
-                _apiResponse.IsSuccess = false;
-                _apiResponse.ErrorMessages.Add($"color is not valid");
-                _apiResponse.StatusCode = HttpStatusCode.BadRequest;
-                return _apiResponse;
-            }
+            
 
             // category                
             var ctgry = await _dbContext.Categories.Where(ct => ct.Name == getShoeByFilterDTO.CTName).AsNoTracking().FirstOrDefaultAsync();
 
-
+            //
+            Gender gender;
+            Color color;
+            Rating rating;
             var shoes = await _dbContext
                 .Shoes
                 .Where(s =>
                 s.Brand.Contains(getShoeByFilterDTO.Brand) ||
                 s.Model.Contains(getShoeByFilterDTO.Model) ||
-                s.Size == getShoeByFilterDTO.Size ||
-                s.Rating == rating ||
-                s.Price == getShoeByFilterDTO.Price ||
-                s.Gender == gender ||
-                s.Color == color ||
+                (getShoeByFilterDTO.Size!=null && s.Size == getShoeByFilterDTO.Size) ||
+                (Enum.TryParse<Rating>(getShoeByFilterDTO.Rating, true, out rating) && s.Rating == rating) ||
+                (getShoeByFilterDTO.Price!=null && s.Price == getShoeByFilterDTO.Price) ||
+                (Enum.TryParse<Gender>(getShoeByFilterDTO.Gender,  true, out gender) && s.Gender == gender) ||
+                (Enum.TryParse<Color>(getShoeByFilterDTO.Color, true, out color) && s.Color == color) ||
                 (ctgry != null && s.CategoryId == ctgry.Id))
                 .Include(x => x.Images)
                 .Include(x => x.ShoeHashtags)

@@ -13,41 +13,33 @@ namespace DigitalShoes.Domain.FluentValidators
     {
         public GetShoeByFilterDTOValidator()
         {
-            RuleFor(p => p.Brand)
-                .NotNull().NotEmpty().WithMessage("brand cannot be empty")
+            RuleFor(p => p.Brand)                
                 .MaximumLength(15).WithMessage("maximum character size is 15")
                 .MinimumLength(2).WithMessage("minimum character size is 2");
 
-            RuleFor(p => p.Model)
-                .NotNull().NotEmpty().WithMessage("model cannot be empty")
+            RuleFor(p => p.Model)                
                 .MaximumLength(20).WithMessage("maximum character size is 20")
                 .MinimumLength(2).WithMessage("minimum character size is 2");
 
             RuleFor(p => p.Count)                
                 .Must(x => x.ToString().All(char.IsDigit)).WithMessage("count can only contain numeric characters");
 
-            RuleFor(p => p.Size)
-                .NotNull().NotEmpty().WithMessage("size should be added")
+            RuleFor(p => p.Size)                
                 .Must(x => x.ToString().All(char.IsDigit)).WithMessage("size can only contain numeric characters");
 
-            RuleFor(p => p.Price)
-                .NotNull().NotEmpty().WithMessage("price should be added")
-                .Must(x => x.ToString().All(char.IsDigit)).WithMessage("price can only contain numeric characters");
-                
+            RuleFor(p => p.Price)                
+                .Must(x => x.ToString().All(char.IsDigit)).WithMessage("price can only contain numeric characters");               
 
 
-            RuleFor(p => p.Gender)
-                .NotNull().NotEmpty().WithMessage("gender should not be empty")
+            RuleFor(p => p.Gender)                
                 .MaximumLength(10).WithMessage("maximum character size is 10")
                 .MinimumLength(2).WithMessage("minimum character size is 2");
 
-            RuleFor(p => p.Color)
-                .NotNull().NotEmpty().WithMessage("color should not be empty")
+            RuleFor(p => p.Color)                
                 .MaximumLength(10).WithMessage("maximum character size is 10")
                 .MinimumLength(2).WithMessage("minimum character size is 2");
 
-            RuleFor(p => p.CTName)
-                .NotNull().NotEmpty().WithMessage("category should not be empty")
+            RuleFor(p => p.CTName)                
                 .MaximumLength(25).WithMessage("maximum character size is 25")
                 .MinimumLength(2).WithMessage("minimum character size is 2");
         }

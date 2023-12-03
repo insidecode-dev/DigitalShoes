@@ -8,7 +8,15 @@ using static DigitalShoes.Domain.StaticDetails;
 namespace DigitalShoes.Domain.Entities
 {
     public class Shoe : BaseEntity
-    {        
+    {
+        public Shoe()
+        {
+            Images = new List<Image>();
+            ShoeHashtags = new List<ShoeHashtag>();
+            ShoeWishlists = new List<ShoeWishlist>();
+            CartItems = new List<CartItem>();
+            Reviews = new List<Review>();
+        }
         public string Brand { get; set; }
         public string Model { get; set; }
         public int Count { get; set; }

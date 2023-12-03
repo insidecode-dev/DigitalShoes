@@ -22,7 +22,7 @@ namespace DigitalShoes.Dal.Configurations
             //
 
             builder
-                .Ignore(x=>x.Id);
+                .Ignore(x => x.Id);
 
             builder.
                 HasKey(sh => new { sh.ShoeId, sh.HashtagId });

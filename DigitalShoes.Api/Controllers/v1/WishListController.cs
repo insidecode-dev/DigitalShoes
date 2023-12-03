@@ -20,6 +20,14 @@ namespace DigitalShoes.Api.Controllers.v1
         }
 
         [Authorize(Roles = "buyer")]
+        [HttpGet("MyWishlist")]
+        public async Task<IActionResult> MyWishlistAsync()
+        {
+            var wishlist = await _wishListService.MyWishlistAsync(_httpContextAccessor.HttpContext);
+            return StatusCode((int)wishlist.StatusCode, wishlist);
+        }
+
+        [Authorize(Roles = "buyer")]
         [HttpPost("{ShoeId:int}/AddToWishlist")]
         public async Task<IActionResult> AddToWishlistAsync([FromRoute] int? ShoeId)
         {
